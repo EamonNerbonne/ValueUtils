@@ -2,3 +2,4 @@ syntax: glob
 packages/
 obj
 *.suo
+bin
