@@ -33,11 +33,11 @@ namespace ValueUtils {
 
                 // multiply by 1+2n
                 // i.e. ensure that at least 2 bits of the lower 32 are set to encourage nice mixing.
-                // we want the lowest bit always to be set to ensure that objects without much symmetry are hashed well.
-                // for more complex situations (i.e. pairs of identical values in one object or multiple objects differing only
-                // in order etc.) we can never get a perfect situation (after all we need to reduce to 32 bits), but addition
-                // loses less than XOR given repeats, and slightly different scaling values means we aren't entirely
-                // insensitive to ordering.
+                // we want the lowest bit always to be set to ensure that objects without much symmetry are hashed
+                // well.  For more complex situations (i.e. pairs of identical values in one object or multiple objects
+                // differing only in order etc.) we can never get a perfect situation (after all we need to reduce to 
+                // 32 bits), but addition loses less than XOR given repeats, and slightly different scaling values
+                // means we aren't entirely insensitive to ordering.
                 fieldIndex++;
                 ulong scale = 1 + 2 * fieldIndex;
                 var scaledFieldHashExpr = Expression.Multiply(ulongFieldHashExpr, Expression.Constant(scale));
