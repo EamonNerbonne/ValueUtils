@@ -28,7 +28,7 @@ namespace ValueUtils {
 
                 //we want to scale/bit-rotate the 32bit hashcode, and the fastest way to do that
                 //on common x64 systems is via ulong - but we don't want sign-extension, so first we cast to unsigned.
-                var uintFieldHashExpr = Expression.Convert(rawFieldHashExpr, typeof(uint))
+                var uintFieldHashExpr = Expression.Convert(rawFieldHashExpr, typeof(uint));
                 var ulongFieldHashExpr = Expression.Convert(uintFieldHashExpr, typeof(ulong));
 
                 // multiply by 1+2n
