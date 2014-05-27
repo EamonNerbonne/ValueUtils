@@ -8,7 +8,7 @@ using ValueUtils;
 using Xunit;
 
 namespace ValueUtilsTest {
-    class FieldwiseHasherTest {
+    public class FieldwiseHasherTest {
         struct SampleStruct {
             public int value;
             public short shortvalue;
