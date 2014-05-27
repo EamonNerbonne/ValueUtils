@@ -7,7 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace ValueUtils {
-    public static class HashFuncFor<T> {
+    public static class FieldwiseHasher<T> {
         public static readonly Func<T, int> Instance = Create();
 
         static Func<T, int> Create() {
@@ -80,5 +80,13 @@ namespace ValueUtils {
             var mi = type.GetMethod("GetHashCode", BindingFlags.Public | BindingFlags.Instance);
             return mi != null && mi.GetBaseDefinition() == getHashCodeMethod ? mi : getHashCodeMethod;
         }
+    }
+
+    public static class FieldwiseHasher {
+        /// <summary>
+        /// Computes a hashcode by combining the hashes of the given object's fields.
+        /// This is simply a type-inference friendly wrapper around the generic FieldwiseHasher<>.Instance.
+        /// </summary>
+        public static int Get<T>(T val) { return FieldwiseHasher<T>.Instance(val); }
     }
 }
