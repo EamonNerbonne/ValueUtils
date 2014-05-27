@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<package >
+	<metadata>
+		<id>$id$</id>
+		<version>$version$</version>
+		<title>$title$</title>
+		<authors>$author$</authors>
+		<owners>$author$</owners>
+		<licenseUrl>http://www.apache.org/licenses/LICENSE-2.0</licenseUrl>
+		<projectUrl>https://github.com/EamonNerbonne/ValueUtils</projectUrl>
+		<!--<iconUrl>http://ICON_URL_HERE_OR_DELETE_THIS_LINE</iconUrl>-->
+		<requireLicenseAcceptance>false</requireLicenseAcceptance>
+		<summary>$description$</summary>
+		<description>
+      Provides utilities to make working with classes having value-semantics more practical in C#.
+      
+      In particular, includes a hash-code generator for arbitrary objects that is fast and robust using runtime code generation to generate code similar to what you'd write by hand.
+		</description>
+		<releaseNotes>Initial release.
+		</releaseNotes>
+		<copyright>Copyright 2014 © $author$</copyright>
+		<tags>GetHashCode Equals ValueType value semantics hashcode</tags>
+	</metadata>
+</package>
