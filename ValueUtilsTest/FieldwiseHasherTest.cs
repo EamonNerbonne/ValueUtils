@@ -30,6 +30,7 @@ namespace ValueUtilsTest {
                 == hash(new SampleStruct(1, 2, "3", 4)));
         }
 
+
         [Fact]
         public void ChangingMembersHaveDifferentHashCodes() {
             PAssert.That(() =>
@@ -64,6 +65,4 @@ namespace ValueUtilsTest {
         }
 
     }
-
-    
 }
