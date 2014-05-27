@@ -7,7 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace ValueUtils {
-    public static class HashFuncFactory<T> {
+    public static class HashFuncFor<T> {
         public static readonly Func<T, int> Instance = Create();
 
         static Func<T, int> Create() {
