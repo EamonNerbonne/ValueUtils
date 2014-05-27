@@ -24,7 +24,7 @@ namespace ValueUtilsTest {
         static readonly Func<SampleStruct, int> hash = FieldwiseHasher<SampleStruct>.Instance;
 
         [Fact]
-        public void IdenticalStructsWork() {
+        public void IdenticalValuesHaveIdenticalHashes() {
             PAssert.That(() =>
                 hash(new SampleStruct(1, 2, "3", 4))
                 == hash(new SampleStruct(1, 2, "3", 4)));
@@ -32,7 +32,14 @@ namespace ValueUtilsTest {
 
 
         [Fact]
-        public void ChangingMembersHaveDifferentHashCodes() {
+        public void IsNotJustAWrapperAroundGetHashCode() {
+            PAssert.That(() =>
+                hash(new SampleStruct(1, 2, "3", 4))
+                != new SampleStruct(1, 2, "3", 4).GetHashCode());
+        }
+
+        [Fact]
+        public void OneDifferentValueMemberChangesHash() {
             PAssert.That(() =>
                 hash(new SampleStruct(1, 2, "3", 4))
                 != hash(new SampleStruct(11, 2, "3", 4)));
@@ -48,21 +55,28 @@ namespace ValueUtilsTest {
         }
 
         [Fact]
-        public void HashFuncWorksForExternalClasses() {
-
+        public void IdenticalObjectsHaveIdenticalHashes() {
+            //it's important that this is a class not struct instance so we've checked that
+            //also, that means we're accessing another assemblies private fields
             PAssert.That(() =>
-                hash(new SampleStruct(1, 2, "3", 4))
-                !=hash( new SampleStruct(11, 2, "3", 4)));
-            PAssert.That(() =>
-                hash(new SampleStruct(1, 2, "3", 4))
-                != hash(new SampleStruct(1, 12, "3", 4)));
-            PAssert.That(() =>
-                hash(new SampleStruct(1, 2, "3", 4))
-                != hash(new SampleStruct(1, 2, "13", 4)));
-            PAssert.That(() =>
-                hash(new SampleStruct(1, 2, "3", 4))
-                != hash(new SampleStruct(1, 2, "3", 14)));
+                FieldwiseHasher.Get(Tuple.Create(1, 2, "3", 4))
+                == FieldwiseHasher.Get(Tuple.Create(1, 2, "3", 4)));
         }
 
+        [Fact]
+        public void OneDifferentObjectMemberChangesHash() {
+            PAssert.That(() =>
+                FieldwiseHasher.Get(Tuple.Create(1, 2, "3", 4))
+                != FieldwiseHasher.Get(Tuple.Create(11, 2, "3", 4)));
+            PAssert.That(() =>
+                FieldwiseHasher.Get(Tuple.Create(1, 2, "3", 4))
+                != FieldwiseHasher.Get(Tuple.Create(1, 12, "3", 4)));
+            PAssert.That(() =>
+                FieldwiseHasher.Get(Tuple.Create(1, 2, "3", 4))
+                != FieldwiseHasher.Get(Tuple.Create(1, 2, "13", 4)));
+            PAssert.That(() =>
+                FieldwiseHasher.Get(Tuple.Create(1, 2, "3", 4))
+                != FieldwiseHasher.Get(Tuple.Create(1, 2, "3", 14)));
+        }
     }
 }
