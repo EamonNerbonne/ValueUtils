@@ -20,5 +20,5 @@ class ExampleClass {
 // ...
 Func<ExampleClass, int> hashfunc = FieldwiseHasher<ExampleClass>.Instance;
 //or simply
-FieldwiseHasher.Get(my_example_object); //returns an int hashcode
+int hashcode = FieldwiseHasher.Get(my_example_object);
 ```
