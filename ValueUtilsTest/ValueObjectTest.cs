@@ -76,6 +76,5 @@ namespace ValueUtilsTest {
                     }
                 }.GetHashCode());
         }
-
     }
 }
