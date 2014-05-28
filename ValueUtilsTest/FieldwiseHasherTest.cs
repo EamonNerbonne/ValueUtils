@@ -103,15 +103,5 @@ namespace ValueUtilsTest {
                 FieldwiseHasher.Hash(new SampleSubClassWithFields { AnEnum = SampleEnum.Q })
                 == FieldwiseHasher.Hash(new SampleSubClassWithFields { AnEnum = SampleEnum.Q }));
         }
-
-        [Fact]
-        public void NonCyclicalSelfReferentialTypesWork() {
-            PAssert.That(() =>
-                FieldwiseHasher.Hash(new SampleClass { SelfReference = new SampleClass { AnEnum = SampleEnum.Q } })
-                != FieldwiseHasher.Hash(new SampleClass { SelfReference = new SampleClass { AnEnum = SampleEnum.P } }));
-            PAssert.That(() =>
-                FieldwiseHasher.Hash(new SampleClass { SelfReference = new SampleClass { AnEnum = SampleEnum.Q } })
-                != FieldwiseHasher.Hash(new SampleClass { SelfReference = new SampleClass { AnEnum = SampleEnum.Q } }));
-        }
     }
 }

@@ -73,12 +73,5 @@ namespace ValueUtilsTest {
                 FieldwiseEquality.AreEqual(new SampleSubClassWithFields { AnEnum = SampleEnum.Q } , new SampleSubClassWithFields { AnEnum = SampleEnum.Q }));
         }
 
-        [Fact]
-        public void NonCyclicalSelfReferentialTypesWork() {
-            PAssert.That(() =>
-                !FieldwiseEquality.AreEqual(new SampleClass { SelfReference = new SampleClass { AnEnum = SampleEnum.Q } } , new SampleClass { SelfReference = new SampleClass { AnEnum = SampleEnum.P } }));
-            PAssert.That(() =>
-                !FieldwiseEquality.AreEqual(new SampleClass { SelfReference = new SampleClass { AnEnum = SampleEnum.Q } } , new SampleClass { SelfReference = new SampleClass { AnEnum = SampleEnum.Q } }));
-        }
     }
 }
