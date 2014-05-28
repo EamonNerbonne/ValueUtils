@@ -87,6 +87,6 @@ namespace ValueUtils {
         /// Computes a hashcode by combining the hashes of the given object's fields.
         /// This is simply a type-inference friendly wrapper around the generic FieldwiseHasher<>.Instance.
         /// </summary>
-        public static int Get<T>(T val) { return FieldwiseHasher<T>.Instance(val); }
+        public static int Hash<T>(T val) { return FieldwiseHasher<T>.Instance(val); }
     }
 }

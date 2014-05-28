@@ -48,41 +48,41 @@ namespace ValueUtilsTest {
             //it's important that this is a class not struct instance so we've checked that
             //also, that means we're accessing another assemblies private fields
             PAssert.That(() =>
-                FieldwiseHasher.Get(Tuple.Create(1, 2, "3", 4))
-                == FieldwiseHasher.Get(Tuple.Create(1, 2, "3", 4)));
+                FieldwiseHasher.Hash(Tuple.Create(1, 2, "3", 4))
+                == FieldwiseHasher.Hash(Tuple.Create(1, 2, "3", 4)));
         }
 
         [Fact]
         public void OneDifferentObjectMemberChangesHash() {
             PAssert.That(() =>
-                FieldwiseHasher.Get(Tuple.Create(1, 2, "3", 4))
-                != FieldwiseHasher.Get(Tuple.Create(11, 2, "3", 4)));
+                FieldwiseHasher.Hash(Tuple.Create(1, 2, "3", 4))
+                != FieldwiseHasher.Hash(Tuple.Create(11, 2, "3", 4)));
             PAssert.That(() =>
-                FieldwiseHasher.Get(Tuple.Create(1, 2, "3", 4))
-                != FieldwiseHasher.Get(Tuple.Create(1, 12, "3", 4)));
+                FieldwiseHasher.Hash(Tuple.Create(1, 2, "3", 4))
+                != FieldwiseHasher.Hash(Tuple.Create(1, 12, "3", 4)));
             PAssert.That(() =>
-                FieldwiseHasher.Get(Tuple.Create(1, 2, "3", 4))
-                != FieldwiseHasher.Get(Tuple.Create(1, 2, "13", 4)));
+                FieldwiseHasher.Hash(Tuple.Create(1, 2, "3", 4))
+                != FieldwiseHasher.Hash(Tuple.Create(1, 2, "13", 4)));
             PAssert.That(() =>
-                FieldwiseHasher.Get(Tuple.Create(1, 2, "3", 4))
-                != FieldwiseHasher.Get(Tuple.Create(1, 2, "3", 14)));
+                FieldwiseHasher.Hash(Tuple.Create(1, 2, "3", 4))
+                != FieldwiseHasher.Hash(Tuple.Create(1, 2, "3", 14)));
         }
 
         [Fact]
         public void AutoPropsAffectHash() {
             PAssert.That(() =>
-                FieldwiseHasher.Get(new SampleClass { AutoPropWithPrivateBackingField = "x" })
-                == FieldwiseHasher.Get(new SampleClass { AutoPropWithPrivateBackingField = "x" }));
+                FieldwiseHasher.Hash(new SampleClass { AutoPropWithPrivateBackingField = "x" })
+                == FieldwiseHasher.Hash(new SampleClass { AutoPropWithPrivateBackingField = "x" }));
             PAssert.That(() =>
-                FieldwiseHasher.Get(new SampleClass { AutoPropWithPrivateBackingField = "x" })
-                != FieldwiseHasher.Get(new SampleClass { AutoPropWithPrivateBackingField = "y" }));
+                FieldwiseHasher.Hash(new SampleClass { AutoPropWithPrivateBackingField = "x" })
+                != FieldwiseHasher.Hash(new SampleClass { AutoPropWithPrivateBackingField = "y" }));
         }
 
         [Fact]
         public void TypeMattersAtCompileTime() {
             PAssert.That(() =>
-                FieldwiseHasher.Get(new SampleClass {  AnEnum = SampleEnum.Q })
-                != FieldwiseHasher.Get(new SampleSubClass { AnEnum = SampleEnum.Q }));
+                FieldwiseHasher.Hash(new SampleClass {  AnEnum = SampleEnum.Q })
+                != FieldwiseHasher.Hash(new SampleSubClass { AnEnum = SampleEnum.Q }));
         }
 
         [Fact]
@@ -97,21 +97,21 @@ namespace ValueUtilsTest {
         [Fact]
         public void SubClassesCheckBaseClassFields() {
             PAssert.That(() =>
-                FieldwiseHasher.Get(new SampleSubClassWithFields { AnEnum = SampleEnum.Q })
-                != FieldwiseHasher.Get(new SampleSubClassWithFields { AnEnum = SampleEnum.P }));
+                FieldwiseHasher.Hash(new SampleSubClassWithFields { AnEnum = SampleEnum.Q })
+                != FieldwiseHasher.Hash(new SampleSubClassWithFields { AnEnum = SampleEnum.P }));
             PAssert.That(() =>
-                FieldwiseHasher.Get(new SampleSubClassWithFields { AnEnum = SampleEnum.Q })
-                == FieldwiseHasher.Get(new SampleSubClassWithFields { AnEnum = SampleEnum.Q }));
+                FieldwiseHasher.Hash(new SampleSubClassWithFields { AnEnum = SampleEnum.Q })
+                == FieldwiseHasher.Hash(new SampleSubClassWithFields { AnEnum = SampleEnum.Q }));
         }
 
         [Fact]
         public void NonCyclicalSelfReferentialTypesWork() {
             PAssert.That(() =>
-                FieldwiseHasher.Get(new SampleClass { SelfReference = new SampleClass { AnEnum = SampleEnum.Q } })
-                != FieldwiseHasher.Get(new SampleClass { SelfReference = new SampleClass { AnEnum = SampleEnum.P } }));
+                FieldwiseHasher.Hash(new SampleClass { SelfReference = new SampleClass { AnEnum = SampleEnum.Q } })
+                != FieldwiseHasher.Hash(new SampleClass { SelfReference = new SampleClass { AnEnum = SampleEnum.P } }));
             PAssert.That(() =>
-                FieldwiseHasher.Get(new SampleClass { SelfReference = new SampleClass { AnEnum = SampleEnum.Q } })
-                != FieldwiseHasher.Get(new SampleClass { SelfReference = new SampleClass { AnEnum = SampleEnum.Q } }));
+                FieldwiseHasher.Hash(new SampleClass { SelfReference = new SampleClass { AnEnum = SampleEnum.Q } })
+                != FieldwiseHasher.Hash(new SampleClass { SelfReference = new SampleClass { AnEnum = SampleEnum.Q } }));
         }
     }
 }
