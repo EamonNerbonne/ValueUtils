@@ -14,6 +14,7 @@ namespace ValueUtilsTest {
             var b = new SampleValueObject { ShortValue = 2000, StringValue = "A", Value = -1 };
             PAssert.That(() =>
                 a.Equals(b)
+                && a==b 
                 && a.GetHashCode() == b.GetHashCode()
                 && !ReferenceEquals(a, b)
                 );
@@ -25,6 +26,7 @@ namespace ValueUtilsTest {
             var b = new SampleValueObject { ShortValue = 2000, StringValue = "a", Value = -1 };
             PAssert.That(() =>
                 !a.Equals(b)
+                && a != b
                 && a.GetHashCode() != b.GetHashCode()
                 && !ReferenceEquals(a, b)
                 );
