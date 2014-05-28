@@ -79,12 +79,21 @@ namespace ValueUtilsTest {
         }
 
         [Fact]
-        public void TypeMatters() {
+        public void TypeMattersAtCompileTime() {
             PAssert.That(() =>
                 FieldwiseHasher.Get(new SampleClass {  AnEnum = SampleEnum.Q })
                 != FieldwiseHasher.Get(new SampleSubClass { AnEnum = SampleEnum.Q }));
         }
 
+        [Fact]
+        public void TypeDoesNotMatterAtRunTime() {
+            var hasher = FieldwiseHasher<SampleClass>.Instance;
+            PAssert.That(() =>
+                hasher(new SampleClass { AnEnum = SampleEnum.Q })
+                == hasher(new SampleSubClass { AnEnum = SampleEnum.Q }));
+        }
+
+        
         [Fact]
         public void SubClassesCheckBaseClassFields() {
             PAssert.That(() =>
