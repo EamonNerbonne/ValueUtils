@@ -13,64 +13,65 @@ namespace ValueUtilsTest {
         static readonly Func<SampleStruct, SampleStruct, bool> eq = FieldwiseEquality<SampleStruct>.Instance;
 
         [Fact]
-        public void IdenticalValuesHaveIdenticalHashes() {
+        public void IdenticalValuesAreEqual() {
             PAssert.That(() =>
                 eq(new SampleStruct(1, 2, "3", 4), new SampleStruct(1, 2, "3", 4)));
         }
 
 
         [Fact]
-        public void OneDifferentValueMemberChangesHash() {
+        public void OneChangedMemberCausesInequality() {
             PAssert.That(() =>
-                !eq(new SampleStruct(1, 2, "3", 4) , new SampleStruct(11, 2, "3", 4)));
+                !eq(new SampleStruct(1, 2, "3", 4), new SampleStruct(11, 2, "3", 4)));
             PAssert.That(() =>
-                !eq(new SampleStruct(1, 2, "3", 4) , new SampleStruct(1, 12, "3", 4)));
+                !eq(new SampleStruct(1, 2, "3", 4), new SampleStruct(1, 12, "3", 4)));
             PAssert.That(() =>
-                !eq(new SampleStruct(1, 2, "3", 4) , new SampleStruct(1, 2, "13", 4)));
+                !eq(new SampleStruct(1, 2, "3", 4), new SampleStruct(1, 2, "13", 4)));
             PAssert.That(() =>
-                !eq(new SampleStruct(1, 2, "3", 4) , new SampleStruct(1, 2, "3", 14)));
+                !eq(new SampleStruct(1, 2, "3", 4), new SampleStruct(1, 2, "3", 14)));
         }
 
         [Fact]
-        public void IdenticalObjectsHaveIdenticalHashes() {
+        public void TuplesWithTheSameFieldValuesAreEqual() {
             //it's important that this is a class not struct instance so we've checked that
             //also, that means we're accessing another assemblies private fields
             PAssert.That(() =>
-                FieldwiseEquality.AreEqual(Tuple.Create(1, 2, "3", 4) , Tuple.Create(1, 2, "3", 4)));
+                FieldwiseEquality.AreEqual(Tuple.Create(1, 2, "3", 4), Tuple.Create(1, 2, "3", 4)));
         }
 
         [Fact]
-        public void OneDifferentObjectMemberChangesHash() {
+        public void OneDifferentObjectMemberCausesInequality() {
             PAssert.That(() =>
-                !FieldwiseEquality.AreEqual(Tuple.Create(1, 2, "3", 4) , Tuple.Create(11, 2, "3", 4)));
+                !FieldwiseEquality.AreEqual(Tuple.Create(1, 2, "3", 4), Tuple.Create(11, 2, "3", 4)));
             PAssert.That(() =>
-                !FieldwiseEquality.AreEqual(Tuple.Create(1, 2, "3", 4) , Tuple.Create(1, 12, "3", 4)));
+                !FieldwiseEquality.AreEqual(Tuple.Create(1, 2, "3", 4), Tuple.Create(1, 12, "3", 4)));
             PAssert.That(() =>
-                !FieldwiseEquality.AreEqual(Tuple.Create(1, 2, "3", 4) , Tuple.Create(1, 2, "13", 4)));
+                !FieldwiseEquality.AreEqual(Tuple.Create(1, 2, "3", 4), Tuple.Create(1, 2, "13", 4)));
             PAssert.That(() =>
-                !FieldwiseEquality.AreEqual(Tuple.Create(1, 2, "3", 4) , Tuple.Create(1, 2, "3", 14)));
+                !FieldwiseEquality.AreEqual(Tuple.Create(1, 2, "3", 4), Tuple.Create(1, 2, "3", 14)));
         }
 
         [Fact]
-        public void AutoPropsAffectHash() {
+        public void AutoPropsAffectEquality() {
             PAssert.That(() =>
-                FieldwiseEquality.AreEqual(new SampleClass { AutoPropWithPrivateBackingField = "x" } , new SampleClass { AutoPropWithPrivateBackingField = "x" }));
+                FieldwiseEquality.AreEqual(new SampleClass { AutoPropWithPrivateBackingField = "x" }, new SampleClass { AutoPropWithPrivateBackingField = "x" }));
             PAssert.That(() =>
-                !FieldwiseEquality.AreEqual(new SampleClass { AutoPropWithPrivateBackingField = "x" } , new SampleClass { AutoPropWithPrivateBackingField = "y" }));
+                !FieldwiseEquality.AreEqual(new SampleClass { AutoPropWithPrivateBackingField = "x" }, new SampleClass { AutoPropWithPrivateBackingField = "y" }));
         }
 
         [Fact]
-        public void TypeDoesNotMatterAtRuntime() {
+        public void TypeDoesAffectRuntimeEquality() {
+            //This is really pretty unwanted behavior
             PAssert.That(() =>
-                !FieldwiseEquality.AreEqual(new SampleClass {  AnEnum = SampleEnum.Q } , new SampleSubClass { AnEnum = SampleEnum.Q }));
+                FieldwiseEquality.AreEqual(new SampleClass { AnEnum = SampleEnum.Q }, new SampleSubClass { AnEnum = SampleEnum.Q }));
         }
 
         [Fact]
-        public void SubClassesCheckBaseClassFields() {
+        public void SubClassesVerifyEqualityOfBaseClassFields() {
             PAssert.That(() =>
-                !FieldwiseEquality.AreEqual(new SampleSubClassWithFields { AnEnum = SampleEnum.Q } , new SampleSubClassWithFields { AnEnum = SampleEnum.P }));
+                !FieldwiseEquality.AreEqual(new SampleSubClassWithFields { AnEnum = SampleEnum.Q }, new SampleSubClassWithFields { AnEnum = SampleEnum.P }));
             PAssert.That(() =>
-                FieldwiseEquality.AreEqual(new SampleSubClassWithFields { AnEnum = SampleEnum.Q } , new SampleSubClassWithFields { AnEnum = SampleEnum.Q }));
+                FieldwiseEquality.AreEqual(new SampleSubClassWithFields { AnEnum = SampleEnum.Q }, new SampleSubClassWithFields { AnEnum = SampleEnum.Q }));
         }
 
     }
