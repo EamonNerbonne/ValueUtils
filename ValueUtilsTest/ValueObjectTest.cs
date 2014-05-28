@@ -33,6 +33,16 @@ namespace ValueUtilsTest {
         }
 
         [Fact]
+        public void CanCompareWithNull() {
+            var a = new SampleValueObject { ShortValue = 2000, StringValue = "A", Value = -1 };
+            SampleValueObject b = null;
+            PAssert.That(() =>
+                b == null && null == b && a != b
+                );
+        }
+
+
+        [Fact]
         public void NonCyclicalSelfReferentialTypesWork() {
             PAssert.That(() =>
                 new SampleSelfReferentialValueObject {
