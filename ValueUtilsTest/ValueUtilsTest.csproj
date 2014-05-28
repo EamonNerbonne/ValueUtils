@@ -57,7 +57,6 @@
     <Compile Include="SampleSubClass.cs" />
     <Compile Include="SampleSubClassWithFields.cs" />
     <Compile Include="SampleValueObject.cs" />
-    <Compile Include="ValueObject.cs" />
     <Compile Include="ValueObjectTest.cs" />
   </ItemGroup>
   <ItemGroup>
