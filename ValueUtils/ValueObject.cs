@@ -19,14 +19,16 @@ namespace ValueUtils {
             if (!typeof(T).IsSealed)
                 throw new NotSupportedException("Value objects must be sealed.");
         }
-        public override bool Equals(object obj) {
-            return obj is T && equalsFunc((T)this, (T)obj);
-        }
-        public bool Equals(T obj) {
-            return obj != null && equalsFunc((T)this, obj);
-        }
-        public override int GetHashCode() {
-            return hashFunc((T)this);
-        }
+
+        public override bool Equals(object obj) { return obj is T && equalsFunc((T)this, (T)obj); }
+
+        public bool Equals(T obj) { return obj != null && equalsFunc((T)this, obj); }
+
+        public override int GetHashCode() { return hashFunc((T)this); }
+
+        public static bool operator !=(ValueObject<T> a, T b) { return !equalsFunc((T)a, b); }
+
+        public static bool operator ==(ValueObject<T> a, T b) { return equalsFunc((T)a, b); }
+
     }
 }
