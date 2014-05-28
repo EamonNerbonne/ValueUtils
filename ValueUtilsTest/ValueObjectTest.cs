@@ -20,7 +20,7 @@ namespace ValueUtilsTest {
         }
 
         [Fact]
-        public void DifferentValuesAreEqual() {
+        public void DifferentValuesAreUnequal() {
             var a = new SampleValueObject { ShortValue = 2000, StringValue = "A", Value = -1 };
             var b = new SampleValueObject { ShortValue = 2000, StringValue = "a", Value = -1 };
             PAssert.That(() =>
