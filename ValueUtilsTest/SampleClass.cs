@@ -7,7 +7,6 @@ using System.Threading.Tasks;
 namespace ValueUtilsTest {
     class SampleClass {
         public SampleEnum AnEnum;
-        public SampleClass SelfReference;
         
         public string AutoPropWithPrivateBackingField { get; set; }
     }
