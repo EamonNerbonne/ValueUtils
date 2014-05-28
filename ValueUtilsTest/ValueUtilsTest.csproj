@@ -49,6 +49,11 @@
   <ItemGroup>
     <Compile Include="FieldwiseHasherTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SampleClass.cs" />
+    <Compile Include="SampleEnum.cs" />
+    <Compile Include="SampleStruct.cs" />
+    <Compile Include="SampleSubClass.cs" />
+    <Compile Include="SampleSubClassWithFields.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\ValueUtils\ValueUtils.csproj">
