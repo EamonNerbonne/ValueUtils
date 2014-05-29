@@ -22,6 +22,7 @@ void Main()
 		from b in MoreEnumerable.Generate(1, b => b << 1).TakeWhile(b => b > 0)
 		from c in MoreEnumerable.Generate(1000, c => (int) (c/1.1)).TakeWhile(c => c > 0)
 		select new TestManual {
+			AnEnum = SeekOrigin.Current,
 			A = a,
 			B = b,
 			C = c,
@@ -125,36 +126,55 @@ double Time(Action action) {
 }
 
 public sealed class TestValueObject : ValueObject<TestValueObject> {
-	public int A,B,C;
-	public DateTime Time;
+	public SeekOrigin AnEnum;
+	public int A;
+	public int? NullableInt;
+	public int B;
 	public string Label;
+	public DateTime Time;
+	public int C;
 }
 public struct TestStruct {
-	public int A,B,C;
-	public DateTime Time;
+	public SeekOrigin AnEnum;
+	public int A;
+	public int? NullableInt;
+	public int B;
 	public string Label;
+	public DateTime Time;
+	public int C;
 }
 public sealed class TestManual : IEquatable<TestManual> {
-	public int A,B,C;
-	public DateTime Time;
+	public SeekOrigin AnEnum;
+	public int A;
+	public int? NullableInt;
+	public int B;
 	public string Label;
+	public DateTime Time;
+	public int C;
+	
+
 	public bool Equals(TestManual obj) {
 		return obj != null 
-		&& obj.A == A
-		&& obj.B == B
-		&& obj.C == C
-		&& obj.Time == Time
-		&& obj.Label == Label;
+			&& obj.AnEnum == AnEnum
+			&& obj.A == A
+			&& obj.NullableInt == NullableInt
+			&& obj.B == B
+			&& obj.Label == Label
+			&& obj.Time == Time
+			&& obj.C == C;
 	}
 	public override bool Equals(object obj) {
 		return Equals(obj as TestManual);
 	}
 	public override int GetHashCode() {
-		return A.GetHashCode() * 3 
-			+ B.GetHashCode() * 5
-			+ C.GetHashCode() * 7 
-			+ Time.GetHashCode() * 9 
-			+ (default(string) == Label ? -1 : Label.GetHashCode() * 11);
+		return 
+			AnEnum.GetHashCode() * 3 
+			+ A.GetHashCode() * 5
+			+ NullableInt.GetHashCode() * 7 
+			+ B.GetHashCode() * 9 
+			+ (default(string) == Label ? -1 : Label.GetHashCode() * 11)
+			+ Time.GetHashCode() * 13
+			+ C.GetHashCode() * 15;
 	}
 	
 	public TestStruct ToStruct() {
