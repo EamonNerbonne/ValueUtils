@@ -179,16 +179,36 @@ public sealed class TestManual : IEquatable<TestManual> {
 	
 	public TestStruct ToStruct() {
 		return new TestStruct {
-			A=A, B=B, C=C, Label=Label,Time=Time,
+			AnEnum = AnEnum,
+			A = A,
+			NullableInt = NullableInt,
+			B = B,
+			Label = Label,
+			Time = Time,
+			C = C,
 		};
 	}
 	public TestValueObject ToValueObject() {
 		return new TestValueObject {
-			A=A, B=B, C=C, Label=Label,Time=Time,
+			AnEnum = AnEnum,
+			A = A,
+			NullableInt = NullableInt,
+			B = B,
+			Label = Label,
+			Time = Time,
+			C = C,
 		};
 	}
-	public Tuple<int,int,int,string,DateTime> ToTuple() {
-		return Tuple.Create(A, B, C, Label, Time);
+	public Tuple<SeekOrigin,int,int?,int,string,DateTime,int> ToTuple() {
+		return Tuple.Create(
+				AnEnum,
+				A,
+				NullableInt,
+				B,
+				Label,
+				Time,
+				C
+			);
 	}
 }
 
