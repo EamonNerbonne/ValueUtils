@@ -66,7 +66,8 @@ namespace ValueUtils {
                 var nullSafeFieldHashExpr = fieldInfo.FieldType.IsValueType
                    ? (Expression)scaledFieldHashExpr
                    : Expression.Condition(
-                      Expression.Equal(Expression.Default(fieldInfo.FieldType), fieldExpr),
+                      Expression.Equal(Expression.Default(typeof(object)), 
+                            Expression.Convert(fieldExpr,typeof(object))),
                          Expression.Constant(scale * 3456789ul),
                          scaledFieldHashExpr
                    );
