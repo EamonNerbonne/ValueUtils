@@ -39,11 +39,13 @@ namespace ValueUtils {
             //Start with some arbitrary constant; pick something type-dependant for the rare mixed-type usecase.
             Expression hashExpr = Expression.Constant((ulong)typeof(T).GetHashCode() * 1234567);
             ulong fieldIndex = 0;
+            var getHashCodeMethod = ((Func<int>)(new object().GetHashCode)).Method;
+
             foreach (var fieldInfo in fields) {
                 var fieldExpr = Expression.Field(paramExpr, fieldInfo);
 
-                //use the overridden hash code function directly if available to avoid virtual method lookup
-                var rawFieldHashExpr = Expression.Call(fieldExpr, OverriddenHashCodeMethod(fieldInfo.FieldType));
+                //use the field's hash code (pre-resolving overridden GetHashCode does not appear to be faster)
+                var rawFieldHashExpr = Expression.Call(fieldExpr, getHashCodeMethod);
 
                 //we want to scale/bit-rotate the 32bit hashcode, and the fastest way to do that
                 //on common x64 systems is via ulong - but we don't want sign-extension, so first we cast to unsigned.
@@ -93,12 +95,6 @@ namespace ValueUtils {
             var funcExpr = Expression.Lambda<Func<T, int>>(bodyExpr, paramExpr);
 
             return funcExpr.Compile();
-        }
-
-        static MethodInfo OverriddenHashCodeMethod(Type type) {
-            var getHashCodeMethod = ((Func<int>)(new object().GetHashCode)).Method;
-            var mi = type.GetMethod("GetHashCode", BindingFlags.Public | BindingFlags.Instance);
-            return mi != null && mi.GetBaseDefinition() == getHashCodeMethod ? mi : getHashCodeMethod;
         }
     }
 }
