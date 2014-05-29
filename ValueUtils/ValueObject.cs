@@ -26,9 +26,14 @@ namespace ValueUtils {
 
         public override int GetHashCode() { return hashFunc((T)this); }
 
-        public static bool operator !=(ValueObject<T> a, T b) { return !equalsFunc((T)a, b); }
+        public static bool operator !=(ValueObject<T> a, T b) {
+            return (object)a != b
+                && ((object)a == null || (object)b == null || !equalsFunc((T)a, b)); 
+        }
 
-        public static bool operator ==(ValueObject<T> a, T b) { return equalsFunc((T)a, b); }
-
+        public static bool operator ==(ValueObject<T> a, T b) {
+            return (object)a == b
+                || (object)a != null && (object)b != null && equalsFunc((T)a, b);
+        }
     }
 }
