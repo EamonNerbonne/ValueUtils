@@ -1,3 +1,8 @@
+1.1
+---
+Improve ValueObject<>.Equals performance by more that a factor 10 by using 
+operator == or a specialized Equals method when available for a field.
+
 1.0
 ---
 Added ValueObject<> to simplify the creation of value-objects.  (1.0.1 is purely a documentation update)

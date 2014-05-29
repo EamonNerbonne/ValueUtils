@@ -20,7 +20,7 @@
       using runtime code generation to result in code similar to what you'd write by hand.
 		</description>
 		<releaseNotes>
-      Added ValueObject&lt;&gt; to simplify the creation of value-objects.
+      Optimized FieldwiseEquality.
     </releaseNotes>
 		<copyright>Copyright 2014 © $author$</copyright>
 		<tags>ValueObject DataTransferObject DTO GetHashCode Equals IEquatable ValueType value semantics hashcode</tags>
