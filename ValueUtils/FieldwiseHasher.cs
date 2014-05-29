@@ -7,7 +7,26 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace ValueUtils {
+    public static class FieldwiseHasher {
+        /// <summary>
+        /// Computes a hashcode for an object based on its fields.  Type resolution is done 
+        /// statically, which allows fast code (similar to hand-rolled performance).
+        /// However, warning: if the instance is of compile-time type BaseType, but at runtime turns out
+        /// to be SubClass, then only the fields of BaseType will be checked.
+        /// 
+        /// This is simply a type-inference friendly wrapper around FieldwiseHasher&lt;&gt;.Instance
+        /// </summary>
+        /// <typeparam name="T">The type of the object to hash.</typeparam>
+        public static int Hash<T>(T val) { return FieldwiseHasher<T>.Instance(val); }
+    }
+
     public static class FieldwiseHasher<T> {
+        /// <summary>
+        /// Computes a hashcode for an object based on its fields.  Type resolution is specified 
+        /// statically, which allows fast code (similar to hand-rolled performance).
+        /// However, warning: if the instance is of compile-time type BaseType, but at runtime turns out
+        /// to be SubClass, then only the fields of BaseType will be checked.
+        /// </summary>
         public static readonly Func<T, int> Instance = Create();
 
         static Func<T, int> Create() {
@@ -80,13 +99,5 @@ namespace ValueUtils {
             var mi = type.GetMethod("GetHashCode", BindingFlags.Public | BindingFlags.Instance);
             return mi != null && mi.GetBaseDefinition() == getHashCodeMethod ? mi : getHashCodeMethod;
         }
-    }
-
-    public static class FieldwiseHasher {
-        /// <summary>
-        /// Computes a hashcode by combining the hashes of the given object's fields.
-        /// This is simply a type-inference friendly wrapper around the generic FieldwiseHasher<>.Instance.
-        /// </summary>
-        public static int Hash<T>(T val) { return FieldwiseHasher<T>.Instance(val); }
     }
 }

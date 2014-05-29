@@ -5,6 +5,15 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace ValueUtils {
+
+    /// <summary>
+    /// Represents a C# object with value semantics.
+    /// ValueObjects implements GetHashCode, Equals, IEquatable<> and operators == and != for you.
+    /// 
+    /// A class deriving from ValueObject should pass itself as
+    /// the generic type parameter to ValueObject.  ValueObjects must be sealed.
+    /// </summary>
+    /// <typeparam name="T">The sealed subclass of ValueObject.</typeparam>
     public abstract class ValueObject<T> : IEquatable<T> where T : ValueObject<T> {
 
         //CRTP to encourage you to use the value type itself as the type parameter.
