@@ -47,18 +47,18 @@ namespace ValueUtils {
                 //use the field's hash code (pre-resolving overridden GetHashCode does not appear to be faster)
                 var rawFieldHashExpr = Expression.Call(fieldExpr, getHashCodeMethod);
 
-                //we want to scale/bit-rotate the 32bit hashcode, and the fastest way to do that
-                //on common x64 systems is via ulong - but we don't want sign-extension, so first we cast to unsigned.
+                //we want to scale/bit-rotate the 32bit hashcode, and the fastest way to do that on common
+                //x64 systems is via ulong - but we don't want sign-extension, so first we cast to unsigned.
                 var uintFieldHashExpr = Expression.Convert(rawFieldHashExpr, typeof(uint));
                 var ulongFieldHashExpr = Expression.Convert(uintFieldHashExpr, typeof(ulong));
 
                 // multiply by 1+2n
                 // i.e. ensure that at least 2 bits of the lower 32 are set to encourage nice mixing.
-                // we want the lowest bit always to be set to ensure that objects without much symmetry are hashed
-                // well.  For more complex situations (i.e. pairs of identical values in one object or multiple objects
-                // differing only in order etc.) we can never get a perfect situation (after all we need to reduce to 
-                // 32 bits), but addition loses less than XOR given repeats, and slightly different scaling values
-                // means we aren't entirely insensitive to ordering.
+                // we want the lowest bit always to be set to ensure that objects without much symmetry are
+                // hashed well.  For more complex situations (i.e. pairs of identical values in one object or multiple
+                // objects differing only in order etc.) we can never get a perfect situation (after all we need to
+                // reduce to 32 bits), but addition loses less than XOR given repeats, and slightly different scaling
+                // values means we aren't entirely insensitive to ordering.
                 fieldIndex++;
                 ulong scale = 1 + 2 * fieldIndex;
                 var scaledFieldHashExpr = Expression.Multiply(ulongFieldHashExpr, Expression.Constant(scale));
@@ -68,10 +68,10 @@ namespace ValueUtils {
                 var nullSafeFieldHashExpr = fieldInfo.FieldType.IsValueType
                    ? (Expression)scaledFieldHashExpr
                    : Expression.Condition(
-                      Expression.Equal(Expression.Default(typeof(object)), 
+                        Expression.Equal(Expression.Default(typeof(object)), 
                             Expression.Convert(fieldExpr,typeof(object))),
-                         Expression.Constant(scale * 3456789ul),
-                         scaledFieldHashExpr
+                        Expression.Constant(scale * 3456789ul),
+                        scaledFieldHashExpr
                    );
 
                 //add this field to running total.  Note we don't need an explicit accumulation variable!
