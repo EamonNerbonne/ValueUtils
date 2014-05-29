@@ -17,7 +17,7 @@
 void Main()
 {
 	
-	var instances = ( 
+	var manuals = ( 
 		from a in MoreEnumerable.Generate(-100, a => a + 4).TakeWhile(a => a < 100)
 		from b in MoreEnumerable.Generate(1, b => b << 1).TakeWhile(b => b > 0)
 		from c in MoreEnumerable.Generate(1000, c => (int) (c/1.1)).TakeWhile(c => c > 0)
@@ -28,31 +28,76 @@ void Main()
 			Label = Math.Min(a,c).ToString(),
 			Time = new DateTime(2014,1,1) + TimeSpan.FromSeconds(a + c + Math.Log(b))
 		}
-		into s select s
-			.ToValueObject()
 		).ToArray();
-	instances.Length.Dump();
-	BestTime( () => {
-//		for(int i=1; i< instances.Length; i++)
-//			instances[i-1].Equals(instances[i]);
-		foreach(var inst in instances)
-			inst.GetHashCode();
+	manuals.Length.Dump();
+	var valueObjects  = manuals.Select(m=>m.ToValueObject()).ToArray();
+	var tuples  = manuals.Select(m=>m.ToTuple()).ToArray();
+	var structs  = manuals.Select(m=>m.ToStruct()).ToArray();
 //		instances.Distinct().Count();	
-	}).Dump();
+	Benchmark("Manual GetHashCode()", () => {
+		foreach(var inst in manuals)
+			inst.GetHashCode();
+	});
+	Benchmark("ValueObject<> GetHashCode",  () => {
+		foreach(var inst in valueObjects)
+			inst.GetHashCode();
+	});
+	Benchmark("struct GetHashCode()",  () => {
+		foreach(var inst in structs)
+			inst.GetHashCode();
+	});
+	Benchmark("Tuple<> GetHashCode()",  () => {
+		foreach(var inst in tuples)
+			inst.GetHashCode();
+	});
+
+	Benchmark("Manual Equals()", () => {
+		var instances = manuals;
+		for(int i=0; i< instances.Length; i++) {
+			instances[i].Equals(instances[i]);
+			instances[i].Equals(instances[(i+1)%instances.Length]);
+		}
+	});
+	Benchmark("ValueObject<> Equals()", () => {
+		var instances = valueObjects;
+		for(int i=0; i< instances.Length; i++) {
+			instances[i].Equals(instances[i]);
+			instances[i].Equals(instances[(i+1)%instances.Length]);
+		}
+	});
+	Benchmark("struct Equals()", () => {
+		var instances = structs;
+		for(int i=0; i< instances.Length; i++) {
+			instances[i].Equals(instances[i]);
+			instances[i].Equals(instances[(i+1)%instances.Length]);
+		}
+	});
+	Benchmark("Tuple<> Equals()", () => {
+		var instances = tuples;
+		for(int i=0; i< instances.Length; i++) {
+			instances[i].Equals(instances[i]);
+			instances[i].Equals(instances[(i+1)%instances.Length]);
+		}
+	});
 }
 
-double BestTime(Action action) {
-	TimeSpan best = TimeSpan.MaxValue;
-	return 
-		Enumerable.Range(0,400)
+void Benchmark(string label, Action action) {
+	Console.WriteLine((label + ": ").PadLeft(26)+Time(action).ToString("f3")+"ms");
+}
+
+double Time(Action action) {
+	var initial = Stopwatch.StartNew();
+	var timings =
+		Enumerable.Range(0,1000000)
 		.Select(_=> {
 			var sw = Stopwatch.StartNew();
 			action();
 			return sw.Elapsed.TotalMilliseconds;
 		})
+		.TakeWhile( t => initial.ElapsedMilliseconds < 1000)
 		.OrderBy(t=>t)
-		.Take(100)
-		.Average();
+		.ToArray();
+	return timings.Take((timings.Length +3)/4).Average();
 }
 
 public sealed class TestValueObject : ValueObject<TestValueObject> {
