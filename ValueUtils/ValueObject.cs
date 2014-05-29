@@ -31,7 +31,8 @@ namespace ValueUtils {
 
         public sealed override bool Equals(object obj) { return obj is T && equalsFunc((T)this, (T)obj); }
 
-        public bool Equals(T obj) { return obj != null && equalsFunc((T)this, obj); }
+        public bool Equals(T obj) { return (object)obj != null && equalsFunc((T)this, obj); }
+        //optimization note: (object)obj == null is equivalent to ReferenceEquals(obj, null) but faster.
 
         public sealed override int GetHashCode() { return hashFunc((T)this); }
 
