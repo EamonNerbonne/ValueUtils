@@ -101,7 +101,7 @@ void AnalyzeHashQuality<T>(T[] objs)
 {
 	int distinctHashes = objs.Select(o=> o.GetHashCode()).Distinct().Count();
 	double coverageRate = (distinctHashes - 1.0) / (objs.Length - 1.0);
-	Console.WriteLine(typeof(T).Name +" has a hash coverate rate of " + (coverageRate*100.0).ToString("f2")+"%");
+	Console.WriteLine(ObjectToCode.GetCSharpFriendlyTypeName(typeof(T)) +" has a hash coverate rate of " + (coverageRate*100.0).ToString("f2")+"% ("+distinctHashes +" hashes over " + objs.Length+" distinct objects)." );
 	
 }
 
