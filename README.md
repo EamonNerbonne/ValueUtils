@@ -24,7 +24,6 @@ A class deriving from `ValueObject<T>` implements `IEquatable<T>` and has `Equal
 
 Given the following example class:
 ```C#
-using ValueUtils;
 class ExampleClass {
 	public string myMember;
 	protected readonly DateTime supports_readonly_too;
@@ -36,6 +35,8 @@ class ExampleClass {
 Hash code usage is as follows:
 
 ```C#
+using ValueUtils;
+
 Func<ExampleClass, int> hashfunc = FieldwiseHasher<ExampleClass>.Instance;
 //or directly 
 int hashcode = FieldwiseHasher.Hash(my_example_object);
@@ -43,6 +44,8 @@ int hashcode = FieldwiseHasher.Hash(my_example_object);
 
 Equality usage is as follows:
 ```C#
+using ValueUtils;
+
 Func<ExampleClass, ExampleClass, bool> equalityComparer = FieldwiseEquality<ExampleClass>.Instance;
 //or directly 
 bool areEqual = FieldwiseEquality.AreEqual(my_example_object, another_example_object);
