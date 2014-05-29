@@ -54,7 +54,7 @@ namespace ValueUtils {
 
         static Expression EqualityByOperatorOrNull(Expression aFieldExpr, Expression bFieldExpr, FieldInfo fieldInfo) {
             //only use operator == if it's explicitly defined.
-            return fieldInfo.FieldType.IsPrimitive || fieldInfo.FieldType.GetMethod("op_Equality", BindingFlags.Public | BindingFlags.Static) != null
+            return fieldInfo.FieldType.IsPrimitive || fieldInfo.FieldType.IsEnum || fieldInfo.FieldType.GetMethod("op_Equality", BindingFlags.Public | BindingFlags.Static) != null
                 ? Expression.Equal(aFieldExpr, bFieldExpr)
                 : null;
         }
