@@ -52,9 +52,17 @@ namespace ValueUtils {
             return funcExpr.Compile();
         }
 
+        static bool HasEqualityOperator(Type type) {
+            return type.IsPrimitive
+                || type.IsEnum
+                || type.GetMethod("op_Equality", BindingFlags.Public | BindingFlags.Static) != null
+                || type.IsValueType && type.IsGenericType
+                        && type.GetGenericTypeDefinition() == typeof(Nullable<>)
+                        && HasEqualityOperator(type.GetGenericArguments()[0]);
+            //nullables are tricky: they are equatable by operator when their underlying type is.
+        }
         static Expression EqualityByOperatorOrNull(Expression aFieldExpr, Expression bFieldExpr, FieldInfo fieldInfo) {
-            //only use operator == if it's explicitly defined.
-            return fieldInfo.FieldType.IsPrimitive || fieldInfo.FieldType.IsEnum || fieldInfo.FieldType.GetMethod("op_Equality", BindingFlags.Public | BindingFlags.Static) != null
+            return HasEqualityOperator(fieldInfo.FieldType)
                 ? Expression.Equal(aFieldExpr, bFieldExpr)
                 : null;
         }
