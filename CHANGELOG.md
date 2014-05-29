@@ -1,3 +1,10 @@
+1.2
+---
+Bugfix release; add support for "unusual" fields
+ - nullables
+ - structs
+ - enums
+
 1.1
 ---
 Improve ValueObject<>.Equals performance by more that a factor 10 by using 
