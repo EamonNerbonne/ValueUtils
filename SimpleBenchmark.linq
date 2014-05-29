@@ -29,11 +29,14 @@ void Main()
 			Time = new DateTime(2014,1,1) + TimeSpan.FromSeconds(a + c + Math.Log(b))
 		}
 		).ToArray();
-	manuals.Length.Dump();
 	var valueObjects  = manuals.Select(m=>m.ToValueObject()).ToArray();
 	var tuples  = manuals.Select(m=>m.ToTuple()).ToArray();
 	var structs  = manuals.Select(m=>m.ToStruct()).ToArray();
-//		instances.Distinct().Count();	
+	AnalyzeHashQuality(manuals);
+	AnalyzeHashQuality(valueObjects);
+	AnalyzeHashQuality(tuples);
+	AnalyzeHashQuality(structs);
+
 	Benchmark("Manual GetHashCode()", () => {
 		foreach(var inst in manuals)
 			inst.GetHashCode();
@@ -79,6 +82,27 @@ void Main()
 			instances[i].Equals(instances[(i+1)%instances.Length]);
 		}
 	});
+	
+	Benchmark("Manual Distinct().Count()", () => {
+		manuals.Distinct().Count();
+	});
+	Benchmark("ValueObject<> Distinct().Count()",  () => {
+		valueObjects.Distinct().Count();
+	});
+	Benchmark("struct Distinct().Count()",  () => {
+		structs.Distinct().Count();
+	});
+	Benchmark("Tuple<> Distinct().Count()",  () => {
+		tuples.Distinct().Count();
+	});
+
+}
+void AnalyzeHashQuality<T>(T[] objs)
+{
+	int distinctHashes = objs.Select(o=> o.GetHashCode()).Distinct().Count();
+	double coverageRate = (distinctHashes - 1.0) / (objs.Length - 1.0);
+	Console.WriteLine(typeof(T).Name +" has a hash coverate rate of " + (coverageRate*100.0).ToString("f2")+"%");
+	
 }
 
 void Benchmark(string label, Action action) {
@@ -94,7 +118,7 @@ double Time(Action action) {
 			action();
 			return sw.Elapsed.TotalMilliseconds;
 		})
-		.TakeWhile( t => initial.ElapsedMilliseconds < 1000)
+		.TakeUntil( t => initial.ElapsedMilliseconds >= 1000)
 		.OrderBy(t=>t)
 		.ToArray();
 	return timings.Take((timings.Length +3)/4).Average();
