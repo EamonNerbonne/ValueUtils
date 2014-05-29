@@ -14,10 +14,14 @@
 		<description>
       Provides utilities to make working with classes having value-semantics more practical in C#.
       
-      In particular, includes a hash-code generator for arbitrary objects that is fast and robust using runtime code generation to generate code similar to what you'd write by hand.
+      Just write "sealed class MyClass : ValueObject&lt;MyClass&gt;" to add value semantics to your class.
+      
+      In particular, includes a efficient hash-code &amp; equality function generators for arbitrary objects
+      using runtime code generation to result in code similar to what you'd write by hand.
 		</description>
-		<releaseNotes>Initial release.
-		</releaseNotes>
+		<releaseNotes>
+      Added ValueObject&lt;&gt; to simplify the creation of value-objects.
+    </releaseNotes>
 		<copyright>Copyright 2014 © $author$</copyright>
 		<tags>GetHashCode Equals ValueType value semantics hashcode</tags>
 	</metadata>
