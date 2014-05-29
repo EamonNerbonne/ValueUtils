@@ -12,7 +12,7 @@
 		<requireLicenseAcceptance>false</requireLicenseAcceptance>
 		<summary>$description$</summary>
 		<description>
-      Provides utilities to make working with classes having value-semantics more practical in C#.
+      Provides utilities to make working with classes having value-semantics (e.g. a data transfer object) more practical in C#.
       
       Just write "sealed class MyClass : ValueObject&lt;MyClass&gt;" to add value semantics to your class.
       
@@ -23,6 +23,6 @@
       Added ValueObject&lt;&gt; to simplify the creation of value-objects.
     </releaseNotes>
 		<copyright>Copyright 2014 © $author$</copyright>
-		<tags>GetHashCode Equals ValueType value semantics hashcode</tags>
+		<tags>ValueObject DataTransferObject DTO GetHashCode Equals IEquatable ValueType value semantics hashcode</tags>
 	</metadata>
 </package>
