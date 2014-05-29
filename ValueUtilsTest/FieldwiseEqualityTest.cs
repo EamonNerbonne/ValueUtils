@@ -66,7 +66,7 @@ namespace ValueUtilsTest {
         }
 
         [Fact]
-        public void TypeDoesAffectRuntimeEquality() {
+        public void TypeDoesNotAffectRuntimeEquality() {
             //This is really pretty unwanted behavior
             PAssert.That(() =>
                 FieldwiseEquality.AreEqual(new SampleClass { AnEnum = SampleEnum.Q }, new SampleSubClass { AnEnum = SampleEnum.Q }));
@@ -79,6 +79,5 @@ namespace ValueUtilsTest {
             PAssert.That(() =>
                 FieldwiseEquality.AreEqual(new SampleSubClassWithFields { AnEnum = SampleEnum.Q }, new SampleSubClassWithFields { AnEnum = SampleEnum.Q }));
         }
-
     }
 }
