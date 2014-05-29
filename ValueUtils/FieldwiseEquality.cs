@@ -35,23 +35,52 @@ namespace ValueUtils {
 
             var aExpr = Expression.Parameter(typeof(T), "a");
             var bExpr = Expression.Parameter(typeof(T), "b");
-            var objectEqualsMethod = ((Func<object, object, bool>)object.Equals).Method;
 
             Expression eqExpr = Expression.Constant(true);
 
             foreach (var fieldInfo in fields) {
                 var aFieldExpr = Expression.Field(aExpr, fieldInfo);
                 var bFieldExpr = Expression.Field(bExpr, fieldInfo);
-                var fieldsEqualExpr =
-                    Expression.Call(objectEqualsMethod,
-                        Expression.Convert(aFieldExpr, typeof(object)),
-                        Expression.Convert(bFieldExpr, typeof(object))
-                    );
-                eqExpr = Expression.AndAlso(eqExpr, fieldsEqualExpr);
+                var bestEqualityApproach =
+                    EqualityByOperatorOrNull(aFieldExpr, bFieldExpr, fieldInfo)
+                    ?? InstanceEqualsOrNull(aFieldExpr, bFieldExpr, fieldInfo)
+                    ;
+
+                eqExpr = Expression.AndAlso(eqExpr, bestEqualityApproach);
             }
             var funcExpr = Expression.Lambda<Func<T, T, bool>>(eqExpr, aExpr, bExpr);
-
             return funcExpr.Compile();
+        }
+
+        static Expression EqualityByOperatorOrNull(Expression aFieldExpr, Expression bFieldExpr, FieldInfo fieldInfo) {
+            //only use operator == if it's explicitly defined.
+            return fieldInfo.FieldType.IsPrimitive || fieldInfo.FieldType.GetMethod("op_Equality", BindingFlags.Public | BindingFlags.Static) != null
+                ? Expression.Equal(aFieldExpr, bFieldExpr)
+                : null;
+        }
+
+        static Expression InstanceEqualsOrNull(Expression aFieldExpr, Expression bFieldExpr, FieldInfo fieldInfo) {
+            Console.WriteLine("Instance equals needed for " + fieldInfo.FieldType);
+            var fieldType = fieldInfo.FieldType;
+            var equalsMethod = fieldType.GetMethod(
+                "Equals", BindingFlags.Public | BindingFlags.Instance,
+                null, new[] { fieldType }, null);
+
+            var fieldsEqualExpr = equalsMethod == null
+                ? Expression.Call(((Func<object, object, bool>)object.Equals).Method,
+                    Expression.Convert(aFieldExpr, typeof(object)),
+                    Expression.Convert(bFieldExpr, typeof(object))
+                )
+                : Expression.Call(aFieldExpr, equalsMethod, bFieldExpr)
+                ;
+            var nullSafeFieldsEqualExpr = fieldInfo.FieldType.IsValueType || equalsMethod == null
+                ? (Expression)fieldsEqualExpr
+                : Expression.Condition(
+                  Expression.Equal(Expression.Default(fieldInfo.FieldType), aFieldExpr),
+                     Expression.Equal(Expression.Default(fieldInfo.FieldType), aFieldExpr),
+                     fieldsEqualExpr
+               );
+            return nullSafeFieldsEqualExpr;
         }
     }
 }
