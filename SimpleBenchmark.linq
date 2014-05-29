@@ -29,27 +29,30 @@ void Main()
 			Time = new DateTime(2014,1,1) + TimeSpan.FromSeconds(a + c + Math.Log(b))
 		}
 		into s select s
-			//.ToValueObject()
+			.ToValueObject()
 		).ToArray();
 	instances.Length.Dump();
 	BestTime( () => {
-		for(int i=1; i< instances.Length; i++)
-			instances[i-1].Equals(instances[i]);
-//	foreach(var inst in instances)
-//		inst.GetHashCode();
+//		for(int i=1; i< instances.Length; i++)
+//			instances[i-1].Equals(instances[i]);
+		foreach(var inst in instances)
+			inst.GetHashCode();
 //		instances.Distinct().Count();	
-	}).TotalMilliseconds.Dump();
+	}).Dump();
 }
 
-TimeSpan BestTime(Action action) {
+double BestTime(Action action) {
 	TimeSpan best = TimeSpan.MaxValue;
-	for(int i=0; i< 30; i++) {
-		var sw = Stopwatch.StartNew();
-		action();
-		var el = sw.Elapsed;
-		best = best> el ? el: best;
-	}
-	return best;
+	return 
+		Enumerable.Range(0,400)
+		.Select(_=> {
+			var sw = Stopwatch.StartNew();
+			action();
+			return sw.Elapsed.TotalMilliseconds;
+		})
+		.OrderBy(t=>t)
+		.Take(100)
+		.Average();
 }
 
 public sealed class TestValueObject : ValueObject<TestValueObject> {
