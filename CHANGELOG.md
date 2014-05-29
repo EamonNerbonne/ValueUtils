@@ -1,6 +1,6 @@
 1.0
 ---
-Added ValueObject<> to simplify the creation of value-objects.
+Added ValueObject<> to simplify the creation of value-objects.  (1.0.1 is purely a documentation update)
 
 0.2
 ---
