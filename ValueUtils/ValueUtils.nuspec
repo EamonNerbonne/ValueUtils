@@ -20,7 +20,7 @@
       using runtime code generation to result in code similar to what you'd write by hand.
 		</description>
 		<releaseNotes>
-      Bugfix: add support for nullable, enum and/or struct fields in equality operations.
+      Bugfix: remove Console logging; tune hash mixing coefficients to minimize collisions.
     </releaseNotes>
 		<copyright>Copyright 2014 © $author$</copyright>
 		<tags>ValueObject DataTransferObject DTO GetHashCode Equals IEquatable ValueType value semantics hashcode</tags>
