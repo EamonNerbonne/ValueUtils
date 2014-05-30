@@ -1,7 +1,7 @@
 1.2.1
 ---
  - Bugfix: remove Console logging from unusual code generator paths.
- - Ttune hash mixing coefficients to minimize collisions.
+ - Tune hash mixing coefficients to minimize collisions.
 
 1.2
 ---
