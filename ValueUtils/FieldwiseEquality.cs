@@ -80,6 +80,10 @@ namespace ValueUtils {
                 )
                 : Expression.Call(aFieldExpr, equalsMethod, bFieldExpr)
                 ;
+            // TODO: optimization possibility: if an object needs object.Equals, and it has *not* overridden
+            // which is quite likely if you need it in the first place, then I just just use a reference equality for
+            // reference types and a by-field equality for structs.
+
             var nullSafeFieldsEqualExpr = fieldInfo.FieldType.IsValueType || equalsMethod == null
                 ? (Expression)fieldsEqualExpr
                 : Expression.Condition(
