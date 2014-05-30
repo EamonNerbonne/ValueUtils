@@ -68,7 +68,6 @@ namespace ValueUtils {
         }
 
         static Expression InstanceEqualsOrNull(Expression aFieldExpr, Expression bFieldExpr, FieldInfo fieldInfo) {
-            Console.WriteLine("Instance equals needed for " + fieldInfo.FieldType);
             var fieldType = fieldInfo.FieldType;
             var equalsMethod = fieldType.GetMethod(
                 "Equals", BindingFlags.Public | BindingFlags.Instance | BindingFlags.ExactBinding,
