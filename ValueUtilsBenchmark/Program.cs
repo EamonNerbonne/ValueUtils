@@ -62,6 +62,7 @@ namespace ValueUtilsBenchmark {
 
     class Program {
         static void Main(string[] args) {
+            
 
             var complicatedTable = HashAnalysisResult.ToTable(
                 "Complicated Case with enums, nullables, and strings", 
@@ -88,10 +89,10 @@ namespace ValueUtilsBenchmark {
                 new XElement("div",
                     complicatedTable, intpairTable, duplicationTable, symmetricalTable, nestedTable);
             Console.WriteLine(tables.ToString());
+            tables.Save("BenchResults.xml");
         }
 
         static IEnumerable<HashAnalysisResult> BenchmarkNastyNestedCases() {
-            Console.WriteLine("NastyNested:");
             var manuals = (
                 from a in MoreEnumerable.Generate(-10000, a => a + 6).TakeWhile(a => a < 14100)
                 from b0 in MoreEnumerable.Generate(int.MaxValue, c => (int)(c * 0.95)).TakeWhile(c => c > 0)
@@ -117,7 +118,6 @@ namespace ValueUtilsBenchmark {
 
 
         static IEnumerable<HashAnalysisResult> BenchmarkIntPairCases() {
-            Console.WriteLine("IntPair:");
             var manuals = (
                 from a in MoreEnumerable.Generate(-8000, a => a + 4).TakeWhile(a => a < 8000)
                 from b0 in MoreEnumerable.Generate(int.MaxValue, c => (int)(c * 0.95)).TakeWhile(c => c > 0)
@@ -141,7 +141,6 @@ namespace ValueUtilsBenchmark {
 
 
         static IEnumerable<HashAnalysisResult> BenchmarkSymmetricalCases() {
-            Console.WriteLine("IntPair with Symmetry:");
             var manuals = (
                 from a in MoreEnumerable.Generate(-5100, a => a + 5).TakeWhile(a => a < 5100)
                 from b0 in MoreEnumerable.Generate(int.MaxValue, c => (int)(c * 0.95)).TakeWhile(c => c > 0)
