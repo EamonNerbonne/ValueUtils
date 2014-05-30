@@ -9,6 +9,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ValueUtilsTest", "ValueUtil
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{34331906-0C4A-4F34-BB09-FBE53D56FB6C}"
 	ProjectSection(SolutionItems) = preProject
+		BenchmarkResults.html = BenchmarkResults.html
 		CHANGELOG.md = CHANGELOG.md
 		LICENSE = LICENSE
 		README.md = README.md
