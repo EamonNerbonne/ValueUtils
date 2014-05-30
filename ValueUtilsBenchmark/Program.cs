@@ -17,16 +17,16 @@ namespace ValueUtilsBenchmark {
     class HashAnalysisResult {
         public string Name;
         public CollisionStats Collisions;
-        public double GetHashCodeMS, EqualsMS, DistinctCountMS, DictionaryMS;
+        public double GetHashCodeNS, EqualsNS, DistinctCountNS, DictionaryNS;
         public XElement ToTableRow() {
             return new XElement("tr",
                 new XElement("td", Name),
                 new XElement("td", (Collisions.Rate * 100).ToString("f2") + "%"),
                 new XElement("td", Collisions.DistinctHashCodes + " / " + Collisions.DistinctValues),
-                new XElement("td", DictionaryMS.ToString("f3")),
-                new XElement("td", DistinctCountMS.ToString("f3")),
-                new XElement("td", EqualsMS.ToString("f3")),
-                new XElement("td", GetHashCodeMS.ToString("f3"))
+                new XElement("td", DictionaryNS.ToString("f1")),
+                new XElement("td", DistinctCountNS.ToString("f1")),
+                new XElement("td", EqualsNS.ToString("f1")),
+                new XElement("td", GetHashCodeNS.ToString("f1"))
                 );
         }
         public static XElement ToTableHead(string title) {
@@ -42,10 +42,10 @@ namespace ValueUtilsBenchmark {
                         new XElement("th", "Name"),
                         new XElement("th", "Collisions"),
                         new XElement("th", "Distinct Hashcodes"),
-                        new XElement("th", ".ToDictionary(...) (ms)"),
-                        new XElement("th", ".Distinct().Count() (ms)"),
-                        new XElement("th", ".Equals(...) (ms)"),
-                        new XElement("th", ".GetHashCode(...) (ms)")
+                        new XElement("th", ".ToDictionary(...) (ns)"),
+                        new XElement("th", ".Distinct().Count() (ns)"),
+                        new XElement("th", ".Equals(...) (ns)"),
+                        new XElement("th", ".GetHashCode(...) (ns)")
                     )
                 );
         }
@@ -216,20 +216,20 @@ namespace ValueUtilsBenchmark {
             return new HashAnalysisResult {
                 Name = name,
                 Collisions = collisions,
-                GetHashCodeMS = Time(() => {
+                GetHashCodeNS = TimeInNS(() => {
                     foreach (var inst in objs)
                         inst.GetHashCode();
                 }) / objs.Length,
-                EqualsMS = Time(() => {
+                EqualsNS = TimeInNS(() => {
                     for (int i = 0; i < objs.Length; i++) {
                         objs[i].Equals(objs[i]);
                         objs[i].Equals(objs[(i + 1) % objs.Length]);
                     }
                 }) / objs.Length / 2,
-                DistinctCountMS = collisions.Rate > 0.99 ? double.NaN : Time(() => {
+                DistinctCountNS = collisions.Rate > 0.99 ? double.NaN : TimeInNS(() => {
                     objs.Distinct().Count();
                 }) / objs.Length,
-                DictionaryMS = collisions.Rate > 0.99 ? double.NaN : Time(() => {
+                DictionaryNS = collisions.Rate > 0.99 ? double.NaN : TimeInNS(() => {
                     int idx = 0;
                     objs.ToDictionary(o => o, _ => idx++);
                 }) / objs.Length,
@@ -242,11 +242,7 @@ namespace ValueUtilsBenchmark {
             };
         }
 
-        static void Benchmark(string label, Action action) {
-            Console.WriteLine((label + ": ").PadLeft(26) + Time(action).ToString("f3") + "ms");
-        }
-
-        static double Time(Action action) {
+        static double TimeInNS(Action action) {
             var initial = Stopwatch.StartNew();
             var timings =
                 Enumerable.Range(0, 1000000)
@@ -255,10 +251,10 @@ namespace ValueUtilsBenchmark {
                     action();
                     return sw.Elapsed.TotalMilliseconds;
                 })
-                .TakeUntil(t => initial.ElapsedMilliseconds >= 100)
+                .TakeUntil(t => initial.ElapsedMilliseconds >= 10000)
                 .OrderBy(t => t)
                 .ToArray();
-            return timings.Take((timings.Length + 3) / 4).Average();
+            return 1000000.0*timings.Take((timings.Length + 3) / 4).Average();
         }
     }
 }
