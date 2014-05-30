@@ -60,7 +60,7 @@ namespace ValueUtils {
                 // reduce to 32 bits), but addition loses less than XOR given repeats, and slightly different scaling
                 // values means we aren't entirely insensitive to ordering.
                 fieldIndex++;
-                ulong scale = 1 + 2 * fieldIndex;
+                ulong scale = 1023 + 1022 * fieldIndex;
                 var scaledFieldHashExpr = Expression.Multiply(ulongFieldHashExpr, Expression.Constant(scale));
 
 
