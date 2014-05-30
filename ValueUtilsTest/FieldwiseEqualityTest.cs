@@ -66,6 +66,15 @@ namespace ValueUtilsTest {
         }
 
         [Fact]
+        public void StructFieldsAffectEquality() {
+            PAssert.That(() =>
+                FieldwiseEquality.AreEqual(new SampleClass { PlainStruct = { Bla = 1 } }, new SampleClass { PlainStruct = { Bla = 1 } }));
+            PAssert.That(() =>
+                !FieldwiseEquality.AreEqual(new SampleClass { PlainStruct = { Bla = 1 } }, new SampleClass { PlainStruct = { Bla = 2 } }));
+        }
+
+
+        [Fact]
         public void TypeDoesNotAffectRuntimeEquality() {
             //This is really pretty unwanted behavior
             PAssert.That(() =>
