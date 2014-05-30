@@ -42,10 +42,10 @@ namespace ValueUtilsBenchmark {
                         new XElement("th", "Name"),
                         new XElement("th", "Collisions"),
                         new XElement("th", "Distinct Hashcodes"),
-                        new XElement("th", ".ToDictionary(...) (ns)"),
-                        new XElement("th", ".Distinct().Count() (ns)"),
-                        new XElement("th", ".Equals(...) (ns)"),
-                        new XElement("th", ".GetHashCode(...) (ns)")
+                        new XElement("th", ".ToDictionary()"),
+                        new XElement("th", ".Distinct().Count()"),
+                        new XElement("th", ".Equals()"),
+                        new XElement("th", ".GetHashCode()")
                     )
                 );
         }
@@ -62,8 +62,6 @@ namespace ValueUtilsBenchmark {
 
     class Program {
         static void Main(string[] args) {
-            
-
             var complicatedTable = HashAnalysisResult.ToTable(
                 "Complicated Case with enums, nullables, and strings", 
                 BenchmarkComplicatedCases()
@@ -81,7 +79,7 @@ namespace ValueUtilsBenchmark {
                 BenchmarkSymmetricalCases()
                 );
             var nestedTable = HashAnalysisResult.ToTable(
-                "int-pair with self-reference; data set contains only one level of nesting with nested values being symmetrical to their containers",
+                "int-pair with self-reference; data set contains one level of nesting with nested values being mirror images of their containers",
                 BenchmarkNastyNestedCases()
                 );
 
