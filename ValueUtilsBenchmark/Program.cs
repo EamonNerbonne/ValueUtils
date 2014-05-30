@@ -12,7 +12,7 @@ using MoreLinq;
 namespace ValueUtilsBenchmark {
     struct CollisionStats {
         public int DistinctHashCodes, DistinctValues;
-        public double Rate { get { return (DistinctValues - DistinctHashCodes - 1) / (DistinctValues - 1); } }
+        public double Rate { get { return (DistinctValues - DistinctHashCodes - 1) / (DistinctValues - 1.0); } }
     }
     class HashAnalysisResult {
         public string Name;
