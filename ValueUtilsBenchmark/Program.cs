@@ -80,11 +80,17 @@ namespace ValueUtilsBenchmark {
             var valueObjects = manuals.Select(m => m.ToValueObject()).ToArray();
             var tuples = manuals.Select(m => m.ToTuple()).ToArray();
             var structs = manuals.Select(m => m.ToStruct()).ToArray();
+            var anonymous = manuals.Select(m =>
+              new {
+                  m.A,
+                  m.B,
+              }).ToArray();
 
             yield return ProcessList(manuals);
             yield return ProcessList(valueObjects);
             yield return ProcessList(tuples);
             yield return ProcessList(structs);
+            yield return ProcessList(anonymous);
         }
 
 
@@ -104,11 +110,17 @@ namespace ValueUtilsBenchmark {
             var valueObjects = manuals.Select(m => m.ToValueObject()).ToArray();
             var tuples = manuals.Select(m => m.ToTuple()).ToArray();
             var structs = manuals.Select(m => m.ToStruct()).ToArray();
+            var anonymous = manuals.Select(m =>
+              new {
+                  m.A,
+                  m.B,
+              }).ToArray();
 
             yield return ProcessList(manuals);
             yield return ProcessList(valueObjects);
             yield return ProcessList(tuples);
             yield return ProcessList(structs);
+            yield return ProcessList(anonymous);
         }
 
         static IEnumerable<HashAnalysisResult> BenchmarkDuplicatePairCases() {
@@ -123,11 +135,17 @@ namespace ValueUtilsBenchmark {
             var valueObjects = manuals.Select(m => m.ToValueObject()).ToArray();
             var tuples = manuals.Select(m => m.ToTuple()).ToArray();
             var structs = manuals.Select(m => m.ToStruct()).ToArray();
+            var anonymous = manuals.Select(m =>
+                new {
+                    m.A,
+                    m.B,
+                }).ToArray();
 
             yield return ProcessList(manuals);
             yield return ProcessList(valueObjects);
             yield return ProcessList(tuples);
             yield return ProcessList(structs);
+            yield return ProcessList(anonymous);
         }
 
         static IEnumerable<HashAnalysisResult> BenchmarkComplicatedCases() {
@@ -150,11 +168,22 @@ namespace ValueUtilsBenchmark {
             var valueObjects = manuals.Select(m => m.ToValueObject()).ToArray();
             var tuples = manuals.Select(m => m.ToTuple()).ToArray();
             var structs = manuals.Select(m => m.ToStruct()).ToArray();
+            var anonymous = manuals.Select(m =>
+                new {
+                    m.AnEnum,
+                    m.A,
+                    m.NullableInt,
+                    m.B,
+                    m.Label,
+                    m.Time,
+                    m.C
+                }).ToArray();
 
             yield return ProcessList(manuals);
             yield return ProcessList(valueObjects);
             yield return ProcessList(tuples);
             yield return ProcessList(structs);
+            yield return ProcessList(anonymous);
         }
 
         static HashAnalysisResult ProcessList<T>(T[] objs) {
