@@ -17,7 +17,7 @@ namespace ValueUtilsBenchmark {
         // perhaps this makes it less robust, but I know of no better alternative.
         static void Main(string[] args) {
             var complicatedTable = HashAnalysisResult.ToTable(
-                "Complicated Case with enums, nullables, and strings", 
+                "Realistic scenario with an enum, a string, a DateTime, an int? and 3 int fields.", 
                 BenchmarkComplicatedCases()
                 );
             var intpairTable = HashAnalysisResult.ToTable(
@@ -25,15 +25,15 @@ namespace ValueUtilsBenchmark {
                 BenchmarkIntPairCases()
                 );
             var duplicationTable = HashAnalysisResult.ToTable(
-                "int-pair with both ints having the same value",
+                "Two ints with both the same value",
                 BenchmarkDuplicatePairCases()
                 );
             var symmetricalTable = HashAnalysisResult.ToTable(
-                "int-pair with a dataset in which both the object and it's mirror image are present",
+                "Two ints such that (x,y) is present iif (y,x) is present in the dataset",
                 BenchmarkSymmetricalCases()
                 );
             var nestedTable = HashAnalysisResult.ToTable(
-                "int-pair with self-reference; data set contains one level of nesting with nested values being mirror images of their containers",
+                "A reference to the type itself and two int fields.  The dataset contains exactly one level of nesting such that the outer object is (x,y) when the inner is (y,x).",
                 BenchmarkNastyNestedCases()
                 );
 
@@ -192,6 +192,10 @@ namespace ValueUtilsBenchmark {
 
         static HashAnalysisResult ProcessList<T>(T[] objs) {
             string name = ObjectToCode.GetCSharpFriendlyTypeName(typeof(T));
+            if (name.StartsWith("Tuple"))
+                name = "Tuple";
+            else if (name.Contains("AnonymousType"))
+                name = "Anonymous Type";
             var collisions = AnalyzeHashCollisions(objs);
             return new HashAnalysisResult {
                 Name = name,
