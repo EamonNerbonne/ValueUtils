@@ -1,3 +1,7 @@
+1.2.2
+---
+ - Tune hash mixing coefficients to minimize collisions (based on actual testing, now).
+
 1.2.1
 ---
  - Bugfix: remove Console logging from unusual code generator paths.
