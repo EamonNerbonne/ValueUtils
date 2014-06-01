@@ -49,6 +49,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CollisionStats.cs" />
+    <Compile Include="HashAnalysisResult.cs" />
     <Compile Include="NastyNested.cs" />
     <Compile Include="IntPair.cs" />
     <Compile Include="Complicated.cs" />
