@@ -102,7 +102,7 @@ All performance measurements were done on an i7-4770k at a fixed clock rate of 4
         <td>42.0</td>
       </tr>
       <tr>
-        <td>Tuple&lt;SeekOrigin, int, int?, int, string, DateTime, int&gt;</td>
+        <td>Tuple</td>
         <td>0.03%</td>
         <td>2913001 / 2914000</td>
         <td>492.9</td>
@@ -120,7 +120,7 @@ All performance measurements were done on an i7-4770k at a fixed clock rate of 4
         <td>94.2</td>
       </tr>
       <tr>
-        <td>&lt;&gt;f__AnonymousTypea&lt;SeekOrigin, int, int?, int, string, DateTime, int&gt;</td>
+        <td>Anonymous Type</td>
         <td>0.03%</td>
         <td>2913022 / 2914000</td>
         <td>269.3</td>
@@ -165,7 +165,7 @@ All performance measurements were done on an i7-4770k at a fixed clock rate of 4
         <td>16.3</td>
       </tr>
       <tr>
-        <td>Tuple&lt;int, int&gt;</td>
+        <td>Tuple</td>
         <td>38.31%</td>
         <td>1835788 / 2976000</td>
         <td>322.1</td>
@@ -183,7 +183,7 @@ All performance measurements were done on an i7-4770k at a fixed clock rate of 4
         <td>37.1</td>
       </tr>
       <tr>
-        <td>&lt;&gt;f__AnonymousType5&lt;int, int&gt;</td>
+        <td>Anonymous Type</td>
         <td>4.69%</td>
         <td>2836344 / 2976000</td>
         <td>182.0</td>
@@ -228,7 +228,7 @@ All performance measurements were done on an i7-4770k at a fixed clock rate of 4
         <td>16.4</td>
       </tr>
       <tr>
-        <td>Tuple&lt;int, int&gt;</td>
+        <td>Tuple</td>
         <td>22.07%</td>
         <td>2337827 / 3000000</td>
         <td>149.9</td>
@@ -246,7 +246,7 @@ All performance measurements were done on an i7-4770k at a fixed clock rate of 4
         <td>37.6</td>
       </tr>
       <tr>
-        <td>&lt;&gt;f__AnonymousType5&lt;int, int&gt;</td>
+        <td>Anonymous Type</td>
         <td>0.00%</td>
         <td>3000000 / 3000000</td>
         <td>157.0</td>
@@ -291,7 +291,7 @@ All performance measurements were done on an i7-4770k at a fixed clock rate of 4
         <td>16.4</td>
       </tr>
       <tr>
-        <td>Tuple&lt;int, int&gt;</td>
+        <td>Tuple</td>
         <td>41.47%</td>
         <td>1775545 / 3033584</td>
         <td>507.5</td>
@@ -309,7 +309,7 @@ All performance measurements were done on an i7-4770k at a fixed clock rate of 4
         <td>37.2</td>
       </tr>
       <tr>
-        <td>&lt;&gt;f__AnonymousType5&lt;int, int&gt;</td>
+        <td>Anonymous Type</td>
         <td>0.79%</td>
         <td>3009536 / 3033584</td>
         <td>179.0</td>
@@ -354,7 +354,7 @@ All performance measurements were done on an i7-4770k at a fixed clock rate of 4
         <td>32.9</td>
       </tr>
       <tr>
-        <td>Tuple&lt;object, int, int&gt;</td>
+        <td>Tuple</td>
         <td>57.80%</td>
         <td>1261193 / 2988648</td>
         <td>488.3</td>
