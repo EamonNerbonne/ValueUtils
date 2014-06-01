@@ -127,10 +127,10 @@ namespace ValueUtilsBenchmark {
             var manuals = (
                 from a in Enumerable.Range(0, 3000000)
                 select new IntPairManual {
-                    A = a * 8,
-                    B = a * 8,
+                    A = a,
+                    B = a,
                 }
-            ).Distinct().ToArray();
+            ).ToArray();
 
             var valueObjects = manuals.Select(m => m.ToValueObject()).ToArray();
             var tuples = manuals.Select(m => m.ToTuple()).ToArray();
