@@ -1,0 +1,37 @@
+The benchmark/hash analyzer reports the number of objects that correspond were placed in an
+already filled hashbucket.  This is computed using the pidgeonhole principle: count the number of 
+hashcodes, count the number of objects - every extra object must have been placed in an already-occupied
+hashbucket. Since the number of hash codes is limited (2^32), it's to be expected that even a perfect
+hashcode code mixer (without foreknowledge of the dataset) will have a few such colliding hashbuckets.
+
+But how many?
+
+N: number of hash buckets (2^32)
+n: number of distinct items
+
+probability for a bucket to fill when an item is added
+1/N
+
+probability for a bucket NOT to fill when an item is added
+1 - 1/N
+
+probability for a bucket NOT to fill when all n items are added
+(1 - 1/N)^n
+
+expected number of unfilled buckets
+N(1 - 1/N)^n
+
+Expected # of filled buckets 
+N - N(1 - 1/N)^n = N(1 - (1 - 1/N)^n)
+
+Expected # of items placed in buckets that are already filled
+n - N(1 - (1 - 1/N)^n)
+
+Chance of an item being placed in an already occupied hashbucket:
+1/n*(n - N(1 - (1 - 1/N)^n))
+= 
+1 - N/n*(1 - (1 - 1/N)^n)
+
+According to wolfram alpha http://www.wolframalpha.com/input/?i=1-+2^32%2F3000000*%281-%281-1%2F2^32%29^3000000%29 that comes out at around 0.035% for the datasets benchmarked.
+
+In other words, any hash that achieves 0.03-0.04% is pretty much perfect.
