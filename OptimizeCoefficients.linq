@@ -100,4 +100,4 @@ let rec findBest (best, offsets, factors, allfactors) =
 let reasonableOffsets = [1..2..50000001] 
 let reasonableFactors = [2..2..50000002] 
 		
-findBest ( (100,0,0), reasonableOffsets, reasonableFactors, reasonableFactors)
+findBest ( (10000,0,0), reasonableOffsets, reasonableFactors, reasonableFactors)
