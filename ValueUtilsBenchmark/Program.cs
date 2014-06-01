@@ -11,6 +11,10 @@ using MoreLinq;
 
 namespace ValueUtilsBenchmark {
     class Program {
+
+        //Note: the manual hash implementations are bastardized FNV since nobody in their right mind
+        // would manually split field hash codes into octets and seperately hash those with FNV.
+        // perhaps this makes it less robust, but I know of no better alternative.
         static void Main(string[] args) {
             var complicatedTable = HashAnalysisResult.ToTable(
                 "Complicated Case with enums, nullables, and strings", 
