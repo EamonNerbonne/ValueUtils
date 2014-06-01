@@ -68,6 +68,8 @@ All performance measurements were done on an i7-4770k at a fixed clock rate of 4
 
 Note that even a perfect hash mix is expected to have 0.03-0.04% colliding buckets, so if you see numbers like that in the data below, a hash if functioning as expected.  Numbers better(lower) than that are actually worrisome, because that means some kind of structure in the input is being exploited, and that likely means similar but slightly different data exists that will have lots of collisions.  And of course, number much higher that that directly impact performance.
 
+Quite a few tests use a simple pair of ints - this is relevant because this is pretty much a worst case for ValueObject.   Although the generated code is fast, calling into that code requires a cast and a Delegate call, and those are (relatively) expensive operations in .NET - at least, compared to simple integer math that a pair-of-ints hashcode requires.  With more complicated objects containing reference types the cost of the hashcode computation will start to matter more, and the overhead less.
+
 <div>
   <table>
     <thead>
