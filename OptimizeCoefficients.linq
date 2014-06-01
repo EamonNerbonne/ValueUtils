@@ -23,53 +23,35 @@
   <Namespace>ValueUtils</Namespace>
 </Query>
 
+let maxIdx = 50u
 let rec gcd a b = 
-	if b = 0 then 
+	if b = 0u then 
 		a
 	else
 		gcd b (a % b)
+		
 let cost offset factor maxcost = 
-//	let nums = [
-//		for i in 1..30 ->
-//			offset + factor * i
-//	]
-	let rec offsetcost n i sum = 
-		if i > 50 then 
+	let rec offsetcost n idx sum = 
+		if sum >= maxcost || idx > maxIdx then 
 			sum
 		else
-			let m = offset + factor * i
-			offsetcost n (i+1) (sum + gcd m n)
-//			if gcd m n > 1 then
-//				offsetcost n (i+1) (sum+1)
-//			else
-//				offsetcost n (i+1) sum
+			let m = offset + factor * idx
+			let newcost = gcd m n
+			offsetcost n (idx + 1u) (sum + newcost)
 	
-	let rec paircost2 i sum =
-		if sum >= maxcost || i >= 50  then 
+	let rec paircost2 idx sum =
+		if sum >= maxcost || idx >= maxIdx  then 
 			sum
 		else
-			let n = offset + factor * i
-			paircost2 (i+1) (offsetcost n (i+1) sum)
+			let n = offset + factor * idx
+			paircost2 (idx+1u) (offsetcost n (idx+1u) sum)
 
 
-//	let rec paircost (sum:int) (xs:int list) =
-//		match xs with
-//		| [] -> sum
-//		| n::tail ->
-//			paircost ((tail |> List.filter (fun m -> gcd m n > 1) |> List.length) + sum) tail
 			
-	paircost2 1 0
-//	let badpairs = [
-//		for n in nums do
-//			for m in nums do
-//				if n < m && gcd m n > 1 then
-//					yield 0
-//	]
-//	badpairs |> List.length
+	paircost2 1u 0u
 
 let rec findBest (best, offsets, factors, allfactors) = 
 	match (offsets, factors) with
-	//(bestcost, offsets, factors, allfactors)
 	| (offset::_, factor::tailfactors) ->
 		let (bestcost, _, _) = best
 		let currcost = cost offset factor bestcost
@@ -86,18 +68,28 @@ let rec findBest (best, offsets, factors, allfactors) =
 		findBest (best, tailoffsets, allfactors, allfactors)
 	| ([], _) ->
 		best
-//let primes max = 
-//    let array = new BitArray(max, true);
-//    let lastp = Math.Sqrt(float max) |> int
-//    for p in 2..lastp+1 do
-//        if array.Get(p) then
-//            for pm in p*2..p..max-1 do
-//                array.Set(pm, false);
-//    seq { for i in 2..max-1 do if array.Get(i) then yield i }
-//
-//		
-//let reasonableOffsets =  primes 65536 |> List.ofSeq  |> Seq.take 2000 |> List.ofSeq
-let reasonableOffsets = [1..2..50000001] 
-let reasonableFactors = [2..2..50000002] 
 		
-findBest ( (10000,0,0), reasonableOffsets, reasonableFactors, reasonableFactors)
+let maxFactor = 50000002u
+let maxOffset = UInt32.MaxValue - maxIdx*maxFactor
+let pMax = min maxOffset (uint32 Int32.MaxValue) |> int32
+
+let primes max = 
+    let lastp = Math.Sqrt(max+1 |> float) |> int
+    let array = new BitArray(max/2, true);
+	[|	
+		yield 2
+		for p in 3..2..lastp do
+			if array.Get(p /2) then
+				yield p
+				for pm in p*p..p*2..max-1 do
+					array.Set(pm/2, false);
+		for i in (lastp+1 ||| 1)..2..max-1 do if array.Get(i/2) then yield i
+	|]
+
+
+
+let reasonableOffsets = primes pMax |> Array.map uint32 |> Array.rev |> List.ofArray
+printfn "done preparing, running"
+let reasonableFactors = [2u..2u..maxFactor] 
+		
+findBest ( (1000000u,0u,0u), reasonableOffsets, reasonableFactors, reasonableFactors)
