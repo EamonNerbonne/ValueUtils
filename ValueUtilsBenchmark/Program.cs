@@ -37,7 +37,7 @@ namespace ValueUtilsBenchmark {
                 new XElement("div",
                     complicatedTable, intpairTable, duplicationTable, symmetricalTable, nestedTable);
             Console.WriteLine(tables.ToString());
-            tables.Save("BenchResults.xml");
+            tables.Save("BenchResults.html");
         }
 
         static IEnumerable<HashAnalysisResult> BenchmarkNastyNestedCases() {
