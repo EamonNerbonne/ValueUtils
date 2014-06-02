@@ -30,6 +30,9 @@ namespace ValueUtils {
         public static readonly Func<T, int> Instance = Create();
 
         static Func<T, int> Create() {
+            return CreateLambda().Compile();
+        }
+        internal static Expression<Func<T, int>> CreateLambda() {
             //Get all fields including inherited fields
             var fields = typeof(T).GetFields(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
 
@@ -99,9 +102,7 @@ from it, and (almost entirely) relatively prime for the first 50 coefficients.
                );
 
             var bodyExpr = Expression.Block(new[] { ulongHashVariable, }, writeHashStatement, intHashExpr);
-            var funcExpr = Expression.Lambda<Func<T, int>>(bodyExpr, paramExpr);
-
-            return funcExpr.Compile();
+            return Expression.Lambda<Func<T, int>>(bodyExpr, paramExpr);
         }
     }
 }

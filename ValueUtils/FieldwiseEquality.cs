@@ -30,6 +30,10 @@ namespace ValueUtils {
         public static readonly Func<T, T, bool> Instance = Create();
 
         static Func<T, T, bool> Create() {
+            return CreateLambda().Compile();
+        }
+
+        internal static Expression<Func<T, T, bool>> CreateLambda() {
             //Get all fields including inherited fields
             var fields = typeof(T).GetFields(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
 
@@ -48,8 +52,7 @@ namespace ValueUtils {
 
                 eqExpr = Expression.AndAlso(eqExpr, bestEqualityApproach);
             }
-            var funcExpr = Expression.Lambda<Func<T, T, bool>>(eqExpr, aExpr, bExpr);
-            return funcExpr.Compile();
+            return Expression.Lambda<Func<T, T, bool>>(eqExpr, aExpr, bExpr);
         }
 
         static bool HasEqualityOperator(Type type) {
