@@ -12,7 +12,7 @@
 		<requireLicenseAcceptance>false</requireLicenseAcceptance>
 		<summary>$description$</summary>
 		<description>
-      Provides utilities to make working with classes having value-semantics (e.g. a data transfer object) more practical in C#.
+      Simplifies implementing or working with object having value-semantics (e.g. a data transfer object).
       
       Just write "sealed class MyClass : ValueObject&lt;MyClass&gt;" to add value semantics to your class.
       
