@@ -27,11 +27,7 @@ namespace ValueUtils {
         /// However, warning: if the objects are of compile-time type BaseType, but at runtime turn out
         /// to be SubClass, then only the fields of BaseType will be checked.
         /// </summary>
-        public static readonly Func<T, T, bool> Instance = Create();
-
-        static Func<T, T, bool> Create() {
-            return CreateLambda().Compile();
-        }
+        public static readonly Func<T, T, bool> Instance = CreateLambda().Compile();
 
         internal static Expression<Func<T, T, bool>> CreateLambda() {
             //Get all fields including inherited fields

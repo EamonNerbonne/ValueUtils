@@ -27,11 +27,8 @@ namespace ValueUtils {
         /// However, warning: if the instance is of compile-time type BaseType, but at runtime turns out
         /// to be SubClass, then only the fields of BaseType will be checked.
         /// </summary>
-        public static readonly Func<T, int> Instance = Create();
+        public static readonly Func<T, int> Instance = CreateLambda().Compile();
 
-        static Func<T, int> Create() {
-            return CreateLambda().Compile();
-        }
         internal static Expression<Func<T, int>> CreateLambda() {
             //Get all fields including inherited fields
             var fields = typeof(T).GetFields(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
