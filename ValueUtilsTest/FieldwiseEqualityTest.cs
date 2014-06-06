@@ -73,7 +73,6 @@ namespace ValueUtilsTest {
                 !FieldwiseEquality.AreEqual(new SampleClass { PlainStruct = { Bla = 1 } }, new SampleClass { PlainStruct = { Bla = 2 } }));
         }
 
-
         [Fact]
         public void TypeDoesNotAffectRuntimeEquality() {
             var sampleClass = new SampleClass { AnEnum = SampleEnum.Q };
@@ -91,8 +90,11 @@ namespace ValueUtilsTest {
                 FieldwiseEquality.AreEqual(new SampleSubClassWithFields { AnEnum = SampleEnum.Q }, new SampleSubClassWithFields { AnEnum = SampleEnum.Q }));
         }
 
+        [Fact]
         public void StructIntFieldsAffectEquality() {
-            PAssert.That(() => !FieldwiseEquality.AreEqual(new CustomStruct { Bla = 1 }, new CustomStruct { Bla = 2 }));
+            var customStruct1 = new CustomStruct { Bla = 1 };
+            var customStruct2 = new CustomStruct { Bla = 2 };
+            PAssert.That(() => !FieldwiseEquality.AreEqual(customStruct1, customStruct2));
             PAssert.That(() => FieldwiseEquality.AreEqual(new CustomStruct { Bla = 3 }, new CustomStruct { Bla = 3 }));
         }
 

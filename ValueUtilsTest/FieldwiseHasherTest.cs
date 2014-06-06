@@ -95,9 +95,8 @@ namespace ValueUtilsTest {
                 hasher(new SampleClass { AnEnum = SampleEnum.Q })
                 == hasher(new SampleSubClass { AnEnum = SampleEnum.Q }));
         }
-
         
-        [Fact, UsedImplicitly]
+        [Fact]
         public void SubClassesCheckBaseClassFields() {
             PAssert.That(() =>
                 FieldwiseHasher.Hash(new SampleSubClassWithFields { AnEnum = SampleEnum.Q })
@@ -107,6 +106,7 @@ namespace ValueUtilsTest {
                 == FieldwiseHasher.Hash(new SampleSubClassWithFields { AnEnum = SampleEnum.Q }));
         }
 
+        [Fact]
         public void StructIntFieldsAffectHash()
         {
             PAssert.That(() =>
