@@ -90,5 +90,11 @@ namespace ValueUtilsTest {
             PAssert.That(() =>
                 FieldwiseEquality.AreEqual(new SampleSubClassWithFields { AnEnum = SampleEnum.Q }, new SampleSubClassWithFields { AnEnum = SampleEnum.Q }));
         }
+
+        public void StructIntFieldsAffectEquality() {
+            PAssert.That(() => !FieldwiseEquality.AreEqual(new CustomStruct { Bla = 1 }, new CustomStruct { Bla = 2 }));
+            PAssert.That(() => FieldwiseEquality.AreEqual(new CustomStruct { Bla = 3 }, new CustomStruct { Bla = 3 }));
+        }
+
     }
 }
