@@ -126,5 +126,17 @@ namespace ValueUtilsTest {
                 FieldwiseHasher.Hash(new SampleClass { NullableField = 3 })
                 == FieldwiseHasher.Hash(new SampleClass { NullableField = 3 }));
         }
+
+
+        [Fact]
+        public void ClassStructFieldsAffectHash() {
+            var object1 = new SampleClass { PlainStruct = new CustomStruct { Bla = 1 } };
+            var object2 = new SampleClass { PlainStruct = new CustomStruct { Bla = 2 } };
+            var object3A = new SampleClass { PlainStruct = new CustomStruct { Bla = 3 } };
+            var object3B = new SampleClass { PlainStruct = new CustomStruct { Bla = 3 } };
+            PAssert.That(() => FieldwiseHasher.Hash(object1) != FieldwiseHasher.Hash(object2));
+            PAssert.That(() => FieldwiseHasher.Hash(object3A) == FieldwiseHasher.Hash(object3B));
+        }
+
     }
 }
