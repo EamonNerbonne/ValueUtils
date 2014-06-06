@@ -36,7 +36,7 @@
 
 <p>ValueUtils implements <code>Equals</code> and <code>GetHashCode</code> for you.  By using runtime code-generation, the performance overhead is kept small; <code>ValueObject&lt;&gt;</code> generally outperforms alternatives such as <code>Tuple&lt;&gt;</code>, <code>struct</code> or anonymous types (see benchmarks below). </p>
 
-<p>The library is available on nuget (for import or direct download) as <a href="https://www.nuget.org/packages/ValueUtils/">ValueUtils</a></p>
+<p>The library is available on nuget (for import or direct download) as <a href="https://www.nuget.org/packages/ValueUtils/">ValueUtils</a>.  Though it's implemented in C#, it's just as applicable to VB.NET classes.</p>
 
 <h2>
 <a name="usage" class="anchor" href="#usage"><span class="octicon octicon-link"></span></a>Usage:</h2>
@@ -51,9 +51,9 @@
 <span class="p">}</span>
 </pre></div>
 
-<p>A class deriving from <code>ValueObject&lt;T&gt;</code> implements <code>IEquatable&lt;T&gt;</code> and has <code>Equals(object)</code>, <code>Equals(T)</code>, <code>GetHashCode()</code> and the == and != operators implemented in terms of their fields.</p>
+<p>A class deriving from <code>ValueObject&lt;T&gt;</code> implements <code>IEquatable&lt;T&gt;</code> and has <code>Equals(object)</code>, <code>Equals(T)</code>, <code>GetHashCode()</code> and the <code>==</code> and <code>!=</code> operators implemented in terms of their fields.</p>
 
-<p>Given the following example class:</p>
+<p>You can also generate delegates for hashing and equality comparison for any type (also types in other assemblies you don't control).  Given the following example class:</p>
 
 <div class="highlight highlight-C#"><pre><span class="k">class</span> <span class="nc">ExampleClass</span> <span class="p">{</span>
     <span class="k">public</span> <span class="kt">string</span> <span class="n">myMember</span><span class="p">;</span>
@@ -68,7 +68,7 @@
 <div class="highlight highlight-C#"><pre><span class="k">using</span> <span class="nn">ValueUtils</span><span class="p">;</span>
 
 <span class="n">Func</span><span class="p">&lt;</span><span class="n">ExampleClass</span><span class="p">,</span> <span class="kt">int</span><span class="p">&gt;</span> <span class="n">hashfunc</span> <span class="p">=</span> <span class="n">FieldwiseHasher</span><span class="p">&lt;</span><span class="n">ExampleClass</span><span class="p">&gt;.</span><span class="n">Instance</span><span class="p">;</span>
-<span class="c1">//or directly </span>
+<span class="c1">//or call directly </span>
 <span class="kt">int</span> <span class="n">hashcode</span> <span class="p">=</span> <span class="n">FieldwiseHasher</span><span class="p">.</span><span class="n">Hash</span><span class="p">(</span><span class="n">my_example_object</span><span class="p">);</span>
 </pre></div>
 
@@ -77,11 +77,11 @@
 <div class="highlight highlight-C#"><pre><span class="k">using</span> <span class="nn">ValueUtils</span><span class="p">;</span>
 
 <span class="n">Func</span><span class="p">&lt;</span><span class="n">ExampleClass</span><span class="p">,</span> <span class="n">ExampleClass</span><span class="p">,</span> <span class="kt">bool</span><span class="p">&gt;</span> <span class="n">equalityComparer</span> <span class="p">=</span> <span class="n">FieldwiseEquality</span><span class="p">&lt;</span><span class="n">ExampleClass</span><span class="p">&gt;.</span><span class="n">Instance</span><span class="p">;</span>
-<span class="c1">//or directly </span>
+<span class="c1">//or call directly </span>
 <span class="kt">bool</span> <span class="n">areEqual</span> <span class="p">=</span> <span class="n">FieldwiseEquality</span><span class="p">.</span><span class="n">AreEqual</span><span class="p">(</span><span class="n">my_example_object</span><span class="p">,</span> <span class="n">another_example_object</span><span class="p">);</span>
 </pre></div>
 
-<p>The above implementations can be considerably faster that the built-in <code>ValueType</code>-provided defaults for <code>struct</code>s (which use reflection every call), which is why they're a good fit to help implement <code>GetHashCode</code> and <code>Equals</code> for structs.</p>
+<p>The above delegates are considerably faster that the built-in <code>ValueType</code>-provided defaults for <code>struct</code>s (which use reflection every call), which is why they're a good fit to help implement <code>GetHashCode</code> and <code>Equals</code> for your own structs.</p>
 
 <h2>
 <a name="limitations-and-gotchas" class="anchor" href="#limitations-and-gotchas"><span class="octicon octicon-link"></span></a>Limitations and gotcha's</h2>
@@ -90,7 +90,7 @@
 
 <p>Equality is implemented on a per-type basis, and that means inheritance gets confusing.  It's OK to <em>have</em> a base class (and base class fields will affect hash and equality), but if you use the base-class's equality and/or hash implementation on a subclass <em>instance</em> the code will seem to work but only consider the fields of the base class.  Best practice: don't create sub-classes that add new fields; and if you do then at least never use the base-class equality+hashcode implementations.  This is why ValueObject verifies that its subclasses must be sealed.</p>
 
-<p>FieldwiseHasher and FieldwiseEquality "work" on almost all types, including types with private members in other assemblies - however, if you don't know the internals, you can't be sure what's being included in the equality computations.  In particular, if an object is lazily initialized, two semantically equivalent objects might compute as unequal simply because one is initialized and the other is not.  In practice this is rarely a problem.</p>
+<p><code>FieldwiseHasher</code> and <code>FieldwiseEquality</code> "work" on almost all types, including types with private members in other assemblies - however, if you don't know the internals, you can't be sure what's being included in the equality computations.  In particular, if an object is lazily initialized, two semantically equivalent objects might compute as unequal simply because one is initialized and the other is not.  In practice this is rarely a problem.</p>
 
 <h2>
 <a name="performance-and-hash-quality" class="anchor" href="#performance-and-hash-quality"><span class="octicon octicon-link"></span></a>Performance and hash-quality</h2>
