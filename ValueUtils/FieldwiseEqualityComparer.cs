@@ -41,7 +41,7 @@ namespace ValueUtils {
                 typeof(bool), new Type[] { typeof(T), typeof(T) });
             equalityFunc.CompileToMethod(equalityMethodBuilder);
             typeBuilder.DefineMethodOverride(equalityMethodBuilder,
-                ((Func<T, T, bool>)default(IEqualityComparer<T>).Equals).Method
+                    (typeof(IEqualityComparer<T>)).GetMethod("Equals")
                 );
 
             MethodBuilder hashMethodBuilder =
@@ -51,7 +51,7 @@ namespace ValueUtils {
             hashFunc.CompileToMethod(hashMethodBuilder);
 
             typeBuilder.DefineMethodOverride(hashMethodBuilder,
-                ((Func<T, int>)default(IEqualityComparer<T>).GetHashCode).Method
+                (typeof(IEqualityComparer<T>)).GetMethod("GetHashCode")
                 );
 
             var type = typeBuilder.CreateType();
