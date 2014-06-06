@@ -1,10 +1,13 @@
-﻿using System;
+﻿// ReSharper disable UnusedMember.Global
+// ReSharper disable EqualExpressionComparison
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using ExpressionToCodeLib;
 using ValueUtils;
+using ValueUtilsTest.Annotations;
 using Xunit;
 
 namespace ValueUtilsTest {
@@ -94,7 +97,7 @@ namespace ValueUtilsTest {
         }
 
         
-        [Fact]
+        [Fact, UsedImplicitly]
         public void SubClassesCheckBaseClassFields() {
             PAssert.That(() =>
                 FieldwiseHasher.Hash(new SampleSubClassWithFields { AnEnum = SampleEnum.Q })
@@ -102,6 +105,16 @@ namespace ValueUtilsTest {
             PAssert.That(() =>
                 FieldwiseHasher.Hash(new SampleSubClassWithFields { AnEnum = SampleEnum.Q })
                 == FieldwiseHasher.Hash(new SampleSubClassWithFields { AnEnum = SampleEnum.Q }));
+        }
+
+        public void StructIntFieldsAffectHash()
+        {
+            PAssert.That(() =>
+                FieldwiseHasher.Hash(new CustomStruct { Bla = 1 })
+                != FieldwiseHasher.Hash(new CustomStruct { Bla = 2 }));
+            PAssert.That(() =>
+                FieldwiseHasher.Hash(new CustomStruct { Bla = 3 })
+                == FieldwiseHasher.Hash(new CustomStruct { Bla = 3 }));
         }
     }
 }
