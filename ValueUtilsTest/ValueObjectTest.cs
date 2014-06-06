@@ -14,7 +14,7 @@ namespace ValueUtilsTest {
             var b = new SampleValueObject { ShortValue = 2000, StringValue = "A", Value = -1 };
             PAssert.That(() =>
                 a.Equals(b)
-                && a==b 
+                && a == b
                 && a.GetHashCode() == b.GetHashCode()
                 && !ReferenceEquals(a, b)
                 );
@@ -44,49 +44,34 @@ namespace ValueUtilsTest {
 
         [Fact]
         public void NonCyclicalSelfReferentialTypesWork() {
-            PAssert.That(() =>
-                new SampleSelfReferentialValueObject {
-                    SameTypeReference = new SampleSelfReferentialValueObject {
-                        Value = 1
-                    }
-                }.Equals(new SampleSelfReferentialValueObject {
-                    SameTypeReference = new SampleSelfReferentialValueObject {
-                        Value = 1
-                    }
-                }));
-            PAssert.That(() =>
-                new SampleSelfReferentialValueObject {
-                    SameTypeReference = new SampleSelfReferentialValueObject {
-                        Value = 1
-                    }
-                }.GetHashCode()
-                == new SampleSelfReferentialValueObject {
-                    SameTypeReference = new SampleSelfReferentialValueObject {
-                        Value = 1
-                    }
-                }.GetHashCode());
-            PAssert.That(() =>
-                !new SampleSelfReferentialValueObject {
-                    SameTypeReference = new SampleSelfReferentialValueObject {
-                        Value = 1
-                    }
-                }.Equals(new SampleSelfReferentialValueObject {
-                    SameTypeReference = new SampleSelfReferentialValueObject {
-                        Value = 2
-                    }
-                }));
+            var valueObjectA = new SampleSelfReferentialValueObject {
+                Value = 1,
+                SameTypeReference = new SampleSelfReferentialValueObject {
+                    Value = 2
+                }
+            };
+            var valueObjectB = new SampleSelfReferentialValueObject {
+                Value = 1,
+                SameTypeReference = new SampleSelfReferentialValueObject {
+                    Value = 2
+                }
+            };
+            var valueObjectX = new SampleSelfReferentialValueObject {
+                Value = 1,
+                SameTypeReference = new SampleSelfReferentialValueObject {
+                    Value = 3
+                }
+            };
 
             PAssert.That(() =>
-                new SampleSelfReferentialValueObject {
-                    SameTypeReference = new SampleSelfReferentialValueObject {
-                        Value = 1
-                    }
-                }.GetHashCode()
-                != new SampleSelfReferentialValueObject {
-                    SameTypeReference = new SampleSelfReferentialValueObject {
-                        Value = 2
-                    }
-                }.GetHashCode());
+                valueObjectA.Equals(valueObjectB)
+                && valueObjectA.GetHashCode() == valueObjectB.GetHashCode()
+                && valueObjectA == valueObjectB);
+            PAssert.That(() =>
+                !valueObjectA.Equals(valueObjectX)
+                && valueObjectA.GetHashCode() != valueObjectX.GetHashCode()
+                && valueObjectA != valueObjectX);
+
         }
     }
 }
