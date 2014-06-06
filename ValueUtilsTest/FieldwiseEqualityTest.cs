@@ -117,5 +117,16 @@ namespace ValueUtilsTest {
             PAssert.That(() => FieldwiseEquality.AreEqual(object3A, object3B));
         }
 
+
+        [Fact]
+        public void ClassNullableStructFieldsAffectEquality() {
+            var object1 = new SampleClass { NullableStruct = null };
+            var object2 = new SampleClass { NullableStruct = new CustomStruct { Bla = 2 } };
+            var object3A = new SampleClass { NullableStruct = new CustomStruct { Bla = 3 } };
+            var object3B = new SampleClass { NullableStruct = new CustomStruct { Bla = 3 } };
+            PAssert.That(() => !FieldwiseEquality.AreEqual(object1, object2));
+            PAssert.That(() => FieldwiseEquality.AreEqual(object3A, object3B));
+        }
+
     }
 }

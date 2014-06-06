@@ -138,5 +138,15 @@ namespace ValueUtilsTest {
             PAssert.That(() => FieldwiseHasher.Hash(object3A) == FieldwiseHasher.Hash(object3B));
         }
 
+        [Fact]
+        public void ClassNullableStructFieldsAffectHash() {
+            var object1 = new SampleClass { NullableStruct = null };
+            var object2 = new SampleClass { NullableStruct = new CustomStruct { Bla = 2 } };
+            var object3A = new SampleClass { NullableStruct = new CustomStruct { Bla = 3 } };
+            var object3B = new SampleClass { NullableStruct = new CustomStruct { Bla = 3 } };
+            PAssert.That(() => FieldwiseHasher.Hash(object1) != FieldwiseHasher.Hash(object2));
+            PAssert.That(() => FieldwiseHasher.Hash(object3A) == FieldwiseHasher.Hash(object3B));
+        }
+
     }
 }
