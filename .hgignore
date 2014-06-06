@@ -1,0 +1,6 @@
+syntax: glob
+packages
+ValueUtilsTest
+ValueUtilsBenchmark
+ValueUtils
+*.suo
