@@ -116,5 +116,15 @@ namespace ValueUtilsTest {
                 FieldwiseHasher.Hash(new CustomStruct { Bla = 3 })
                 == FieldwiseHasher.Hash(new CustomStruct { Bla = 3 }));
         }
+
+        [Fact]
+        public void ClassNullableIntFieldsAffectHash() {
+            PAssert.That(() =>
+                FieldwiseHasher.Hash(new SampleClass { NullableField = null })
+                != FieldwiseHasher.Hash(new SampleClass { NullableField = 1 }));
+            PAssert.That(() =>
+                FieldwiseHasher.Hash(new SampleClass { NullableField = 3 })
+                == FieldwiseHasher.Hash(new SampleClass { NullableField = 3 }));
+        }
     }
 }
