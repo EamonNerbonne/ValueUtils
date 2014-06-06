@@ -15,7 +15,7 @@ namespace ValueUtils {
     }
 
     static class FieldwiseEqualityComparer {
-        static int idCounter = 0;
+        static int idCounter;
 
         static readonly AssemblyBuilder assemblyBuilder;
         static readonly ModuleBuilder moduleBuilder;

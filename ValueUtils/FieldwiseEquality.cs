@@ -3,8 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ValueUtils {
     public static class FieldwiseEquality {
@@ -73,10 +71,11 @@ namespace ValueUtils {
                 null, new[] { fieldType }, null);
 
             var fieldsEqualExpr = equalsMethod == null
-                ? Expression.Call(((Func<object, object, bool>)object.Equals).Method,
+                ? Expression.Call(((Func<object, object, bool>)Equals).Method,
                     Expression.Convert(aFieldExpr, typeof(object)),
                     Expression.Convert(bFieldExpr, typeof(object))
                 )
+// ReSharper disable once PossiblyMistakenUseOfParamsMethod
                 : Expression.Call(aFieldExpr, equalsMethod, bFieldExpr)
                 ;
             // TODO: optimization possibility: if an object needs object.Equals, and it has *not* overridden

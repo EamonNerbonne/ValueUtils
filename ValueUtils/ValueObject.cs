@@ -1,14 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ValueUtils {
 
     /// <summary>
     /// Represents a C# object with value semantics.
-    /// ValueObjects implements GetHashCode, Equals, IEquatable<> and operators == and != for you.
+    /// ValueObjects implements GetHashCode, Equals, IEquatable&lt;&gt; and operators == and != for you.
     /// 
     /// A class deriving from ValueObject should pass itself as
     /// the generic type parameter to ValueObject.  ValueObjects must be sealed.
@@ -37,11 +35,13 @@ namespace ValueUtils {
         public sealed override int GetHashCode() { return hashFunc((T)this); }
 
         public static bool operator !=(ValueObject<T> a, T b) {
+            // ReSharper disable once CSharpWarnings::CS0252
             return (object)a != b
                 && ((object)a == null || (object)b == null || !equalsFunc((T)a, b)); 
         }
 
         public static bool operator ==(ValueObject<T> a, T b) {
+            // ReSharper disable once CSharpWarnings::CS0252
             return (object)a == b
                 || (object)a != null && (object)b != null && equalsFunc((T)a, b);
         }

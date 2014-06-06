@@ -1,21 +1,24 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using ValueUtilsTest.Annotations;
 
 namespace ValueUtilsTest {
     struct CustomStruct {
+        [UsedImplicitly]
         public int Bla;
     }
 
     class SampleClass {
+        [UsedImplicitly]
         public SampleEnum AnEnum;
+        [UsedImplicitly]
         public int? NullableField;
+        [UsedImplicitly]
         public CustomStruct PlainStruct;
+        [UsedImplicitly]
         public CustomStruct? NullableStruct;
 
-        public string AutoPropWithPrivateBackingField { get; set; }
+        public string AutoPropWithPrivateBackingField { [UsedImplicitly] get; set; }
     }
-
 }
