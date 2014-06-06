@@ -1,7 +1,7 @@
 ValueUtils
 ==========
 
-A C# library to make work with value-semantics easier by e.g. (efficiently) implementing Equals and GetHashCode for you.
+ValueUtils implements `Equals` and `GetHashCode` for you.  By using runtime code-generation, the performance overhead is kept small; `ValueObject<>` generally outperforms alternatives such as `Tuple<>`, `struct` or anonymous types (see benchmarks below). 
 
 The library is available on nuget (for import or direct download) as [ValueUtils](https://www.nuget.org/packages/ValueUtils/)
 
@@ -64,6 +64,8 @@ FieldwiseHasher and FieldwiseEquality "work" on almost all types, including type
 
 Performance and hash-quality
 ----
+**TL;DR** `ValueObject<>` usually outperforms alternatives such as `Tuple<>`, `struct` and anonymous types.   Compared to hand-rolled implementations common operations such as `.ToDictionary` are around 15-25% slower (if your object contains "expensive" data such as large strings, the difference will become a lot smaller).
+
 All performance measurements were done on an i7-4770k at a fixed clock rate of 4.0GHz.    Timings are in nanoseconds per object.  Datasets are all approximately 3000000 objects in size. Loops over the dataset were repeated until 10 seconds were up, then the fastest quartile average reported (this minimizes interference by other processes on my dev machine since random interference is almost always bad for performance, not good).  Some hash generators (notably `struct`) are so poor that this wasn't feasible, those timings are omitted (NaN) below.
 
 Note that even a perfect hash mix is expected to have 0.03-0.04% colliding buckets, so if you see numbers like that in the data below, a hash if functioning as expected.  Numbers better(lower) than that are actually worrisome, because that means some kind of structure in the input is being exploited, and that likely means similar but slightly different data exists that will have lots of collisions.  And of course, number much higher that that directly impact performance.
