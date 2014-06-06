@@ -269,19 +269,21 @@ Full-Width Styles
   margin: 0 auto;
 }
 
-#forkme_banner {
+#nuget_banner, #forkme_banner {
   display: block;
-  position: absolute;
-  top:0;
-  right: 10px;
-  z-index: 10;
-  padding: 10px 50px 10px 10px;
+  float: right;
+  padding: 10px;
   color: #fff;
-  background: url('../images/blacktocat.png') #0090ff no-repeat 95% 50%;
+  background-color: #0090ff;
   font-weight: 700;
   box-shadow: 0 0 10px rgba(0,0,0,.5);
-  border-bottom-left-radius: 2px;
-  border-bottom-right-radius: 2px;
+  border-radius: 0 0 2px 2px;
+  margin: 0 0 5px 10px;
+}
+
+#forkme_banner {
+  background: url('../images/blacktocat.png') #0090ff no-repeat 95% 50%;
+  padding-right:50px;
 }
 
 #header_wrap {
@@ -294,7 +296,7 @@ Full-Width Styles
 }
 
 #header_wrap .inner {
-  padding: 50px 10px 30px 10px;
+  padding: 0 10px 30px 10px;
 }
 
 #project_title {
@@ -302,6 +304,7 @@ Full-Width Styles
   color: #fff;
   font-size: 42px;
   font-weight: 700;
+  clear:right;
   text-shadow: #111 0px 0px 10px;
 }
 
