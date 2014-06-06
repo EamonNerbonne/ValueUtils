@@ -1,11 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Reflection;
 using System.Reflection.Emit;
-using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
 
 namespace ValueUtils {
 
@@ -38,7 +35,7 @@ namespace ValueUtils {
             MethodBuilder equalityMethodBuilder =
              typeBuilder.DefineMethod("Equals",
                 MethodAttributes.Public | MethodAttributes.Virtual,
-                typeof(bool), new Type[] { typeof(T), typeof(T) });
+                typeof(bool), new[] { typeof(T), typeof(T) });
             equalityFunc.CompileToMethod(equalityMethodBuilder);
             typeBuilder.DefineMethodOverride(equalityMethodBuilder,
                     (typeof(IEqualityComparer<T>)).GetMethod("Equals")
@@ -47,7 +44,7 @@ namespace ValueUtils {
             MethodBuilder hashMethodBuilder =
              typeBuilder.DefineMethod("GetHashCode",
                 MethodAttributes.Public | MethodAttributes.Virtual,
-                typeof(int), new Type[] { typeof(T) });
+                typeof(int), new[] { typeof(T) });
             hashFunc.CompileToMethod(hashMethodBuilder);
 
             typeBuilder.DefineMethodOverride(hashMethodBuilder,
