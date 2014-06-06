@@ -3,11 +3,8 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using ExpressionToCodeLib;
 using ValueUtils;
-using ValueUtilsTest.Annotations;
 using Xunit;
 
 namespace ValueUtilsTest {
@@ -84,7 +81,7 @@ namespace ValueUtilsTest {
         [Fact]
         public void TypeMattersAtCompileTime() {
             PAssert.That(() =>
-                FieldwiseHasher.Hash(new SampleClass {  AnEnum = SampleEnum.Q })
+                FieldwiseHasher.Hash(new SampleClass { AnEnum = SampleEnum.Q })
                 != FieldwiseHasher.Hash(new SampleSubClass { AnEnum = SampleEnum.Q }));
         }
 
@@ -95,7 +92,7 @@ namespace ValueUtilsTest {
                 hasher(new SampleClass { AnEnum = SampleEnum.Q })
                 == hasher(new SampleSubClass { AnEnum = SampleEnum.Q }));
         }
-        
+
         [Fact]
         public void SubClassesCheckBaseClassFields() {
             PAssert.That(() =>
@@ -107,8 +104,7 @@ namespace ValueUtilsTest {
         }
 
         [Fact]
-        public void StructIntFieldsAffectHash()
-        {
+        public void StructIntFieldsAffectHash() {
             PAssert.That(() =>
                 FieldwiseHasher.Hash(new CustomStruct { Bla = 1 })
                 != FieldwiseHasher.Hash(new CustomStruct { Bla = 2 }));
