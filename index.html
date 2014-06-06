@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+    <meta charset='utf-8' />
+    <meta http-equiv="X-UA-Compatible" content="chrome=1" />
+    <meta name="description" content="ValueUtils : ValueUtils efficiently implements `.Equals()` and `.GetHashCode()` for you.  " />
+
+    <link rel="stylesheet" type="text/css" media="screen" href="stylesheets/stylesheet.css">
+
+    <title>ValueUtils</title>
+  </head>
+
+  <body>
+
+    <!-- HEADER -->
+    <div id="header_wrap" class="outer">
+        <header class="inner">
+          <a id="forkme_banner" href="https://github.com/EamonNerbonne/ValueUtils">View on GitHub</a>
+
+          <h1 id="project_title">ValueUtils</h1>
+          <h2 id="project_tagline">ValueUtils efficiently implements `.Equals()` and `.GetHashCode()` for you.  </h2>
+
+            <section id="downloads">
+              <a class="zip_download_link" href="https://github.com/EamonNerbonne/ValueUtils/zipball/master">Download this project as a .zip file</a>
+              <a class="tar_download_link" href="https://github.com/EamonNerbonne/ValueUtils/tarball/master">Download this project as a tar.gz file</a>
+            </section>
+        </header>
+    </div>
+
+    <!-- MAIN CONTENT -->
+    <div id="main_content_wrap" class="outer">
+      <section id="main_content" class="inner">
+        <h1>
+<a name="valueutils" class="anchor" href="#valueutils"><span class="octicon octicon-link"></span></a>ValueUtils</h1>
+
+<p>ValueUtils implements <code>Equals</code> and <code>GetHashCode</code> for you.  By using runtime code-generation, the performance overhead is kept small; <code>ValueObject&lt;&gt;</code> generally outperforms alternatives such as <code>Tuple&lt;&gt;</code>, <code>struct</code> or anonymous types (see benchmarks below). </p>
+
+<p>The library is available on nuget (for import or direct download) as <a href="https://www.nuget.org/packages/ValueUtils/">ValueUtils</a></p>
+
+<h2>
+<a name="usage" class="anchor" href="#usage"><span class="octicon octicon-link"></span></a>Usage:</h2>
+
+<p>The easiest way to use value semantics is to derive from <code>ValueObject&lt;&gt;</code>, for example:</p>
+
+<div class="highlight highlight-C#"><pre><span class="k">using</span> <span class="nn">ValueUtils</span><span class="p">;</span>
+<span class="k">sealed</span> <span class="k">class</span> <span class="nc">MyValueObject</span> <span class="p">:</span> <span class="n">ValueObject</span><span class="p">&lt;</span><span class="n">MyValueObject</span><span class="p">&gt;</span> <span class="p">{</span>
+    <span class="k">public</span> <span class="kt">int</span> <span class="n">A</span><span class="p">,</span> <span class="n">B</span><span class="p">,</span> <span class="n">C</span><span class="p">;</span>
+    <span class="k">public</span> <span class="kt">string</span> <span class="n">X</span><span class="p">,</span><span class="n">Y</span><span class="p">,</span> <span class="n">Z</span><span class="p">;</span>
+<span class="c1">// ...</span>
+<span class="p">}</span>
+</pre></div>
+
+<p>A class deriving from <code>ValueObject&lt;T&gt;</code> implements <code>IEquatable&lt;T&gt;</code> and has <code>Equals(object)</code>, <code>Equals(T)</code>, <code>GetHashCode()</code> and the == and != operators implemented in terms of their fields.</p>
+
+<p>Given the following example class:</p>
+
+<div class="highlight highlight-C#"><pre><span class="k">class</span> <span class="nc">ExampleClass</span> <span class="p">{</span>
+    <span class="k">public</span> <span class="kt">string</span> <span class="n">myMember</span><span class="p">;</span>
+    <span class="k">protected</span> <span class="k">readonly</span> <span class="n">DateTime</span> <span class="n">supports_readonly_too</span><span class="p">;</span>
+    <span class="kt">int</span> <span class="n">private_int</span><span class="p">;</span>
+<span class="c1">// ...</span>
+<span class="p">}</span>
+</pre></div>
+
+<p>Hash code usage is as follows:</p>
+
+<div class="highlight highlight-C#"><pre><span class="k">using</span> <span class="nn">ValueUtils</span><span class="p">;</span>
+
+<span class="n">Func</span><span class="p">&lt;</span><span class="n">ExampleClass</span><span class="p">,</span> <span class="kt">int</span><span class="p">&gt;</span> <span class="n">hashfunc</span> <span class="p">=</span> <span class="n">FieldwiseHasher</span><span class="p">&lt;</span><span class="n">ExampleClass</span><span class="p">&gt;.</span><span class="n">Instance</span><span class="p">;</span>
+<span class="c1">//or directly </span>
+<span class="kt">int</span> <span class="n">hashcode</span> <span class="p">=</span> <span class="n">FieldwiseHasher</span><span class="p">.</span><span class="n">Hash</span><span class="p">(</span><span class="n">my_example_object</span><span class="p">);</span>
+</pre></div>
+
+<p>Equality usage is as follows:</p>
+
+<div class="highlight highlight-C#"><pre><span class="k">using</span> <span class="nn">ValueUtils</span><span class="p">;</span>
+
+<span class="n">Func</span><span class="p">&lt;</span><span class="n">ExampleClass</span><span class="p">,</span> <span class="n">ExampleClass</span><span class="p">,</span> <span class="kt">bool</span><span class="p">&gt;</span> <span class="n">equalityComparer</span> <span class="p">=</span> <span class="n">FieldwiseEquality</span><span class="p">&lt;</span><span class="n">ExampleClass</span><span class="p">&gt;.</span><span class="n">Instance</span><span class="p">;</span>
+<span class="c1">//or directly </span>
+<span class="kt">bool</span> <span class="n">areEqual</span> <span class="p">=</span> <span class="n">FieldwiseEquality</span><span class="p">.</span><span class="n">AreEqual</span><span class="p">(</span><span class="n">my_example_object</span><span class="p">,</span> <span class="n">another_example_object</span><span class="p">);</span>
+</pre></div>
+
+<p>The above implementations can be considerably faster that the built-in <code>ValueType</code>-provided defaults for <code>struct</code>s (which use reflection every call), which is why they're a good fit to help implement <code>GetHashCode</code> and <code>Equals</code> for structs.</p>
+
+<h2>
+<a name="limitations-and-gotchas" class="anchor" href="#limitations-and-gotchas"><span class="octicon octicon-link"></span></a>Limitations and gotcha's</h2>
+
+<p><code>ValueObject&lt;&gt;</code> supports self-referential types (like tree structures or a singly linked list), but does not support cyclical types - such as a doubly linked list.  Whenever a cycle is encountered, the hash function and equals operations will not terminate (until the stack overflows).</p>
+
+<p>Equality is implemented on a per-type basis, and that means inheritance gets confusing.  It's OK to <em>have</em> a base class (and base class fields will affect hash and equality), but if you use the base-class's equality and/or hash implementation on a subclass <em>instance</em> the code will seem to work but only consider the fields of the base class.  Best practice: don't create sub-classes that add new fields; and if you do then at least never use the base-class equality+hashcode implementations.  This is why ValueObject verifies that its subclasses must be sealed.</p>
+
+<p>FieldwiseHasher and FieldwiseEquality "work" on almost all types, including types with private members in other assemblies - however, if you don't know the internals, you can't be sure what's being included in the equality computations.  In particular, if an object is lazily initialized, two semantically equivalent objects might compute as unequal simply because one is initialized and the other is not.  In practice this is rarely a problem.</p>
+
+<h2>
+<a name="performance-and-hash-quality" class="anchor" href="#performance-and-hash-quality"><span class="octicon octicon-link"></span></a>Performance and hash-quality</h2>
+
+<p><strong>TL;DR</strong> <code>ValueObject&lt;&gt;</code> usually outperforms alternatives such as <code>Tuple&lt;&gt;</code>, <code>struct</code> and anonymous types.   Compared to hand-rolled implementations common operations such as <code>.ToDictionary</code> are around 15-25% slower (if your object contains "expensive" data such as large strings, the difference will become a lot smaller).</p>
+
+<p>All performance measurements were done on an i7-4770k at a fixed clock rate of 4.0GHz.    Timings are in nanoseconds per object.  Datasets are all approximately 3000000 objects in size. Loops over the dataset were repeated until 10 seconds were up, then the fastest quartile average reported (this minimizes interference by other processes on my dev machine since random interference is almost always bad for performance, not good).  Some hash generators (notably <code>struct</code>) are so poor that this wasn't feasible, those timings are omitted (NaN) below.</p>
+
+<p>Note that even a perfect hash mix is expected to have 0.03-0.04% colliding buckets, so if you see numbers like that in the data below, a hash if functioning as expected.  Numbers better(lower) than that are actually worrisome, because that means some kind of structure in the input is being exploited, and that likely means similar but slightly different data exists that will have lots of collisions.  And of course, number much higher that that directly impact performance.</p>
+
+<p>Quite a few tests use a simple pair of ints - this is relevant because this is pretty much a worst case for ValueObject.   Although the generated code is fast, calling into that code requires a cast and a Delegate call, and those are (relatively) expensive operations in .NET - at least, compared to simple integer math that a pair-of-ints hashcode requires.  With more complicated objects containing reference types the cost of the hashcode computation will start to matter more, and the overhead less.</p>
+
+<div>
+  <table>
+<thead>
+<tr>
+<th colspan="7">Realistic scenario with an enum, a string, a DateTime, an int? and 3 int fields.</th>
+      </tr>
+<tr>
+<th>Name</th>
+        <th>Collisions</th>
+        <th>Distinct Hashcodes</th>
+        <th>.ToDictionary()</th>
+        <th>.Distinct().Count()</th>
+        <th>.Equals()</th>
+        <th>.GetHashCode()</th>
+      </tr>
+</thead>
+<tbody>
+<tr>
+<td>ComplicatedManual</td>
+        <td>0.04%</td>
+        <td>2912961 / 2914000</td>
+        <td>218.8</td>
+        <td>199.6</td>
+        <td>6.9</td>
+        <td>17.4</td>
+      </tr>
+<tr>
+<td>ComplicatedValueObject</td>
+        <td>0.04%</td>
+        <td>2912977 / 2914000</td>
+        <td>250.2</td>
+        <td>230.5</td>
+        <td>21.4</td>
+        <td>42.1</td>
+      </tr>
+<tr>
+<td>Tuple</td>
+        <td>0.03%</td>
+        <td>2913001 / 2914000</td>
+        <td>482.2</td>
+        <td>494.8</td>
+        <td>257.6</td>
+        <td>263.5</td>
+      </tr>
+<tr>
+<td>ComplicatedStruct</td>
+        <td>100.00%</td>
+        <td>2 / 2914000</td>
+        <td>NaN</td>
+        <td>NaN</td>
+        <td>1002.3</td>
+        <td>97.2</td>
+      </tr>
+<tr>
+<td>Anonymous Type</td>
+        <td>0.03%</td>
+        <td>2913022 / 2914000</td>
+        <td>261.0</td>
+        <td>247.8</td>
+        <td>31.5</td>
+        <td>52.9</td>
+      </tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th colspan="7">A simple pair of ints</th>
+      </tr>
+<tr>
+<th>Name</th>
+        <th>Collisions</th>
+        <th>Distinct Hashcodes</th>
+        <th>.ToDictionary()</th>
+        <th>.Distinct().Count()</th>
+        <th>.Equals()</th>
+        <th>.GetHashCode()</th>
+      </tr>
+</thead>
+<tbody>
+<tr>
+<td>IntPairManual</td>
+        <td>0.02%</td>
+        <td>2975318 / 2976000</td>
+        <td>159.3</td>
+        <td>133.6</td>
+        <td>3.8</td>
+        <td>1.7</td>
+      </tr>
+<tr>
+<td>IntPairValueObject</td>
+        <td>0.03%</td>
+        <td>2974963 / 2976000</td>
+        <td>199.3</td>
+        <td>181.9</td>
+        <td>20.0</td>
+        <td>16.9</td>
+      </tr>
+<tr>
+<td>Tuple</td>
+        <td>38.31%</td>
+        <td>1835788 / 2976000</td>
+        <td>353.7</td>
+        <td>289.2</td>
+        <td>98.4</td>
+        <td>54.9</td>
+      </tr>
+<tr>
+<td>IntPairStruct</td>
+        <td>56.61%</td>
+        <td>1291168 / 2976000</td>
+        <td>864.7</td>
+        <td>812.6</td>
+        <td>31.4</td>
+        <td>36.8</td>
+      </tr>
+<tr>
+<td>Anonymous Type</td>
+        <td>4.69%</td>
+        <td>2836344 / 2976000</td>
+        <td>185.2</td>
+        <td>158.2</td>
+        <td>15.3</td>
+        <td>13.5</td>
+      </tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th colspan="7">Two ints with both the same value</th>
+      </tr>
+<tr>
+<th>Name</th>
+        <th>Collisions</th>
+        <th>Distinct Hashcodes</th>
+        <th>.ToDictionary()</th>
+        <th>.Distinct().Count()</th>
+        <th>.Equals()</th>
+        <th>.GetHashCode()</th>
+      </tr>
+</thead>
+<tbody>
+<tr>
+<td>IntPairManual</td>
+        <td>0.37%</td>
+        <td>2988915 / 3000000</td>
+        <td>188.5</td>
+        <td>155.6</td>
+        <td>3.6</td>
+        <td>1.7</td>
+      </tr>
+<tr>
+<td>IntPairValueObject</td>
+        <td>0.03%</td>
+        <td>2999012 / 3000000</td>
+        <td>200.8</td>
+        <td>194.6</td>
+        <td>19.7</td>
+        <td>16.5</td>
+      </tr>
+<tr>
+<td>Tuple</td>
+        <td>22.07%</td>
+        <td>2337827 / 3000000</td>
+        <td>145.2</td>
+        <td>140.5</td>
+        <td>76.4</td>
+        <td>55.1</td>
+      </tr>
+<tr>
+<td>IntPairStruct</td>
+        <td>100.00%</td>
+        <td>1 / 3000000</td>
+        <td>NaN</td>
+        <td>NaN</td>
+        <td>31.0</td>
+        <td>36.7</td>
+      </tr>
+<tr>
+<td>Anonymous Type</td>
+        <td>0.00%</td>
+        <td>3000000 / 3000000</td>
+        <td>144.5</td>
+        <td>106.3</td>
+        <td>12.1</td>
+        <td>13.5</td>
+      </tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th colspan="7">Two ints such that (x,y) is present iif (y,x) is present in the dataset</th>
+      </tr>
+<tr>
+<th>Name</th>
+        <th>Collisions</th>
+        <th>Distinct Hashcodes</th>
+        <th>.ToDictionary()</th>
+        <th>.Distinct().Count()</th>
+        <th>.Equals()</th>
+        <th>.GetHashCode()</th>
+      </tr>
+</thead>
+<tbody>
+<tr>
+<td>IntPairManual</td>
+        <td>0.62%</td>
+        <td>3014881 / 3033584</td>
+        <td>154.3</td>
+        <td>140.5</td>
+        <td>3.6</td>
+        <td>1.7</td>
+      </tr>
+<tr>
+<td>IntPairValueObject</td>
+        <td>0.03%</td>
+        <td>3032561 / 3033584</td>
+        <td>192.8</td>
+        <td>174.6</td>
+        <td>19.6</td>
+        <td>17.0</td>
+      </tr>
+<tr>
+<td>Tuple</td>
+        <td>41.47%</td>
+        <td>1775545 / 3033584</td>
+        <td>457.5</td>
+        <td>432.1</td>
+        <td>76.0</td>
+        <td>54.8</td>
+      </tr>
+<tr>
+<td>IntPairStruct</td>
+        <td>74.50%</td>
+        <td>773500 / 3033584</td>
+        <td>804.6</td>
+        <td>775.8</td>
+        <td>31.0</td>
+        <td>36.6</td>
+      </tr>
+<tr>
+<td>Anonymous Type</td>
+        <td>0.79%</td>
+        <td>3009536 / 3033584</td>
+        <td>175.2</td>
+        <td>161.2</td>
+        <td>12.1</td>
+        <td>13.5</td>
+      </tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th colspan="7">A reference to the type itself and two int fields.  The dataset contains exactly one level of nesting such that the outer object is (x,y) when the inner is (y,x).</th>
+      </tr>
+<tr>
+<th>Name</th>
+        <th>Collisions</th>
+        <th>Distinct Hashcodes</th>
+        <th>.ToDictionary()</th>
+        <th>.Distinct().Count()</th>
+        <th>.Equals()</th>
+        <th>.GetHashCode()</th>
+      </tr>
+</thead>
+<tbody>
+<tr>
+<td>NastyNestedManual</td>
+        <td>24.14%</td>
+        <td>2267216 / 2988648</td>
+        <td>225.1</td>
+        <td>181.5</td>
+        <td>6.3</td>
+        <td>5.0</td>
+      </tr>
+<tr>
+<td>NastyNestedValueObject</td>
+        <td>0.03%</td>
+        <td>2987634 / 2988648</td>
+        <td>239.7</td>
+        <td>208.8</td>
+        <td>30.9</td>
+        <td>33.0</td>
+      </tr>
+<tr>
+<td>Tuple</td>
+        <td>57.80%</td>
+        <td>1261193 / 2988648</td>
+        <td>489.5</td>
+        <td>491.8</td>
+        <td>103.3</td>
+        <td>132.0</td>
+      </tr>
+</tbody>
+</table>
+</div>
+      </section>
+    </div>
+
+    <!-- FOOTER  -->
+    <div id="footer_wrap" class="outer">
+      <footer class="inner">
+        <p class="copyright">ValueUtils maintained by <a href="https://github.com/EamonNerbonne">EamonNerbonne</a></p>
+        <p>Published with <a href="http://pages.github.com">GitHub Pages</a></p>
+      </footer>
+    </div>
+
+    
+
+  </body>
+</html>
