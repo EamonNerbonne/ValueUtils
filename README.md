@@ -51,7 +51,26 @@ Func<ExampleClass, ExampleClass, bool> equalityComparer = FieldwiseEquality<Exam
 bool areEqual = FieldwiseEquality.AreEqual(my_example_object, another_example_object);
 ```
 
-The above delegates are considerably faster that the built-in `ValueType`-provided defaults for `struct`s (which use reflection every call), which is why they're a good fit to help implement `GetHashCode` and `Equals` for your own structs.
+The above delegates are considerably faster than the built-in `ValueType`-provided defaults for `struct`s (which use reflection every call), which is why they're a good fit to help implement `GetHashCode` and `Equals` for your own structs, for example as follows:
+
+```C#
+struct ExampleStruct : IEquatable<ExampleStruct> {
+    int some, members, here; 
+    //...
+
+    public bool Equals(ExampleStruct other) {
+        return FieldwiseEquality.AreEqual(this, other);
+    }
+    public override bool Equals(object obj) {
+        return obj is ExampleStruct &&
+            FieldwiseEquality.AreEqual(this, (ExampleStruct)obj);
+    }
+    public override int GetHashCode() {
+        return FieldwiseHasher.Hash(this);
+    }
+}
+```
+
 
 Limitations and gotcha's
 ----
