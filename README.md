@@ -64,8 +64,7 @@ struct ExampleStruct : IEquatable<ExampleStruct> {
         return FieldwiseEquality.AreEqual(this, other);
     }
     public override bool Equals(object obj) {
-        return obj is ExampleStruct &&
-            FieldwiseEquality.AreEqual(this, (ExampleStruct)obj);
+        return obj is ExampleStruct && Equals((ExampleStruct)obj);
     }
     public override int GetHashCode() {
         return FieldwiseHasher.Hash(this);
