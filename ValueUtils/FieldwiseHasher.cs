@@ -64,8 +64,8 @@ from it, and (almost entirely) relatively prime for the first 50 coefficients.
                  
                  */
                 fieldIndex++;
-                ulong scale = 1794967171ul /*prime*/
-                + fieldIndex * 19399380ul /*2*2*3*5*7*11*13*17*19 */;
+                ulong scale = 1794966779ul /*prime*/
+                + fieldIndex * 35225190ul /*2*3*3*5*7*11*13*17*23 */;
                 var scaledFieldHashExpr = Expression.Multiply(ulongFieldHashExpr, Expression.Constant(scale));
 
 
