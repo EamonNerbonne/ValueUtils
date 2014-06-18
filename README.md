@@ -8,6 +8,8 @@ The library is available on nuget (for import or direct download) as [ValueUtils
 Usage:
 ---
 
+### The easy way
+
 The easiest way to use value semantics is to derive from `ValueObject<>`, for example:
 
 ```C#
@@ -20,7 +22,7 @@ sealed class MyValueObject : ValueObject<MyValueObject> {
 ```
 A class deriving from `ValueObject<T>` implements `IEquatable<T>` and has `Equals(object)`, `Equals(T)`, `GetHashCode()` and the `==` and `!=` operators implemented in terms of their fields.
 
-
+### Explicit usage
 You can also generate delegates for hashing and equality comparison for any type (also types in other assemblies you don't control).  Given the following example class:
 ```C#
 class ExampleClass {
@@ -31,26 +33,27 @@ class ExampleClass {
 }
 ```
 
-Hash code usage is as follows:
+The generated hash function can be explicitly used as follows:
 
 ```C#
 using ValueUtils;
 
 Func<ExampleClass, int> hashfunc = FieldwiseHasher<ExampleClass>.Instance;
-//or call directly 
+//or call immediately with type-inference
 int hashcode = FieldwiseHasher.Hash(my_example_object);
 ```
 
-Equality usage is as follows:
+The generated equality function can be explicitly used as follows:
 ```C#
 using ValueUtils;
 
 Func<ExampleClass, ExampleClass, bool> equalityComparer = FieldwiseEquality<ExampleClass>.Instance;
-//or call directly 
+//or call immediately with type-inference
 bool areEqual = FieldwiseEquality.AreEqual(my_example_object, another_example_object);
 ```
 
-The above delegates are considerably faster than the built-in `ValueType`-provided defaults for `struct`s (which use reflection every call), which is why they're a good fit to help implement `GetHashCode` and `Equals` for your own structs, for example as follows:
+### Usage in `struct`s
+The above delegates are considerably faster than the built-in `ValueType`-provided defaults for `struct`s (which use reflection every call), which is why they're a good fit to help implement `GetHashCode` and `Equals` for your own structs.  Unfortunately, you can't use inheritance to mix in the generated code, so you'll need to use the explicit calls described above.  For example:
 
 ```C#
 struct ExampleStruct : IEquatable<ExampleStruct> {
@@ -73,11 +76,12 @@ struct ExampleStruct : IEquatable<ExampleStruct> {
 
 Limitations and gotcha's
 ----
-`ValueObject<>` supports self-referential types (like tree structures or a singly linked list), but does not support cyclical types - such as a doubly linked list.  Whenever a cycle is encountered, the hash function and equals operations will not terminate (until the stack overflows).
 
-Equality is implemented on a per-type basis, and that means inheritance gets confusing.  It's OK to *have* a base class (and base class fields will affect hash and equality), but if you use the base-class's equality and/or hash implementation on a subclass *instance* the code will seem to work but only consider the fields of the base class.  Best practice: don't create sub-classes that add new fields; and if you do then at least never use the base-class equality+hashcode implementations.  This is why ValueObject verifies that its subclasses must be sealed.
+**Cyclical data structures:** `ValueObject<>` supports self-referential types (like tree structures or a singly linked list), but does not support cyclical types - such as a doubly linked list.  Whenever a cycle is encountered, the hash function and equals operations will not terminate (until the stack overflows).
 
-`FieldwiseHasher` and `FieldwiseEquality` "work" on almost all types, including types with private members in other assemblies - however, if you don't know the internals, you can't be sure what's being included in the equality computations.  In particular, if an object is lazily initialized, two semantically equivalent objects might compute as unequal simply because one is initialized and the other is not.  In practice this is rarely a problem.
+**Inheritance:** Equality is implemented on a per-type basis, and that means inheritance gets confusing.  It's OK to *have* a base class (and base class fields will affect hash and equality), but if you use the base-class's equality and/or hash implementation on a subclass *instance* the code will seem to work but only consider the fields of the base class.  Best practice: don't create sub-classes that add new fields; and if you do then at least never use the base-class equality+hashcode implementations.  This is why ValueObject verifies that its subclasses must be sealed.
+
+**Lazily constructed internals:** `FieldwiseHasher` and `FieldwiseEquality` "work" on almost all types, including types with private members in other assemblies - however, if you don't know the internals, you can't be sure what's being included in the equality computations.  In particular, if an object is lazily initialized, two semantically equivalent objects might compute as unequal simply because one is initialized and the other is not.  In practice this is rarely a problem.
 
 
 Performance and hash-quality
