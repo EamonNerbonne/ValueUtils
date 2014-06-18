@@ -34,9 +34,9 @@
         <h1>
 <a name="valueutils" class="anchor" href="#valueutils"><span class="octicon octicon-link"></span></a>ValueUtils</h1>
 
-<p>ValueUtils implements <code>Equals</code> and <code>GetHashCode</code> for you.  By using runtime code-generation, the performance overhead is kept small; <code>ValueObject&lt;&gt;</code> generally outperforms alternatives such as <code>Tuple&lt;&gt;</code>, <code>struct</code> or anonymous types (see benchmarks below). </p>
+<p><a href="http://eamonnerbonne.github.io/ValueUtils/">ValueUtils</a> implements <code>Equals</code> and <code>GetHashCode</code> for you.  By using runtime code-generation, the performance overhead is kept small; <code>ValueObject&lt;&gt;</code> generally outperforms alternatives such as <code>Tuple&lt;&gt;</code>, <code>struct</code> or anonymous types (see benchmarks below). </p>
 
-<p>The library is available on nuget (for import or direct download) as <a href="https://www.nuget.org/packages/ValueUtils/">ValueUtils</a>.  Though it's implemented in C#, it's just as applicable to VB.NET classes.</p>
+<p>The library is available on nuget (for import or direct download) as <a href="https://www.nuget.org/packages/ValueUtils/">ValueUtils</a>.  Though it's implemented in C#, it's just as applicable to VB.NET classes.  If you've found a bug, are missing a feature, or just have a question, please do create a new <a href="https://github.com/EamonNerbonne/ValueUtils/issues">issue on github</a> or mail 'eamon (at) nerbonne (dot) org'.</p>
 
 <h2>
 <a name="usage" class="anchor" href="#usage"><span class="octicon octicon-link"></span></a>Usage:</h2>
@@ -81,7 +81,24 @@
 <span class="kt">bool</span> <span class="n">areEqual</span> <span class="p">=</span> <span class="n">FieldwiseEquality</span><span class="p">.</span><span class="n">AreEqual</span><span class="p">(</span><span class="n">my_example_object</span><span class="p">,</span> <span class="n">another_example_object</span><span class="p">);</span>
 </pre></div>
 
-<p>The above delegates are considerably faster that the built-in <code>ValueType</code>-provided defaults for <code>struct</code>s (which use reflection every call), which is why they're a good fit to help implement <code>GetHashCode</code> and <code>Equals</code> for your own structs.</p>
+<p>The above delegates are considerably faster than the built-in <code>ValueType</code>-provided defaults for <code>struct</code>s (which use reflection every call), which is why they're a good fit to help implement <code>GetHashCode</code> and <code>Equals</code> for your own structs, for example as follows:</p>
+
+<div class="highlight highlight-C#"><pre><span class="k">struct</span> <span class="nc">ExampleStruct</span> <span class="p">:</span> <span class="n">IEquatable</span><span class="p">&lt;</span><span class="n">ExampleStruct</span><span class="p">&gt;</span> <span class="p">{</span>
+    <span class="kt">int</span> <span class="n">some</span><span class="p">,</span> <span class="n">members</span><span class="p">,</span> <span class="n">here</span><span class="p">;</span> 
+    <span class="c1">//...</span>
+
+    <span class="k">public</span> <span class="kt">bool</span> <span class="nf">Equals</span><span class="p">(</span><span class="n">ExampleStruct</span> <span class="n">other</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="n">FieldwiseEquality</span><span class="p">.</span><span class="n">AreEqual</span><span class="p">(</span><span class="k">this</span><span class="p">,</span> <span class="n">other</span><span class="p">);</span>
+    <span class="p">}</span>
+    <span class="k">public</span> <span class="k">override</span> <span class="kt">bool</span> <span class="nf">Equals</span><span class="p">(</span><span class="kt">object</span> <span class="n">obj</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="n">obj</span> <span class="k">is</span> <span class="n">ExampleStruct</span> <span class="p">&amp;&amp;</span>
+            <span class="n">FieldwiseEquality</span><span class="p">.</span><span class="n">AreEqual</span><span class="p">(</span><span class="k">this</span><span class="p">,</span> <span class="p">(</span><span class="n">ExampleStruct</span><span class="p">)</span><span class="n">obj</span><span class="p">);</span>
+    <span class="p">}</span>
+    <span class="k">public</span> <span class="k">override</span> <span class="kt">int</span> <span class="nf">GetHashCode</span><span class="p">()</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="n">FieldwiseHasher</span><span class="p">.</span><span class="n">Hash</span><span class="p">(</span><span class="k">this</span><span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
 
 <h2>
 <a name="limitations-and-gotchas" class="anchor" href="#limitations-and-gotchas"><span class="octicon octicon-link"></span></a>Limitations and gotcha's</h2>
