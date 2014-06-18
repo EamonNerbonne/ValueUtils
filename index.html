@@ -41,6 +41,9 @@
 <h2>
 <a name="usage" class="anchor" href="#usage"><span class="octicon octicon-link"></span></a>Usage:</h2>
 
+<h3>
+<a name="the-easy-way" class="anchor" href="#the-easy-way"><span class="octicon octicon-link"></span></a>The easy way</h3>
+
 <p>The easiest way to use value semantics is to derive from <code>ValueObject&lt;&gt;</code>, for example:</p>
 
 <div class="highlight highlight-C#"><pre><span class="k">using</span> <span class="nn">ValueUtils</span><span class="p">;</span>
@@ -53,6 +56,9 @@
 
 <p>A class deriving from <code>ValueObject&lt;T&gt;</code> implements <code>IEquatable&lt;T&gt;</code> and has <code>Equals(object)</code>, <code>Equals(T)</code>, <code>GetHashCode()</code> and the <code>==</code> and <code>!=</code> operators implemented in terms of their fields.</p>
 
+<h3>
+<a name="explicit-usage" class="anchor" href="#explicit-usage"><span class="octicon octicon-link"></span></a>Explicit usage</h3>
+
 <p>You can also generate delegates for hashing and equality comparison for any type (also types in other assemblies you don't control).  Given the following example class:</p>
 
 <div class="highlight highlight-C#"><pre><span class="k">class</span> <span class="nc">ExampleClass</span> <span class="p">{</span>
@@ -63,25 +69,28 @@
 <span class="p">}</span>
 </pre></div>
 
-<p>Hash code usage is as follows:</p>
+<p>The generated hash function can be explicitly used as follows:</p>
 
 <div class="highlight highlight-C#"><pre><span class="k">using</span> <span class="nn">ValueUtils</span><span class="p">;</span>
 
 <span class="n">Func</span><span class="p">&lt;</span><span class="n">ExampleClass</span><span class="p">,</span> <span class="kt">int</span><span class="p">&gt;</span> <span class="n">hashfunc</span> <span class="p">=</span> <span class="n">FieldwiseHasher</span><span class="p">&lt;</span><span class="n">ExampleClass</span><span class="p">&gt;.</span><span class="n">Instance</span><span class="p">;</span>
-<span class="c1">//or call directly </span>
+<span class="c1">//or call immediately with type-inference</span>
 <span class="kt">int</span> <span class="n">hashcode</span> <span class="p">=</span> <span class="n">FieldwiseHasher</span><span class="p">.</span><span class="n">Hash</span><span class="p">(</span><span class="n">my_example_object</span><span class="p">);</span>
 </pre></div>
 
-<p>Equality usage is as follows:</p>
+<p>The generated equality function can be explicitly used as follows:</p>
 
 <div class="highlight highlight-C#"><pre><span class="k">using</span> <span class="nn">ValueUtils</span><span class="p">;</span>
 
 <span class="n">Func</span><span class="p">&lt;</span><span class="n">ExampleClass</span><span class="p">,</span> <span class="n">ExampleClass</span><span class="p">,</span> <span class="kt">bool</span><span class="p">&gt;</span> <span class="n">equalityComparer</span> <span class="p">=</span> <span class="n">FieldwiseEquality</span><span class="p">&lt;</span><span class="n">ExampleClass</span><span class="p">&gt;.</span><span class="n">Instance</span><span class="p">;</span>
-<span class="c1">//or call directly </span>
+<span class="c1">//or call immediately with type-inference</span>
 <span class="kt">bool</span> <span class="n">areEqual</span> <span class="p">=</span> <span class="n">FieldwiseEquality</span><span class="p">.</span><span class="n">AreEqual</span><span class="p">(</span><span class="n">my_example_object</span><span class="p">,</span> <span class="n">another_example_object</span><span class="p">);</span>
 </pre></div>
 
-<p>The above delegates are considerably faster than the built-in <code>ValueType</code>-provided defaults for <code>struct</code>s (which use reflection every call), which is why they're a good fit to help implement <code>GetHashCode</code> and <code>Equals</code> for your own structs, for example as follows:</p>
+<h3>
+<a name="usage-in-structs" class="anchor" href="#usage-in-structs"><span class="octicon octicon-link"></span></a>Usage in <code>struct</code>s</h3>
+
+<p>The above delegates are considerably faster than the built-in <code>ValueType</code>-provided defaults for <code>struct</code>s (which use reflection every call), which is why they're a good fit to help implement <code>GetHashCode</code> and <code>Equals</code> for your own structs.  Unfortunately, you can't use inheritance to mix in the generated code, so you'll need to use the explicit calls described above.  For example:</p>
 
 <div class="highlight highlight-C#"><pre><span class="k">struct</span> <span class="nc">ExampleStruct</span> <span class="p">:</span> <span class="n">IEquatable</span><span class="p">&lt;</span><span class="n">ExampleStruct</span><span class="p">&gt;</span> <span class="p">{</span>
     <span class="kt">int</span> <span class="n">some</span><span class="p">,</span> <span class="n">members</span><span class="p">,</span> <span class="n">here</span><span class="p">;</span> 
@@ -91,8 +100,7 @@
         <span class="k">return</span> <span class="n">FieldwiseEquality</span><span class="p">.</span><span class="n">AreEqual</span><span class="p">(</span><span class="k">this</span><span class="p">,</span> <span class="n">other</span><span class="p">);</span>
     <span class="p">}</span>
     <span class="k">public</span> <span class="k">override</span> <span class="kt">bool</span> <span class="nf">Equals</span><span class="p">(</span><span class="kt">object</span> <span class="n">obj</span><span class="p">)</span> <span class="p">{</span>
-        <span class="k">return</span> <span class="n">obj</span> <span class="k">is</span> <span class="n">ExampleStruct</span> <span class="p">&amp;&amp;</span>
-            <span class="n">FieldwiseEquality</span><span class="p">.</span><span class="n">AreEqual</span><span class="p">(</span><span class="k">this</span><span class="p">,</span> <span class="p">(</span><span class="n">ExampleStruct</span><span class="p">)</span><span class="n">obj</span><span class="p">);</span>
+        <span class="k">return</span> <span class="n">obj</span> <span class="k">is</span> <span class="n">ExampleStruct</span> <span class="p">&amp;&amp;</span> <span class="n">Equals</span><span class="p">((</span><span class="n">ExampleStruct</span><span class="p">)</span><span class="n">obj</span><span class="p">);</span>
     <span class="p">}</span>
     <span class="k">public</span> <span class="k">override</span> <span class="kt">int</span> <span class="nf">GetHashCode</span><span class="p">()</span> <span class="p">{</span>
         <span class="k">return</span> <span class="n">FieldwiseHasher</span><span class="p">.</span><span class="n">Hash</span><span class="p">(</span><span class="k">this</span><span class="p">);</span>
@@ -103,11 +111,11 @@
 <h2>
 <a name="limitations-and-gotchas" class="anchor" href="#limitations-and-gotchas"><span class="octicon octicon-link"></span></a>Limitations and gotcha's</h2>
 
-<p><code>ValueObject&lt;&gt;</code> supports self-referential types (like tree structures or a singly linked list), but does not support cyclical types - such as a doubly linked list.  Whenever a cycle is encountered, the hash function and equals operations will not terminate (until the stack overflows).</p>
+<p><strong>Cyclical data structures:</strong> <code>ValueObject&lt;&gt;</code> supports self-referential types (like tree structures or a singly linked list), but does not support cyclical types - such as a doubly linked list.  Whenever a cycle is encountered, the hash function and equals operations will not terminate (until the stack overflows).</p>
 
-<p>Equality is implemented on a per-type basis, and that means inheritance gets confusing.  It's OK to <em>have</em> a base class (and base class fields will affect hash and equality), but if you use the base-class's equality and/or hash implementation on a subclass <em>instance</em> the code will seem to work but only consider the fields of the base class.  Best practice: don't create sub-classes that add new fields; and if you do then at least never use the base-class equality+hashcode implementations.  This is why ValueObject verifies that its subclasses must be sealed.</p>
+<p><strong>Inheritance:</strong> Equality is implemented on a per-type basis, and that means inheritance gets confusing.  It's OK to <em>have</em> a base class (and base class fields will affect hash and equality), but if you use the base-class's equality and/or hash implementation on a subclass <em>instance</em> the code will seem to work but only consider the fields of the base class.  Best practice: don't create sub-classes that add new fields; and if you do then at least never use the base-class equality+hashcode implementations.  This is why ValueObject verifies that its subclasses must be sealed.</p>
 
-<p><code>FieldwiseHasher</code> and <code>FieldwiseEquality</code> "work" on almost all types, including types with private members in other assemblies - however, if you don't know the internals, you can't be sure what's being included in the equality computations.  In particular, if an object is lazily initialized, two semantically equivalent objects might compute as unequal simply because one is initialized and the other is not.  In practice this is rarely a problem.</p>
+<p><strong>Lazily constructed internals:</strong> <code>FieldwiseHasher</code> and <code>FieldwiseEquality</code> "work" on almost all types, including types with private members in other assemblies - however, if you don't know the internals, you can't be sure what's being included in the equality computations.  In particular, if an object is lazily initialized, two semantically equivalent objects might compute as unequal simply because one is initialized and the other is not.  In practice this is rarely a problem.</p>
 
 <h2>
 <a name="performance-and-hash-quality" class="anchor" href="#performance-and-hash-quality"><span class="octicon octicon-link"></span></a>Performance and hash-quality</h2>
