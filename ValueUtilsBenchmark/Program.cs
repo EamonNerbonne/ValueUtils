@@ -197,6 +197,7 @@ namespace ValueUtilsBenchmark {
             else if (name.Contains("AnonymousType"))
                 name = "Anonymous Type";
             var collisions = AnalyzeHashCollisions(objs);
+            Console.WriteLine(collisions.Rate);
             return new HashAnalysisResult {
                 Name = name,
                 Collisions = collisions,
@@ -210,10 +211,10 @@ namespace ValueUtilsBenchmark {
                         objs[i].Equals(objs[(i + 1) % objs.Length]);
                     }
                 }) / objs.Length / 2,
-                DistinctCountNS = collisions.Rate > 0.99 ? double.NaN : TimeInNS(() => {
+                DistinctCountNS = collisions.Rate > 0.95 ? double.NaN : TimeInNS(() => {
                     objs.Distinct().Count();
                 }) / objs.Length,
-                DictionaryNS = collisions.Rate > 0.99 ? double.NaN : TimeInNS(() => {
+                DictionaryNS = collisions.Rate > 0.95 ? double.NaN : TimeInNS(() => {
                     int idx = 0;
                     objs.ToDictionary(o => o, _ => idx++);
                 }) / objs.Length,
