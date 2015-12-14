@@ -65,7 +65,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Annotations\Annotations.cs" />
-    <Compile Include="BaseTypesWork.cs" />
+    <Compile Include="InheritanceWalkerTheory.cs" />
     <Compile Include="FieldwiseEqualityTest.cs" />
     <Compile Include="FieldwiseHasherTest.cs" />
     <Compile Include="GetAllFieldTheory.cs" />
