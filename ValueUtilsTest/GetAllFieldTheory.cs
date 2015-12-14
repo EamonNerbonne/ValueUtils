@@ -30,6 +30,7 @@ namespace ValueUtilsTest
         {
             PAssert.That(() => ReflectionHelper.GetAllFields(typeof(SampleSubClassWithFields)).Take(5)
                 .SequenceEqual(ReflectionHelper.GetAllFields(typeof(SampleClass))));
+
             PAssert.That(() => ReflectionHelper.GetAllFields(typeof(SampleSubClassWithFields)).Select(f => f.Name).Skip(5)
                 .SequenceEqual(new[] { "SubClassField" }));
         }
