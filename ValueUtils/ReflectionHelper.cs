@@ -23,6 +23,7 @@ namespace ValueUtils
         }
 
         public static IEnumerable<FieldInfo> GetAllFields(Type type)
-            => WalkMeaningfulInheritanceChain(type).Reverse().SelectMany(t=> t.GetFields(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.DeclaredOnly));
+            => WalkMeaningfulInheritanceChain(type).Reverse()
+            .SelectMany(t => t.GetFields(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.DeclaredOnly));
     }
 }
