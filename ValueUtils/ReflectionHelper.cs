@@ -22,8 +22,11 @@ namespace ValueUtils
             }
         }
 
+        const BindingFlags OnlyDeclaredInstanceMembers =
+            BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.DeclaredOnly;
+
         public static IEnumerable<FieldInfo> GetAllFields(Type type)
             => WalkMeaningfulInheritanceChain(type).Reverse()
-            .SelectMany(t => t.GetFields(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.DeclaredOnly));
+                .SelectMany(t => t.GetFields(OnlyDeclaredInstanceMembers));
     }
 }
