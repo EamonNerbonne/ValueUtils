@@ -29,7 +29,7 @@ namespace ValueUtils {
 
         internal static Expression<Func<T, int>> CreateLambda() {
             //Get all fields including inherited fields
-            var fields = typeof(T).GetFields(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
+            var fields = ReflectionHelper.GetAllFields(typeof(T));
 
             var paramExpr = Expression.Parameter(typeof(T), "valueToHash");
             //Strategy: accumulate a scaled hash code for each member

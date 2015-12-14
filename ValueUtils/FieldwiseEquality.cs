@@ -29,7 +29,7 @@ namespace ValueUtils {
 
         internal static Expression<Func<T, T, bool>> CreateLambda() {
             //Get all fields including inherited fields
-            var fields = typeof(T).GetFields(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
+            var fields = ReflectionHelper.GetAllFields(typeof(T));
 
             var aExpr = Expression.Parameter(typeof(T), "a");
             var bExpr = Expression.Parameter(typeof(T), "b");
