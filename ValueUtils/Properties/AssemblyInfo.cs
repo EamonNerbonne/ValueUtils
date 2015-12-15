@@ -20,3 +20,4 @@ using System.Runtime.InteropServices;
 [assembly: Guid("65387ab9-b35c-4b44-9a35-d5c9ea367599")]
 
 [assembly: AssemblyVersion("1.2.2")]
+[assembly: InternalsVisibleTo("ValueUtilsTest")]

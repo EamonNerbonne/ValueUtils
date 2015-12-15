@@ -65,9 +65,13 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Annotations\Annotations.cs" />
+    <Compile Include="InheritanceWalkerTheory.cs" />
     <Compile Include="FieldwiseEqualityTest.cs" />
     <Compile Include="FieldwiseHasherTest.cs" />
+    <Compile Include="GetAllFieldTheory.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="PrivateBaseMembers.cs" />
+    <Compile Include="ProtectedBaseMembers.cs" />
     <Compile Include="SampleClass.cs" />
     <Compile Include="SampleEnum.cs" />
     <Compile Include="SampleSelfReferentialValueObject.cs" />

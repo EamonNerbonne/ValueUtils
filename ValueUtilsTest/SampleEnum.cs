@@ -5,7 +5,5 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace ValueUtilsTest {
-
-
     enum SampleEnum { P, Q }
 }

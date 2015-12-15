@@ -5,7 +5,6 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace ValueUtilsTest {
-    class SampleSubClass : SampleClass {
-
-    }
+    class SampleSubClass : SampleClass { }
+    class SampleSubSubClass : SampleSubClass { }
 }
