@@ -1,0 +1,7 @@
+packages/
+obj
+*.suo
+bin
+*.nupkg
+*.DotSettings.user
+.vs
