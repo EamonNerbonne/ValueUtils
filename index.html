@@ -32,7 +32,9 @@
 
 <p><a href="http://eamonnerbonne.github.io/ValueUtils/">ValueUtils</a> implements <code>Equals</code> and <code>GetHashCode</code> for you.  By using runtime code-generation, the performance overhead is kept small; <code>ValueObject&lt;&gt;</code> generally outperforms alternatives such as <code>Tuple&lt;&gt;</code>, <code>struct</code> or anonymous types (see benchmarks below). </p>
 
-<p>The library is available on nuget (for import or direct download) as <a href="https://www.nuget.org/packages/ValueUtils/">ValueUtils</a>.  Though it's implemented in C#, it's just as applicable to VB.NET classes.  If you've found a bug, are missing a feature, or just have a question, please do create a new <a href="https://github.com/EamonNerbonne/ValueUtils/issues">issue on github</a> or mail 'eamon (at) nerbonne (dot) org'.</p>
+<p>The library is available on nuget (for import or direct download) as <a href="https://www.nuget.org/packages/ValueUtils/">ValueUtils</a>.  Though it's implemented in C#, it's just as applicable to VB.NET classes.  </p>
+
+<p><b>Contributions welcome!</b> If you've found a bug, are missing a feature, or just have a question, please do create a new <a href="https://github.com/EamonNerbonne/ValueUtils/issues">github issue</a>, <a href="https://github.com/EamonNerbonne/ValueUtils/pulls">pull request</a>, or send an email to 'eamon (at) nerbonne (dot) org'.</p>
 
 <h2>
 <a name="usage" class="anchor" href="#usage"><span class="octicon octicon-link"></span></a>Usage:</h2>
@@ -55,7 +57,7 @@
 <h3>
 <a name="explicit-usage" class="anchor" href="#explicit-usage"><span class="octicon octicon-link"></span></a>Explicit usage</h3>
 
-<p>You can also generate delegates for hashing and equality comparison for any type (also types in other assemblies you don't control).  Given the following example class:</p>
+<p>You can also generate delegates (or an IEqualityComparer&lt;&gt;) for hashing and equality comparison for any type (also types in other assemblies you don't control).  Given the following example class:</p>
 
 <div class="highlight highlight-C#"><pre><span class="k">class</span> <span class="nc">ExampleClass</span> <span class="p">{</span>
     <span class="k">public</span> <span class="kt">string</span> <span class="n">myMember</span><span class="p">;</span>

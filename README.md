@@ -3,7 +3,9 @@ ValueUtils
 
 [ValueUtils](http://eamonnerbonne.github.io/ValueUtils/) implements `Equals` and `GetHashCode` for you.  By using runtime code-generation, the performance overhead is kept small; `ValueObject<>` generally outperforms alternatives such as `Tuple<>`, `struct` or anonymous types (see benchmarks below). 
 
-The library is available on nuget (for import or direct download) as [ValueUtils](https://www.nuget.org/packages/ValueUtils/).  Though it's implemented in C#, it's just as applicable to VB.NET classes.  If you've found a bug, are missing a feature, or just have a question, please do create a new [issue on github](https://github.com/EamonNerbonne/ValueUtils/issues) or mail 'eamon (at) nerbonne (dot) org'.
+The library is available on nuget (for import or direct download) as [ValueUtils](https://www.nuget.org/packages/ValueUtils/).  Though it's implemented in C#, it's just as applicable to VB.NET classes.  
+
+**Contributions welcome!**  If you've found a bug, are missing a feature, or just have a question, please do create a new [github issue](https://github.com/EamonNerbonne/ValueUtils/issues), [pull request](https://github.com/EamonNerbonne/ValueUtils/pulls), or send an email to 'eamon (at) nerbonne (dot) org'.  
 
 Usage:
 ---
@@ -23,7 +25,7 @@ sealed class MyValueObject : ValueObject<MyValueObject> {
 A class deriving from `ValueObject<T>` implements `IEquatable<T>` and has `Equals(object)`, `Equals(T)`, `GetHashCode()` and the `==` and `!=` operators implemented in terms of their fields.
 
 ### Explicit usage
-You can also generate delegates for hashing and equality comparison for any type (also types in other assemblies you don't control).  Given the following example class:
+You can also use delegates (or an IEqualityComparer<>) for hashing and equality comparison for any type (also types in other assemblies you don't control).  Given the following example class:
 ```C#
 class ExampleClass {
 	public string myMember;
