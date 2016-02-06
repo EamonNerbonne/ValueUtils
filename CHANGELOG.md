@@ -1,3 +1,8 @@
+1.3.0
+---
+ - Consider private fields of base classes when computing hashcodes or comparing for equality (PR #4)
+ - Added `FieldwiseEqualityComparer<> : IEqualityComparer<>` for convenience.
+
 1.2.2
 ---
  - Tune hash mixing coefficients to minimize collisions (based on actual testing, now).
