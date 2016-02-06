@@ -7,3 +7,4 @@ bin
 *.DotSettings.user
 .vs
 *.csproj.user
+*.orig
