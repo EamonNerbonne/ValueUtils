@@ -6,3 +6,4 @@ bin
 *.nupkg
 *.DotSettings.user
 .vs
+*.csproj.user
