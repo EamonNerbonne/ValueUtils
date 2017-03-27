@@ -62,10 +62,12 @@ namespace ValueUtilsBenchmark {
 
             var valueObjects = manuals.Select(m => m.ToValueObject()).ToArray();
             var tuples = manuals.Select(m => m.ToTuple()).ToArray();
+            var cs7tuples = manuals.Select(m => m.ToCs7Tuple()).ToArray();
 
             yield return ProcessList(manuals);
             yield return ProcessList(valueObjects);
             yield return ProcessList(tuples);
+            yield return ProcessList(cs7tuples);
         }
 
 
@@ -83,6 +85,7 @@ namespace ValueUtilsBenchmark {
 
             var valueObjects = manuals.Select(m => m.ToValueObject()).ToArray();
             var tuples = manuals.Select(m => m.ToTuple()).ToArray();
+            var cs7tuples = manuals.Select(m => m.ToCs7Tuple()).ToArray();
             var structs = manuals.Select(m => m.ToStruct()).ToArray();
             var anonymous = manuals.Select(m =>
               new {
@@ -93,6 +96,7 @@ namespace ValueUtilsBenchmark {
             yield return ProcessList(manuals);
             yield return ProcessList(valueObjects);
             yield return ProcessList(tuples);
+            yield return ProcessList(cs7tuples);
             yield return ProcessList(structs);
             yield return ProcessList(anonymous);
         }
@@ -113,6 +117,7 @@ namespace ValueUtilsBenchmark {
 
             var valueObjects = manuals.Select(m => m.ToValueObject()).ToArray();
             var tuples = manuals.Select(m => m.ToTuple()).ToArray();
+            var cs7tuples = manuals.Select(m => m.ToCs7Tuple()).ToArray();
             var structs = manuals.Select(m => m.ToStruct()).ToArray();
             var anonymous = manuals.Select(m =>
               new {
@@ -123,6 +128,7 @@ namespace ValueUtilsBenchmark {
             yield return ProcessList(manuals);
             yield return ProcessList(valueObjects);
             yield return ProcessList(tuples);
+            yield return ProcessList(cs7tuples);
             yield return ProcessList(structs);
             yield return ProcessList(anonymous);
         }
@@ -138,6 +144,7 @@ namespace ValueUtilsBenchmark {
 
             var valueObjects = manuals.Select(m => m.ToValueObject()).ToArray();
             var tuples = manuals.Select(m => m.ToTuple()).ToArray();
+            var cs7tuples = manuals.Select(m => m.ToCs7Tuple()).ToArray();
             var structs = manuals.Select(m => m.ToStruct()).ToArray();
             var anonymous = manuals.Select(m =>
                 new {
@@ -148,6 +155,7 @@ namespace ValueUtilsBenchmark {
             yield return ProcessList(manuals);
             yield return ProcessList(valueObjects);
             yield return ProcessList(tuples);
+            yield return ProcessList(cs7tuples);
             yield return ProcessList(structs);
             yield return ProcessList(anonymous);
         }
@@ -171,6 +179,7 @@ namespace ValueUtilsBenchmark {
             ).ToArray();
             var valueObjects = manuals.Select(m => m.ToValueObject()).ToArray();
             var tuples = manuals.Select(m => m.ToTuple()).ToArray();
+            var cs7tuples = manuals.Select(m => m.ToCs7Tuple()).ToArray();
             var structs = manuals.Select(m => m.ToStruct()).ToArray();
             var anonymous = manuals.Select(m =>
                 new {
@@ -186,12 +195,13 @@ namespace ValueUtilsBenchmark {
             yield return ProcessList(manuals);
             yield return ProcessList(valueObjects);
             yield return ProcessList(tuples);
+            yield return ProcessList(cs7tuples);
             yield return ProcessList(structs);
             yield return ProcessList(anonymous);
         }
 
         static HashAnalysisResult ProcessList<T>(T[] objs) {
-            string name = ObjectToCode.GetCSharpFriendlyTypeName(typeof(T));
+            string name = typeof(T).ToCSharpFriendlyTypeName();
             if (name.StartsWith("Tuple"))
                 name = "Tuple";
             else if (name.Contains("AnonymousType"))

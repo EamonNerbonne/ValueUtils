@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2013
-VisualStudioVersion = 12.0.30501.0
+# Visual Studio 14
+VisualStudioVersion = 14.0.24720.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ValueUtils", "ValueUtils\ValueUtils.csproj", "{AA2AC059-A993-4CB4-8C05-2B5821851A14}"
 EndProject
@@ -11,6 +11,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 	ProjectSection(SolutionItems) = preProject
 		BenchmarkResults.html = BenchmarkResults.html
 		CHANGELOG.md = CHANGELOG.md
+		index.html = index.html
 		LICENSE = LICENSE
 		ProbabilityOfHashCollisions.txt = ProbabilityOfHashCollisions.txt
 		README.md = README.md
@@ -25,6 +26,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{811861
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ValueUtilsBenchmark", "ValueUtilsBenchmark\ValueUtilsBenchmark.csproj", "{92458D24-5270-42A9-A530-B86C5F7B29C0}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "html-docs", "html-docs", "{70A05DFE-11EB-4E81-BF61-A2220F81F4EC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -47,5 +50,8 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{70A05DFE-11EB-4E81-BF61-A2220F81F4EC} = {34331906-0C4A-4F34-BB09-FBE53D56FB6C}
 	EndGlobalSection
 EndGlobal
