@@ -29,10 +29,11 @@ namespace ValueUtils {
 
         internal static Expression<Func<T, T, bool>> CreateLambda() {
             //Get all fields including inherited fields
-            var fields = ReflectionHelper.GetAllFields(typeof(T));
+            var type = typeof(T);
+            var fields = ReflectionHelper.GetAllFields(type);
 
-            var aExpr = Expression.Parameter(typeof(T), "a");
-            var bExpr = Expression.Parameter(typeof(T), "b");
+            var aExpr = Expression.Parameter(type, "a");
+            var bExpr = Expression.Parameter(type, "b");
 
             Expression eqExpr = Expression.Constant(true);
 
@@ -49,29 +50,28 @@ namespace ValueUtils {
             return Expression.Lambda<Func<T, T, bool>>(eqExpr, aExpr, bExpr);
         }
 
-        static bool HasEqualityOperator(Type type) {
+        static bool HasEqualityOperator(TypeInfo type) {
             return type.IsPrimitive
                 || type.IsEnum
                 || type.GetMethod("op_Equality", BindingFlags.Public | BindingFlags.Static) != null
                 || type.IsValueType && type.IsGenericType
                         && type.GetGenericTypeDefinition() == typeof(Nullable<>)
-                        && HasEqualityOperator(type.GetGenericArguments()[0]);
+                        && HasEqualityOperator(type.GetGenericArguments()[0].GetTypeInfo());
             //nullables are tricky: they are equatable by operator when their underlying type is.
         }
         static Expression EqualityByOperatorOrNull(Expression aFieldExpr, Expression bFieldExpr, FieldInfo fieldInfo) {
-            return HasEqualityOperator(fieldInfo.FieldType)
+            return HasEqualityOperator(fieldInfo.FieldType.GetTypeInfo())
                 ? Expression.Equal(aFieldExpr, bFieldExpr)
                 : null;
         }
 
         static Expression InstanceEqualsOrNull(Expression aFieldExpr, Expression bFieldExpr, FieldInfo fieldInfo) {
             var fieldType = fieldInfo.FieldType;
-            var equalsMethod = fieldType.GetMethod(
-                "Equals", BindingFlags.Public | BindingFlags.Instance | BindingFlags.ExactBinding,
-                null, new[] { fieldType }, null);
+            var equalsMethod = fieldType.GetTypeInfo().GetMethod(
+                "Equals", new[] { fieldType });
 
-            var fieldsEqualExpr = equalsMethod == null
-                ? Expression.Call(((Func<object, object, bool>)Equals).Method,
+            var fieldsEqualExpr = equalsMethod == null || equalsMethod.GetParameters()[0].ParameterType != fieldType
+                ? Expression.Call(((Func<object, object, bool>)Equals).GetMethodInfo(),
                     Expression.Convert(aFieldExpr, typeof(object)),
                     Expression.Convert(bFieldExpr, typeof(object))
                 )
@@ -82,7 +82,7 @@ namespace ValueUtils {
             // which is quite likely if you need it in the first place, then I just just use a reference equality for
             // reference types and a by-field equality for structs.
 
-            var nullSafeFieldsEqualExpr = fieldInfo.FieldType.IsValueType || equalsMethod == null
+            var nullSafeFieldsEqualExpr = fieldInfo.FieldType.GetTypeInfo().IsValueType || equalsMethod == null
                 ? (Expression)fieldsEqualExpr
                 : Expression.Condition(
                   Expression.Equal(Expression.Default(fieldInfo.FieldType), aFieldExpr),

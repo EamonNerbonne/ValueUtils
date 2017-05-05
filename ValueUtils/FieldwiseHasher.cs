@@ -29,15 +29,16 @@ namespace ValueUtils {
 
         internal static Expression<Func<T, int>> CreateLambda() {
             //Get all fields including inherited fields
-            var fields = ReflectionHelper.GetAllFields(typeof(T));
+            var type = typeof(T);
+            var fields = ReflectionHelper.GetAllFields(type);
 
-            var paramExpr = Expression.Parameter(typeof(T), "valueToHash");
+            var paramExpr = Expression.Parameter(type, "valueToHash");
             //Strategy: accumulate a scaled hash code for each member
 
             //Start with some arbitrary constant; pick something type-dependant for the rare mixed-type usecase.
-            Expression hashExpr = Expression.Constant((ulong)typeof(T).GetHashCode() * 1234567);
+            Expression hashExpr = Expression.Constant((ulong)type.GetHashCode() * 1234567);
             ulong fieldIndex = 0;
-            var getHashCodeMethod = ((Func<int>)(new object().GetHashCode)).Method;
+            var getHashCodeMethod = ((Func<int>)(new object().GetHashCode)).GetMethodInfo();
 
             foreach (var fieldInfo in fields) {
                 var fieldExpr = Expression.Field(paramExpr, fieldInfo);
@@ -70,7 +71,7 @@ from it, and (almost entirely) relatively prime for the first 50 coefficients.
 
 
                 //if this field is null, use some arbitrary hash code.
-                var nullSafeFieldHashExpr = fieldInfo.FieldType.IsValueType
+                var nullSafeFieldHashExpr = fieldInfo.FieldType.GetTypeInfo().IsValueType
                    ? (Expression)scaledFieldHashExpr
                    : Expression.Condition(
                         Expression.Equal(Expression.Default(typeof(object)),

@@ -2,8 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ValueUtils
 {
@@ -11,15 +9,16 @@ namespace ValueUtils
     {
         public static IEnumerable<Type> WalkMeaningfulInheritanceChain(Type type)
         {
-            if (type.IsClass)
+            var info = type.GetTypeInfo();
+            if (info.IsClass)
             {
                 while (type != typeof (object))
                 {
                     yield return type;
-                    type = type.BaseType;
+                    type = type.GetTypeInfo().BaseType;
                 }
             }
-            else if (type.IsValueType)
+            else if (info.IsValueType)
             {
                 yield return type;
             }
@@ -30,6 +29,6 @@ namespace ValueUtils
 
         public static IEnumerable<FieldInfo> GetAllFields(Type type)
             => WalkMeaningfulInheritanceChain(type).Reverse()
-                .SelectMany(t => t.GetFields(OnlyDeclaredInstanceMembers));
+                .SelectMany(t => t.GetTypeInfo().GetFields(OnlyDeclaredInstanceMembers));
     }
 }

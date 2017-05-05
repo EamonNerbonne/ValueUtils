@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 
 namespace ValueUtils {
 
@@ -23,7 +24,7 @@ namespace ValueUtils {
         static readonly Func<T, int> hashFunc = FieldwiseHasher<T>.Instance;
 
         static ValueObject() {
-            if (!typeof(T).IsSealed)
+            if (!typeof(T).GetTypeInfo().IsSealed)
                 throw new NotSupportedException("Value objects must be sealed.");
         }
 

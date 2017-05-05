@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using ValueUtilsTest.Annotations;
+using JetBrains.Annotations;
 
 namespace ValueUtilsTest {
     struct CustomStruct {
