@@ -1,3 +1,7 @@
+1.4.0
+---
+ - Add support for .net core 1.0 via .net standard 1.5
+
 1.3.0
 ---
  - Consider private fields of base classes when computing hashcodes or comparing for equality (PR #4)

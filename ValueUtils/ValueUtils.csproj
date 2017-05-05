@@ -6,7 +6,7 @@
     <Title>ValueUtils</Title>
     <Description>Efficient hash code and equality implementations for arbitrary objects.</Description>
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
-    <PackageReleaseNotes></PackageReleaseNotes>
+    <PackageReleaseNotes>Add support for .net core (via .net standard 1.5)</PackageReleaseNotes>
     <PackageTags>ValueObject DataTransferObject DTO GetHashCode Equals IEquatable ValueType value semantics hashcode</PackageTags>
     <PackageLicenseUrl>http://www.apache.org/licenses/LICENSE-2.0</PackageLicenseUrl>
     <PackageProjectUrl>http://eamonnerbonne.github.io/ValueUtils/</PackageProjectUrl>
