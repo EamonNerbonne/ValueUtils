@@ -14,6 +14,9 @@
       <!--;net452-->
     <RepositoryUrl>https://github.com/EamonNerbonne/ValueUtils</RepositoryUrl>
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+
+    <DebugType>full</DebugType>
+    <DebugSymbols>True</DebugSymbols>
   </PropertyGroup>
   <PropertyGroup Condition="'$(TargetFramework)' == 'net452' or '$(TargetFramework)' == 'net47' ">
     <DefineConstants>dotnet_framework</DefineConstants>
