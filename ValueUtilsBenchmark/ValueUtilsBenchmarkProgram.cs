@@ -3,14 +3,12 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Xml.Linq;
 using ExpressionToCodeLib;
 using MoreLinq;
 
 namespace ValueUtilsBenchmark {
-    class Program {
+    public static class ValueUtilsBenchmarkProgram {
 
         //Note: the manual hash implementations are bastardized FNV since nobody in their right mind
         // would manually split field hash codes into octets and seperately hash those with FNV.
@@ -41,7 +39,8 @@ namespace ValueUtilsBenchmark {
                 new XElement("div",
                     complicatedTable, intpairTable, duplicationTable, symmetricalTable, nestedTable);
             Console.WriteLine(tables.ToString());
-            tables.Save("BenchResults.html");
+            using (var stream = File.OpenWrite("BenchResults.html"))
+                tables.Save(stream);
         }
 
         static IEnumerable<HashAnalysisResult> BenchmarkNastyNestedCases() {

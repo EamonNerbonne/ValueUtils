@@ -10,15 +10,15 @@
     <PackageTags>ValueObject DataTransferObject DTO GetHashCode Equals IEquatable ValueType value semantics hashcode</PackageTags>
     <PackageLicenseUrl>http://www.apache.org/licenses/LICENSE-2.0</PackageLicenseUrl>
     <PackageProjectUrl>http://eamonnerbonne.github.io/ValueUtils/</PackageProjectUrl>
-    <TargetFrameworks>netstandard1.5;net452</TargetFrameworks>
+    <TargetFrameworks>netstandard1.5;net452;net47</TargetFrameworks>
       <!--;net452-->
     <RepositoryUrl>https://github.com/EamonNerbonne/ValueUtils</RepositoryUrl>
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Framework)' == 'net452' ">
+  <PropertyGroup Condition="'$(TargetFramework)' == 'net452' or '$(TargetFramework)' == 'net47' ">
     <DefineConstants>dotnet_framework</DefineConstants>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Framework)' == 'netstandard1.5' ">
+  <PropertyGroup Condition="'$(TargetFramework)' == 'netstandard1.5' ">
     <DefineConstants>dotnet_core</DefineConstants>
   </PropertyGroup>
   <ItemGroup Condition="'$(Framework)' == 'net452'">
@@ -30,7 +30,7 @@
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
   </ItemGroup>
-  <ItemGroup Condition="'$(Framework)' == 'netstandard1.5'">
+  <ItemGroup Condition="'$(TargetFramework)' == 'netstandard1.5'">
     <PackageReference Include="System.Runtime" Version="4.3.0" />
   </ItemGroup>
 </Project>
