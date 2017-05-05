@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-  <PropertyGroup Label="Configuration">
+  <PropertyGroup>
     <Authors>Eamon Nerbonne</Authors>
-    <TargetFrameworks>netcoreapp1.1;net452</TargetFrameworks>
+    <TargetFrameworks>net452</TargetFrameworks><!--multitargeting to netcoreapp1.1 doesn't seem to work, even though both targets individually do... weird! -->
     <OutputType>Exe</OutputType>
   </PropertyGroup>
   <ItemGroup>
