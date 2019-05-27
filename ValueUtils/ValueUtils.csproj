@@ -8,7 +8,7 @@
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
     <PackageReleaseNotes>Add support for .net core (via .net standard 1.5)</PackageReleaseNotes>
     <PackageTags>ValueObject DataTransferObject DTO GetHashCode Equals IEquatable ValueType value semantics hashcode</PackageTags>
-    <PackageLicenseUrl>http://www.apache.org/licenses/LICENSE-2.0</PackageLicenseUrl>
+    <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
     <PackageProjectUrl>http://eamonnerbonne.github.io/ValueUtils/</PackageProjectUrl>
     <TargetFrameworks>netstandard2.0;net452</TargetFrameworks>
       <!--;net452-->
