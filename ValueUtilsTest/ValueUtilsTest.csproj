@@ -7,6 +7,7 @@
     <Service Include="{82a7f48d-3b50-4b1e-b82e-3ada8210c358}" />
     <ProjectReference Include="..\ValueUtils\ValueUtils.csproj" />
     <PackageReference Include="ExpressionToCodeLib" Version="2.1.0" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.1.0" />
     <PackageReference Include="xunit" Version="2.3.0-beta1-build3642" />
     <PackageReference Include="xunit.runner.visualstudio" Version="2.3.0-beta1-build1309" />
     <PackageReference Include="Assent" Version="0.8.0" />
