@@ -6,7 +6,7 @@
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="ExpressionToCodeLib" Version="2.1.0" />
-    <PackageReference Include="JetBrains.Annotations" Version="10.4.0" />
+    <PackageReference Include="JetBrains.Annotations" Version="2019.1.1" />
     <PackageReference Include="morelinq" Version="2.4.1" />
     <PackageReference Include="System.ValueTuple" Version="4.3.0" />
     <ProjectReference Include="..\ValueUtils\ValueUtils.csproj" />
