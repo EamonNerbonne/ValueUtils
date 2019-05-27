@@ -20,4 +20,4 @@ steps:
     command: test
     projects: '**/*Tests/*.csproj'
     arguments: '--configuration $(buildConfiguration) --collect "Code coverage"'
-- script: dotnet publish --output $(Build.ArtifactStagingDirectory)
+- script: dotnet publish --configuration $(BuildConfiguration) --output $(Build.ArtifactStagingDirectory)
