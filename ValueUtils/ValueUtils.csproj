@@ -1,6 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup Label="Configuration">
-    <Version>1.4.0</Version>
+    <Version>2.0.0-preview1</Version>
     <Authors>Eamon Nerbonne</Authors>
     <Owners>Eamon Nerbonne</Owners>
     <Title>ValueUtils</Title>
@@ -10,7 +10,7 @@
     <PackageTags>ValueObject DataTransferObject DTO GetHashCode Equals IEquatable ValueType value semantics hashcode</PackageTags>
     <PackageLicenseUrl>http://www.apache.org/licenses/LICENSE-2.0</PackageLicenseUrl>
     <PackageProjectUrl>http://eamonnerbonne.github.io/ValueUtils/</PackageProjectUrl>
-    <TargetFrameworks>netstandard1.5;net452;net47</TargetFrameworks>
+    <TargetFrameworks>netstandard2.0;net452</TargetFrameworks>
       <!--;net452-->
     <RepositoryUrl>https://github.com/EamonNerbonne/ValueUtils</RepositoryUrl>
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
@@ -18,13 +18,7 @@
     <DebugType>full</DebugType>
     <DebugSymbols>True</DebugSymbols>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(TargetFramework)' == 'net452' or '$(TargetFramework)' == 'net47' ">
-    <DefineConstants>dotnet_framework</DefineConstants>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(TargetFramework)' == 'netstandard1.5' ">
-    <DefineConstants>dotnet_core</DefineConstants>
-  </PropertyGroup>
-  <ItemGroup Condition="'$(Framework)' == 'net452'">
+  <ItemGroup Condition="'$(TargetFramework)' == 'net452'">
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -33,7 +27,7 @@
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
   </ItemGroup>
-  <ItemGroup Condition="'$(TargetFramework)' == 'netstandard1.5'">
+  <ItemGroup Condition="'$(TargetFramework)' == 'netstandard2.0'">
     <PackageReference Include="System.Runtime" Version="4.3.0" />
   </ItemGroup>
 </Project>
