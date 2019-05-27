@@ -11,23 +11,10 @@
     <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
     <PackageProjectUrl>http://eamonnerbonne.github.io/ValueUtils/</PackageProjectUrl>
     <TargetFrameworks>netstandard2.0;net452</TargetFrameworks>
-      <!--;net452-->
     <RepositoryUrl>https://github.com/EamonNerbonne/ValueUtils</RepositoryUrl>
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
 
     <DebugType>full</DebugType>
     <DebugSymbols>True</DebugSymbols>
   </PropertyGroup>
-  <ItemGroup Condition="'$(TargetFramework)' == 'net452'">
-    <Reference Include="System" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="Microsoft.CSharp" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Xml" />
-  </ItemGroup>
-  <ItemGroup Condition="'$(TargetFramework)' == 'netstandard2.0'">
-    <PackageReference Include="System.Runtime" Version="4.3.0" />
-  </ItemGroup>
 </Project>
