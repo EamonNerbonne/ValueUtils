@@ -1,14 +1,14 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <Authors>Eamon Nerbonne</Authors>
-    <TargetFrameworks>net452</TargetFrameworks><!--multitargeting to netcoreapp1.1 doesn't seem to work, even though both targets individually do... weird! -->
+    <TargetFrameworks>netcoreapp2.2</TargetFrameworks>
     <OutputType>Exe</OutputType>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="ExpressionToCodeLib" Version="2.1.0" />
-    <PackageReference Include="JetBrains.Annotations" Version="10.4.0" />
-    <PackageReference Include="morelinq" Version="2.4.1" />
-    <PackageReference Include="System.ValueTuple" Version="4.3.0" />
+    <PackageReference Include="ExpressionToCodeLib" Version="3.2.0" />
+    <PackageReference Include="JetBrains.Annotations" Version="2019.1.1" />
+    <PackageReference Include="morelinq" Version="3.1.1" />
+    <PackageReference Include="System.ValueTuple" Version="4.5.0" />
     <ProjectReference Include="..\ValueUtils\ValueUtils.csproj" />
   </ItemGroup>
 </Project>
