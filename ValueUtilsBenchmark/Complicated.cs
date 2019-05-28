@@ -1,9 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using ValueUtils;
 
 namespace ValueUtilsBenchmark
@@ -54,7 +50,7 @@ namespace ValueUtilsBenchmark
 
         public override int GetHashCode()
         {
-            uint h = 2166136261;
+            var h = 2166136261;
             h = (h * 16777619) ^ (uint)AnEnum.GetHashCode();
             h = (h * 16777619) ^ (uint)A.GetHashCode();
             h = (h * 16777619) ^ (uint)NullableInt.GetHashCode();
@@ -99,6 +95,6 @@ namespace ValueUtilsBenchmark
             );
 
         public (SeekOrigin AnEnum, int A, int? NullableInt, int B, string Label, DateTime Time, int C) ToCs7Tuple()
-            => (AnEnum: AnEnum, A: A, NullableInt: NullableInt, B:B, Label: Label, Time: Time, C: C);
+            => (AnEnum: AnEnum, A: A, NullableInt: NullableInt, B: B, Label: Label, Time: Time, C: C);
     }
 }

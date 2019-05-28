@@ -1,13 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using ExpressionToCodeLib;
+﻿using ExpressionToCodeLib;
 using Xunit;
 
-namespace ValueUtilsTest {
-    public class ValueObjectTest {
+namespace ValueUtilsTest
+{
+    public class ValueObjectTest
+    {
         [Fact]
-        public void IdenticalValuesAreEqual() {
+        public void IdenticalValuesAreEqual()
+        {
             var a = new SampleValueObject { ShortValue = 2000, StringValue = "A", Value = -1 };
             var b = new SampleValueObject { ShortValue = 2000, StringValue = "A", Value = -1 };
             PAssert.That(() =>
@@ -19,7 +19,8 @@ namespace ValueUtilsTest {
         }
 
         [Fact]
-        public void DifferentValuesAreUnequal() {
+        public void DifferentValuesAreUnequal()
+        {
             var a = new SampleValueObject { ShortValue = 2000, StringValue = "A", Value = -1 };
             var b = new SampleValueObject { ShortValue = 2000, StringValue = "a", Value = -1 };
             PAssert.That(() =>
@@ -31,7 +32,8 @@ namespace ValueUtilsTest {
         }
 
         [Fact]
-        public void CanCompareWithNull() {
+        public void CanCompareWithNull()
+        {
             var a = new SampleValueObject { ShortValue = 2000, StringValue = "A", Value = -1 };
             SampleValueObject b = null;
             PAssert.That(() =>
@@ -41,7 +43,8 @@ namespace ValueUtilsTest {
 
 
         [Fact]
-        public void NonCyclicalSelfReferentialTypesWork() {
+        public void NonCyclicalSelfReferentialTypesWork()
+        {
             var valueObjectA = new SampleSelfReferentialValueObject {
                 Value = 1,
                 SameTypeReference = new SampleSelfReferentialValueObject {

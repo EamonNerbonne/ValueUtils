@@ -1,11 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
 
-namespace ValueUtils {
-    public static class FieldwiseHasher {
+namespace ValueUtils
+{
+    public static class FieldwiseHasher
+    {
         /// <summary>
         /// Computes a hashcode for an object based on its fields.  Type resolution is done 
         /// statically, which allows fast code (similar to hand-rolled performance).
@@ -15,10 +15,12 @@ namespace ValueUtils {
         /// This is simply a type-inference friendly wrapper around FieldwiseHasher&lt;&gt;.Instance
         /// </summary>
         /// <typeparam name="T">The type of the object to hash.</typeparam>
-        public static int Hash<T>(T val) { return FieldwiseHasher<T>.Instance(val); }
+
+        public static int Hash<T>(T val) => FieldwiseHasher<T>.Instance(val);
     }
 
-    public static class FieldwiseHasher<T> {
+    public static class FieldwiseHasher<T>
+    {
         /// <summary>
         /// Computes a hashcode for an object based on its fields.  Type resolution is specified 
         /// statically, which allows fast code (similar to hand-rolled performance).
@@ -27,7 +29,8 @@ namespace ValueUtils {
         /// </summary>
         public static readonly Func<T, int> Instance = CreateLambda().Compile();
 
-        internal static Expression<Func<T, int>> CreateLambda() {
+        internal static Expression<Func<T, int>> CreateLambda()
+        {
             //Get all fields including inherited fields
             var type = typeof(T);
             var fields = ReflectionHelper.GetAllFields(type);
@@ -65,7 +68,7 @@ from it, and (almost entirely) relatively prime for the first 50 coefficients.
                  
                  */
                 fieldIndex++;
-                ulong scale = 1794966779ul /*prime*/
+                var scale = 1794966779ul /*prime*/
                 + fieldIndex * 35225190ul /*2*3*3*5*7*11*13*17*23 */;
                 var scaledFieldHashExpr = Expression.Multiply(ulongFieldHashExpr, Expression.Constant(scale));
 

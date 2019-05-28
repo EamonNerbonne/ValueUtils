@@ -10,16 +10,12 @@ namespace ValueUtils
         public static IEnumerable<Type> WalkMeaningfulInheritanceChain(Type type)
         {
             var info = type.GetTypeInfo();
-            if (info.IsClass)
-            {
-                while (type != typeof (object))
-                {
+            if (info.IsClass) {
+                while (type != typeof(object)) {
                     yield return type;
                     type = type.GetTypeInfo().BaseType;
                 }
-            }
-            else if (info.IsValueType)
-            {
+            } else if (info.IsValueType) {
                 yield return type;
             }
         }

@@ -1,15 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using JetBrains.Annotations;
+﻿using JetBrains.Annotations;
 
-namespace ValueUtilsTest {
-    struct CustomStruct {
+namespace ValueUtilsTest
+{
+    struct CustomStruct
+    {
         [UsedImplicitly]
         public int Bla;
     }
 
-    class SampleClass {
+    class SampleClass
+    {
         [UsedImplicitly]
         public SampleEnum AnEnum;
         [UsedImplicitly]

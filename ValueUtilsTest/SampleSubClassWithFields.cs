@@ -1,11 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace ValueUtilsTest {
-    class SampleSubClassWithFields:SampleClass {
+﻿namespace ValueUtilsTest
+{
+    class SampleSubClassWithFields : SampleClass
+    {
         public int SubClassField = 3;
     }
 }

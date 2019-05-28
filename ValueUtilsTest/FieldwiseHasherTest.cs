@@ -1,19 +1,20 @@
 ﻿// ReSharper disable UnusedMember.Global
 // ReSharper disable EqualExpressionComparison
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using ExpressionToCodeLib;
 using ValueUtils;
 using Xunit;
 
-namespace ValueUtilsTest {
-    public class FieldwiseHasherTest {
+namespace ValueUtilsTest
+{
+    public class FieldwiseHasherTest
+    {
 
         static readonly Func<SampleStruct, int> hash = FieldwiseHasher<SampleStruct>.Instance;
 
         [Fact]
-        public void IdenticalValuesHaveIdenticalHashes() {
+        public void IdenticalValuesHaveIdenticalHashes()
+        {
             PAssert.That(() =>
                 hash(new SampleStruct(1, 2, "3", 4))
                 == hash(new SampleStruct(1, 2, "3", 4)));
@@ -21,14 +22,16 @@ namespace ValueUtilsTest {
 
 
         [Fact]
-        public void IsNotJustAWrapperAroundGetHashCode() {
+        public void IsNotJustAWrapperAroundGetHashCode()
+        {
             PAssert.That(() =>
                 hash(new SampleStruct(1, 2, "3", 4))
                 != new SampleStruct(1, 2, "3", 4).GetHashCode());
         }
 
         [Fact]
-        public void OneDifferentValueMemberChangesHash() {
+        public void OneDifferentValueMemberChangesHash()
+        {
             PAssert.That(() =>
                 hash(new SampleStruct(1, 2, "3", 4))
                 != hash(new SampleStruct(11, 2, "3", 4)));
@@ -44,7 +47,8 @@ namespace ValueUtilsTest {
         }
 
         [Fact]
-        public void IdenticalObjectsHaveIdenticalHashes() {
+        public void IdenticalObjectsHaveIdenticalHashes()
+        {
             //it's important that this is a class not struct instance so we've checked that
             //also, that means we're accessing another assemblies private fields
             PAssert.That(() =>
@@ -53,7 +57,8 @@ namespace ValueUtilsTest {
         }
 
         [Fact]
-        public void OneDifferentObjectMemberChangesHash() {
+        public void OneDifferentObjectMemberChangesHash()
+        {
             PAssert.That(() =>
                 FieldwiseHasher.Hash(Tuple.Create(1, 2, "3", 4))
                 != FieldwiseHasher.Hash(Tuple.Create(11, 2, "3", 4)));
@@ -69,7 +74,8 @@ namespace ValueUtilsTest {
         }
 
         [Fact]
-        public void AutoPropsAffectHash() {
+        public void AutoPropsAffectHash()
+        {
             PAssert.That(() =>
                 FieldwiseHasher.Hash(new SampleClass { AutoPropWithPrivateBackingField = "x" })
                 == FieldwiseHasher.Hash(new SampleClass { AutoPropWithPrivateBackingField = "x" }));
@@ -79,14 +85,16 @@ namespace ValueUtilsTest {
         }
 
         [Fact]
-        public void TypeMattersAtCompileTime() {
+        public void TypeMattersAtCompileTime()
+        {
             PAssert.That(() =>
                 FieldwiseHasher.Hash(new SampleClass { AnEnum = SampleEnum.Q })
                 != FieldwiseHasher.Hash(new SampleSubClass { AnEnum = SampleEnum.Q }));
         }
 
         [Fact]
-        public void TypeDoesNotMatterAtRunTime() {
+        public void TypeDoesNotMatterAtRunTime()
+        {
             var hasher = FieldwiseHasher<SampleClass>.Instance;
             PAssert.That(() =>
                 hasher(new SampleClass { AnEnum = SampleEnum.Q })
@@ -94,7 +102,8 @@ namespace ValueUtilsTest {
         }
 
         [Fact]
-        public void SubClassesCheckBaseClassFields() {
+        public void SubClassesCheckBaseClassFields()
+        {
             PAssert.That(() =>
                 FieldwiseHasher.Hash(new SampleSubClassWithFields { AnEnum = SampleEnum.Q })
                 != FieldwiseHasher.Hash(new SampleSubClassWithFields { AnEnum = SampleEnum.P }));
@@ -104,7 +113,8 @@ namespace ValueUtilsTest {
         }
 
         [Fact]
-        public void StructIntFieldsAffectHash() {
+        public void StructIntFieldsAffectHash()
+        {
             PAssert.That(() =>
                 FieldwiseHasher.Hash(new CustomStruct { Bla = 1 })
                 != FieldwiseHasher.Hash(new CustomStruct { Bla = 2 }));
@@ -114,7 +124,8 @@ namespace ValueUtilsTest {
         }
 
         [Fact]
-        public void ClassNullableIntFieldsAffectHash() {
+        public void ClassNullableIntFieldsAffectHash()
+        {
             PAssert.That(() =>
                 FieldwiseHasher.Hash(new SampleClass { NullableField = null })
                 != FieldwiseHasher.Hash(new SampleClass { NullableField = 1 }));
@@ -125,7 +136,8 @@ namespace ValueUtilsTest {
 
 
         [Fact]
-        public void ClassStructFieldsAffectHash() {
+        public void ClassStructFieldsAffectHash()
+        {
             var object1 = new SampleClass { PlainStruct = new CustomStruct { Bla = 1 } };
             var object2 = new SampleClass { PlainStruct = new CustomStruct { Bla = 2 } };
             var object3A = new SampleClass { PlainStruct = new CustomStruct { Bla = 3 } };
@@ -135,7 +147,8 @@ namespace ValueUtilsTest {
         }
 
         [Fact]
-        public void ClassNullableStructFieldsAffectHash() {
+        public void ClassNullableStructFieldsAffectHash()
+        {
             var object1 = new SampleClass { NullableStruct = null };
             var object2 = new SampleClass { NullableStruct = new CustomStruct { Bla = 2 } };
             var object3A = new SampleClass { NullableStruct = new CustomStruct { Bla = 3 } };

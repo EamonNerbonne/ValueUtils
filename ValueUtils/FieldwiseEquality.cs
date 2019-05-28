@@ -82,7 +82,7 @@ namespace ValueUtils
                 "Equals", new[] { fieldType });
 
             var fieldsEqualExpr = equalsMethod == null || equalsMethod.GetParameters()[0].ParameterType != fieldType
-                    ? Expression.Call(((Func<object, object, bool>) Equals).GetMethodInfo(),
+                    ? Expression.Call(((Func<object, object, bool>)Equals).GetMethodInfo(),
                         Expression.Convert(aFieldExpr, typeof(object)),
                         Expression.Convert(bFieldExpr, typeof(object))
                     )
@@ -93,7 +93,7 @@ namespace ValueUtils
             // reference types and a by-field equality for structs.
 
             var nullSafeFieldsEqualExpr = fieldInfo.FieldType.GetTypeInfo().IsValueType || equalsMethod == null
-                ? (Expression) fieldsEqualExpr
+                ? (Expression)fieldsEqualExpr
                 : Expression.Condition(
                     Expression.Equal(Expression.Default(fieldInfo.FieldType), aFieldExpr),
                     Expression.Equal(Expression.Default(fieldInfo.FieldType), aFieldExpr),

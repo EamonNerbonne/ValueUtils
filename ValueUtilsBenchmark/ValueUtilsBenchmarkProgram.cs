@@ -7,15 +7,18 @@ using System.Xml.Linq;
 using ExpressionToCodeLib;
 using MoreLinq;
 
-namespace ValueUtilsBenchmark {
-    public static class ValueUtilsBenchmarkProgram {
+namespace ValueUtilsBenchmark
+{
+    public static class ValueUtilsBenchmarkProgram
+    {
 
         //Note: the manual hash implementations are bastardized FNV since nobody in their right mind
         // would manually split field hash codes into octets and seperately hash those with FNV.
         // perhaps this makes it less robust, but I know of no better alternative.
-        static void Main(string[] args) {
+        static void Main(string[] args)
+        {
             var complicatedTable = HashAnalysisResult.ToTable(
-                "Realistic scenario with an enum, a string, a DateTime, an int? and 3 int fields.", 
+                "Realistic scenario with an enum, a string, a DateTime, an int? and 3 int fields.",
                 BenchmarkComplicatedCases()
                 );
             var intpairTable = HashAnalysisResult.ToTable(
@@ -35,15 +38,17 @@ namespace ValueUtilsBenchmark {
                 BenchmarkNastyNestedCases()
                 );
 
-            var tables = 
+            var tables =
                 new XElement("div",
                     complicatedTable, intpairTable, duplicationTable, symmetricalTable, nestedTable);
             Console.WriteLine(tables.ToString());
-            using (var stream = File.OpenWrite("BenchResults.html"))
+            using (var stream = File.OpenWrite("BenchResults.html")) {
                 tables.Save(stream);
+            }
         }
 
-        static IEnumerable<HashAnalysisResult> BenchmarkNastyNestedCases() {
+        static IEnumerable<HashAnalysisResult> BenchmarkNastyNestedCases()
+        {
             var manuals = (
                 from a in MoreEnumerable.Generate(-10000, a => a + 6).TakeWhile(a => a < 14100)
                 from b0 in MoreEnumerable.Generate(int.MaxValue, c => (int)(c * 0.95)).TakeWhile(c => c > 0)
@@ -70,7 +75,8 @@ namespace ValueUtilsBenchmark {
         }
 
 
-        static IEnumerable<HashAnalysisResult> BenchmarkIntPairCases() {
+        static IEnumerable<HashAnalysisResult> BenchmarkIntPairCases()
+        {
             var manuals = (
                 from a in MoreEnumerable.Generate(-8000, a => a + 4).TakeWhile(a => a < 8000)
                 from b0 in MoreEnumerable.Generate(int.MaxValue, c => (int)(c * 0.95)).TakeWhile(c => c > 0)
@@ -101,7 +107,8 @@ namespace ValueUtilsBenchmark {
         }
 
 
-        static IEnumerable<HashAnalysisResult> BenchmarkSymmetricalCases() {
+        static IEnumerable<HashAnalysisResult> BenchmarkSymmetricalCases()
+        {
             var manuals = (
                 from a in MoreEnumerable.Generate(-5100, a => a + 5).TakeWhile(a => a < 5100)
                 from b0 in MoreEnumerable.Generate(int.MaxValue, c => (int)(c * 0.95)).TakeWhile(c => c > 0)
@@ -132,7 +139,8 @@ namespace ValueUtilsBenchmark {
             yield return ProcessList(anonymous);
         }
 
-        static IEnumerable<HashAnalysisResult> BenchmarkDuplicatePairCases() {
+        static IEnumerable<HashAnalysisResult> BenchmarkDuplicatePairCases()
+        {
             var manuals = (
                 from a in Enumerable.Range(0, 3000000)
                 select new IntPairManual {
@@ -159,7 +167,8 @@ namespace ValueUtilsBenchmark {
             yield return ProcessList(anonymous);
         }
 
-        static IEnumerable<HashAnalysisResult> BenchmarkComplicatedCases() {
+        static IEnumerable<HashAnalysisResult> BenchmarkComplicatedCases()
+        {
             var manuals = (
                 from a in MoreEnumerable.Generate(-500, a => a + 4).TakeWhile(a => a < 500)
                 from b0 in MoreEnumerable.Generate(int.MaxValue, b => (int)(b * 0.9)).TakeWhile(b => b > 0)
@@ -199,23 +208,27 @@ namespace ValueUtilsBenchmark {
             yield return ProcessList(anonymous);
         }
 
-        static HashAnalysisResult ProcessList<T>(T[] objs) {
-            string name = typeof(T).ToCSharpFriendlyTypeName();
-            if (name.StartsWith("Tuple"))
+        static HashAnalysisResult ProcessList<T>(T[] objs)
+        {
+            var name = typeof(T).ToCSharpFriendlyTypeName();
+            if (name.StartsWith("Tuple")) {
                 name = "Tuple";
-            else if (name.Contains("AnonymousType"))
+            } else if (name.Contains("AnonymousType")) {
                 name = "Anonymous Type";
+            }
+
             var collisions = AnalyzeHashCollisions(objs);
             Console.WriteLine(collisions.Rate);
             return new HashAnalysisResult {
                 Name = name,
                 Collisions = collisions,
                 GetHashCodeNS = TimeInNS(() => {
-                    foreach (var inst in objs)
+                    foreach (var inst in objs) {
                         inst.GetHashCode();
+                    }
                 }) / objs.Length,
                 EqualsNS = TimeInNS(() => {
-                    for (int i = 0; i < objs.Length; i++) {
+                    for (var i = 0; i < objs.Length; i++) {
                         objs[i].Equals(objs[i]);
                         objs[i].Equals(objs[(i + 1) % objs.Length]);
                     }
@@ -224,19 +237,21 @@ namespace ValueUtilsBenchmark {
                     objs.Distinct().Count();
                 }) / objs.Length,
                 DictionaryNS = collisions.Rate > 0.95 ? double.NaN : TimeInNS(() => {
-                    int idx = 0;
+                    var idx = 0;
                     objs.ToDictionary(o => o, _ => idx++);
                 }) / objs.Length,
             };
         }
-        static CollisionStats AnalyzeHashCollisions<T>(T[] objs) {
+        static CollisionStats AnalyzeHashCollisions<T>(T[] objs)
+        {
             return new CollisionStats {
                 DistinctValues = objs.Length,
                 DistinctHashCodes = objs.Select(o => o.GetHashCode()).Distinct().Count()
             };
         }
 
-        static double TimeInNS(Action action) {
+        static double TimeInNS(Action action)
+        {
             var initial = Stopwatch.StartNew();
             var timings =
                 Enumerable.Range(0, 1000000)
@@ -248,7 +263,7 @@ namespace ValueUtilsBenchmark {
                 .TakeUntil(t => initial.ElapsedMilliseconds >= 10000)
                 .OrderBy(t => t)
                 .ToArray();
-            return 1000000.0*timings.Take((timings.Length + 3) / 4).Average();
+            return 1000000.0 * timings.Take((timings.Length + 3) / 4).Average();
         }
     }
 }

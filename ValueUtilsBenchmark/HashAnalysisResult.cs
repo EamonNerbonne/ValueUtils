@@ -1,16 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Xml.Linq;
 
-namespace ValueUtilsBenchmark {
-    class HashAnalysisResult {
+namespace ValueUtilsBenchmark
+{
+    class HashAnalysisResult
+    {
         public string Name;
         public CollisionStats Collisions;
         public double GetHashCodeNS, EqualsNS, DistinctCountNS, DictionaryNS;
-        public XElement ToTableRow() {
+        public XElement ToTableRow()
+        {
             return new XElement("tr",
                 new XElement("td", Name),
                 new XElement("td", (Collisions.Rate * 100).ToString("f2") + "%"),
@@ -21,7 +21,8 @@ namespace ValueUtilsBenchmark {
                 new XElement("td", GetHashCodeNS.ToString("f1"))
                 );
         }
-        public static XElement ToTableHead(string title) {
+        public static XElement ToTableHead(string title)
+        {
             return
                 new XElement("thead",
                     new XElement("tr",
@@ -41,7 +42,8 @@ namespace ValueUtilsBenchmark {
                     )
                 );
         }
-        public static XElement ToTable(string title, IEnumerable<HashAnalysisResult> results) {
+        public static XElement ToTable(string title, IEnumerable<HashAnalysisResult> results)
+        {
             return
                 new XElement("table",
                     ToTableHead(title),

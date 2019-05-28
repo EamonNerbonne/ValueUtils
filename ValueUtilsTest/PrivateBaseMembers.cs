@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using ExpressionToCodeLib;
+﻿using ExpressionToCodeLib;
 using ValueUtils;
 using Xunit;
 
@@ -12,7 +7,7 @@ namespace ValueUtilsTest
     class SampleBaseWithPrivateMembers
     {
         int SomeValue;
-        public SampleBaseWithPrivateMembers(int val) { SomeValue = val; }
+        public SampleBaseWithPrivateMembers(int val) => SomeValue = val;
     }
 
     class SampleSubWithPrivateInherited : SampleBaseWithPrivateMembers
@@ -67,4 +62,4 @@ namespace ValueUtilsTest
         }
     }
 }
-    
+

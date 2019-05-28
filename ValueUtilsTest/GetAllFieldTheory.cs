@@ -1,5 +1,5 @@
-﻿using System.Linq;
-using ExpressionToCodeLib;
+﻿using ExpressionToCodeLib;
+using System.Linq;
 using ValueUtils;
 using Xunit;
 
