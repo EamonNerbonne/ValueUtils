@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using ExpressionToCodeLib;
 using ValueUtils;
 using Xunit;
@@ -61,11 +59,11 @@ namespace ValueUtilsTest
         }
 
         [Fact]
-        public void StructFieldsAffectEquality() {
-            PAssert.That(() =>
-                FieldwiseEquality.AreEqual(new SampleClass { PlainStruct = { Bla = 1 } }, new SampleClass { PlainStruct = { Bla = 1 } }));
-            PAssert.That(() =>
-                !FieldwiseEquality.AreEqual(new SampleClass { PlainStruct = { Bla = 1 } }, new SampleClass { PlainStruct = { Bla = 2 } }));
+        public void StructFieldsAffectEquality()
+        {
+            //MemberMemberBindings are buggy, so use PlainStruct=new... syntax; ref https://github.com/dotnet/corefx/issues/37968
+            PAssert.That(() => FieldwiseEquality.AreEqual(new SampleClass { PlainStruct = new CustomStruct { Bla = 1 } }, new SampleClass { PlainStruct = new CustomStruct { Bla = 1 } }));
+            PAssert.That(() => !FieldwiseEquality.AreEqual(new SampleClass { PlainStruct = new CustomStruct { Bla = 1 } }, new SampleClass { PlainStruct = new CustomStruct { Bla = 2 } }));
         }
 
         [Fact]
