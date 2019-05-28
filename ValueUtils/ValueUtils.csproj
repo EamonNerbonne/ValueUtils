@@ -1,12 +1,12 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup Label="Configuration">
     <Version>2.0.0-preview1</Version>
+    <PackageReleaseNotes>Add source link support</PackageReleaseNotes>
     <Authors>Eamon Nerbonne</Authors>
     <Owners>Eamon Nerbonne</Owners>
     <Title>ValueUtils</Title>
     <Description>Efficient hash code and equality implementations for arbitrary objects.</Description>
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
-    <PackageReleaseNotes>Add support for .net core (via .net standard 1.5)</PackageReleaseNotes>
     <PackageTags>ValueObject DataTransferObject DTO GetHashCode Equals IEquatable ValueType value semantics hashcode</PackageTags>
     <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
     <PackageProjectUrl>http://eamonnerbonne.github.io/ValueUtils/</PackageProjectUrl>
