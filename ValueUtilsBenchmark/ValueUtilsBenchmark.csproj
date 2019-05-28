@@ -5,7 +5,7 @@
     <OutputType>Exe</OutputType>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="ExpressionToCodeLib" Version="2.1.0" />
+    <PackageReference Include="ExpressionToCodeLib" Version="3.2.0" />
     <PackageReference Include="JetBrains.Annotations" Version="10.4.0" />
     <PackageReference Include="morelinq" Version="2.4.1" />
     <PackageReference Include="System.ValueTuple" Version="4.3.0" />
