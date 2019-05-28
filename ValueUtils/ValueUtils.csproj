@@ -12,9 +12,20 @@
     <PackageProjectUrl>http://eamonnerbonne.github.io/ValueUtils/</PackageProjectUrl>
     <TargetFrameworks>netstandard2.0;net452</TargetFrameworks>
     <RepositoryUrl>https://github.com/EamonNerbonne/ValueUtils</RepositoryUrl>
-    <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+    <AllowedOutputExtensionsInPackageBuildOutputFolder>$(AllowedOutputExtensionsInPackageBuildOutputFolder);.pdb</AllowedOutputExtensionsInPackageBuildOutputFolder>
+    <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <SignAssembly>true</SignAssembly>
+    <WarningsAsErrors>NU1605</WarningsAsErrors>
+  </PropertyGroup>
 
-    <DebugType>full</DebugType>
+  <PropertyGroup>
+    <!-- Source link: -->
+    <DebugType>portable</DebugType>
     <DebugSymbols>True</DebugSymbols>
+    <PublishRepositoryUrl>true</PublishRepositoryUrl>
+    <EmbedUntrackedSources>true</EmbedUntrackedSources>
+    <IncludeSymbols>true</IncludeSymbols>
+    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
   </PropertyGroup>
 </Project>
