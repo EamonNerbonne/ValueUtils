@@ -13,7 +13,6 @@ variables:
   buildConfiguration: 'Release'
 
 steps:
-  displayName: 'dotnet build $(buildConfiguration)'
 - script: dotnet build --configuration $(buildConfiguration)
 - script: dotnet --list-runtimes
 - script: dotnet --list-sdks
