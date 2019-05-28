@@ -38,7 +38,7 @@ namespace ValueUtils
 
             //Start with some arbitrary constant; pick something type-dependant for the rare mixed-type usecase.
             Expression hashExpr = Expression.Constant((ulong)type.GetHashCode() * 1234567);
-            ulong fieldIndex = 0;
+            var fieldIndex = 0ul;
             var getHashCodeMethod = ((Func<int>)new object().GetHashCode).GetMethodInfo();
 
             foreach (var fieldInfo in fields) {
