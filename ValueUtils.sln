@@ -1,14 +1,15 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.24720.0
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.28917.182
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ValueUtils", "ValueUtils\ValueUtils.csproj", "{AA2AC059-A993-4CB4-8C05-2B5821851A14}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ValueUtils", "ValueUtils\ValueUtils.csproj", "{AA2AC059-A993-4CB4-8C05-2B5821851A14}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ValueUtilsTest", "ValueUtilsTest\ValueUtilsTest.csproj", "{498F7DE2-EE66-4804-9A72-9CAD5C09F400}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ValueUtilsTest", "ValueUtilsTest\ValueUtilsTest.csproj", "{498F7DE2-EE66-4804-9A72-9CAD5C09F400}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{34331906-0C4A-4F34-BB09-FBE53D56FB6C}"
 	ProjectSection(SolutionItems) = preProject
+		.gitattributes = .gitattributes
 		BenchmarkResults.html = BenchmarkResults.html
 		CHANGELOG.md = CHANGELOG.md
 		index.html = index.html
@@ -25,7 +26,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{811861
 		.nuget\NuGet.targets = .nuget\NuGet.targets
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ValueUtilsBenchmark", "ValueUtilsBenchmark\ValueUtilsBenchmark.csproj", "{92458D24-5270-42A9-A530-B86C5F7B29C0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ValueUtilsBenchmark", "ValueUtilsBenchmark\ValueUtilsBenchmark.csproj", "{92458D24-5270-42A9-A530-B86C5F7B29C0}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "html-docs", "html-docs", "{70A05DFE-11EB-4E81-BF61-A2220F81F4EC}"
 EndProject
@@ -53,5 +54,8 @@ Global
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{70A05DFE-11EB-4E81-BF61-A2220F81F4EC} = {34331906-0C4A-4F34-BB09-FBE53D56FB6C}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {FBC55A10-7115-4C51-8F5E-BBB7B6D6DD73}
 	EndGlobalSection
 EndGlobal
