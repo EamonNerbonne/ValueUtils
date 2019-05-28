@@ -30,8 +30,8 @@ namespace ValueUtilsBenchmark
         public override int GetHashCode()
         {
             var h = 2166136261;
-            h = (h * 16777619) ^ (uint)A.GetHashCode();
-            h = (h * 16777619) ^ (uint)B.GetHashCode();
+            h = h * 16777619 ^ (uint)A.GetHashCode();
+            h = h * 16777619 ^ (uint)B.GetHashCode();
             return (int)h;
         }
 
@@ -55,8 +55,8 @@ namespace ValueUtilsBenchmark
 
         public (int A, int B) ToCs7Tuple()
             => (
-                A: A,
-                B: B
-                );
+                A,
+                B
+            );
     }
 }

@@ -10,18 +10,14 @@ namespace ValueUtilsTest
         static readonly Func<SampleStruct, SampleStruct, bool> eq = FieldwiseEquality<SampleStruct>.Instance;
 
         [Fact]
-        public void IdenticalValuesAreEqual()
-        {
-            PAssert.That(() =>
-                eq(new SampleStruct(1, 2, "3", 4), new SampleStruct(1, 2, "3", 4)));
-        }
+        public void IdenticalValuesAreEqual() => PAssert.That(() =>
+            eq(new SampleStruct(1, 2, "3", 4), new SampleStruct(1, 2, "3", 4))
+        );
 
         [Fact(Skip = "Don't support nulls")]
-        public void CanCheckEqualityWithNull()
-        {
-            PAssert.That(() =>
-                !FieldwiseEquality.AreEqual(Tuple.Create(1), null));
-        }
+        public void CanCheckEqualityWithNull() => PAssert.That(() =>
+            !FieldwiseEquality.AreEqual(Tuple.Create(1), null)
+        );
 
 
         [Fact]
@@ -34,13 +30,9 @@ namespace ValueUtilsTest
         }
 
         [Fact]
-        public void TuplesWithTheSameFieldValuesAreEqual()
-        {
-            //it's important that this is a class not struct instance so we've checked that
-            //also, that means we're accessing another assemblies private fields
-            PAssert.That(() =>
-                FieldwiseEquality.AreEqual(Tuple.Create(1, 2, "3", 4), Tuple.Create(1, 2, "3", 4)));
-        }
+        public void TuplesWithTheSameFieldValuesAreEqual() => PAssert.That(() =>
+            FieldwiseEquality.AreEqual(Tuple.Create(1, 2, "3", 4), Tuple.Create(1, 2, "3", 4))
+        );
 
         [Fact]
         public void OneDifferentObjectMemberCausesInequality()

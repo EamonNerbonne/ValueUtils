@@ -1,5 +1,5 @@
-﻿using ExpressionToCodeLib;
-using System.Linq;
+﻿using System.Linq;
+using ExpressionToCodeLib;
 using ValueUtils;
 using Xunit;
 
@@ -8,14 +8,11 @@ namespace ValueUtilsTest
     public class GetAllFieldTheory
     {
         [Fact]
-        public void SampleStructHasFourFields()
-        {
-            PAssert.That(() => ReflectionHelper.GetAllFields(typeof(SampleStruct))
-                .OrderBy(f => f.MetadataToken)
-                .Select(f => f.Name)
-                .SequenceEqual(new[] { "value", "shortvalue", "hmm", "last" })
-            );
-        }
+        public void SampleStructHasFourFields() => PAssert.That(() => ReflectionHelper.GetAllFields(typeof(SampleStruct))
+            .OrderBy(f => f.MetadataToken)
+            .Select(f => f.Name)
+            .SequenceEqual(new[] { "value", "shortvalue", "hmm", "last" })
+        );
 
         [Fact]
         public void SampleClassHasFiveFields()
@@ -44,21 +41,15 @@ namespace ValueUtilsTest
         }
 
         [Fact]
-        public void FieldsIncludeBaseProtectedFieldsExactlyOnce()
-        {
-            PAssert.That(() =>
-                ReflectionHelper.GetAllFields(typeof(SampleSubWithProtectedInherited)).Select(f => f.Name)
-                    .SequenceEqual(new[] { "SomeValue" })
-            );
-        }
+        public void FieldsIncludeBaseProtectedFieldsExactlyOnce() => PAssert.That(() =>
+            ReflectionHelper.GetAllFields(typeof(SampleSubWithProtectedInherited)).Select(f => f.Name)
+                .SequenceEqual(new[] { "SomeValue" })
+        );
 
         [Fact]
-        public void FieldsIncludeBasePrivateFieldsExactlyOnce()
-        {
-            PAssert.That(() =>
-                ReflectionHelper.GetAllFields(typeof(SampleSubWithPrivateInherited)).Select(f => f.Name)
-                    .SequenceEqual(new[] { "SomeValue" })
-            );
-        }
+        public void FieldsIncludeBasePrivateFieldsExactlyOnce() => PAssert.That(() =>
+            ReflectionHelper.GetAllFields(typeof(SampleSubWithPrivateInherited)).Select(f => f.Name)
+                .SequenceEqual(new[] { "SomeValue" })
+        );
     }
 }

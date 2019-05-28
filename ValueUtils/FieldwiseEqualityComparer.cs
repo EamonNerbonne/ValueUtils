@@ -17,7 +17,7 @@ namespace ValueUtils
         public bool Equals(T x, T y) => equalsDelegate(x, y);
         public int GetHashCode(T obj) => getHashCodeDelegate(obj);
 
-        private FieldwiseEqualityComparer() { }
+        FieldwiseEqualityComparer() { }
         readonly Func<T, T, bool> equalsDelegate = FieldwiseEquality<T>.Instance;
         readonly Func<T, int> getHashCodeDelegate = FieldwiseHasher<T>.Instance;
     }

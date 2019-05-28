@@ -11,7 +11,6 @@ namespace ValueUtilsBenchmark
 {
     public static class ValueUtilsBenchmarkProgram
     {
-
         //Note: the manual hash implementations are bastardized FNV since nobody in their right mind
         // would manually split field hash codes into octets and seperately hash those with FNV.
         // perhaps this makes it less robust, but I know of no better alternative.
@@ -20,27 +19,28 @@ namespace ValueUtilsBenchmark
             var complicatedTable = HashAnalysisResult.ToTable(
                 "Realistic scenario with an enum, a string, a DateTime, an int? and 3 int fields.",
                 BenchmarkComplicatedCases()
-                );
+            );
             var intpairTable = HashAnalysisResult.ToTable(
                 "A simple pair of ints",
                 BenchmarkIntPairCases()
-                );
+            );
             var duplicationTable = HashAnalysisResult.ToTable(
                 "Two ints with both the same value",
                 BenchmarkDuplicatePairCases()
-                );
+            );
             var symmetricalTable = HashAnalysisResult.ToTable(
                 "Two ints such that (x,y) is present iif (y,x) is present in the dataset",
                 BenchmarkSymmetricalCases()
-                );
+            );
             var nestedTable = HashAnalysisResult.ToTable(
                 "A reference to the type itself and two int fields.  The dataset contains exactly one level of nesting such that the outer object is (x,y) when the inner is (y,x).",
                 BenchmarkNastyNestedCases()
-                );
+            );
 
             var tables =
                 new XElement("div",
-                    complicatedTable, intpairTable, duplicationTable, symmetricalTable, nestedTable);
+                    complicatedTable, intpairTable, duplicationTable, symmetricalTable, nestedTable
+                );
             Console.WriteLine(tables.ToString());
             using (var stream = File.OpenWrite("BenchResults.html")) {
                 tables.Save(stream);
@@ -93,10 +93,11 @@ namespace ValueUtilsBenchmark
             var cs7tuples = manuals.Select(m => m.ToCs7Tuple()).ToArray();
             var structs = manuals.Select(m => m.ToStruct()).ToArray();
             var anonymous = manuals.Select(m =>
-              new {
-                  m.A,
-                  m.B,
-              }).ToArray();
+                new {
+                    m.A,
+                    m.B,
+                }
+            ).ToArray();
 
             yield return ProcessList(manuals);
             yield return ProcessList(valueObjects);
@@ -126,10 +127,11 @@ namespace ValueUtilsBenchmark
             var cs7tuples = manuals.Select(m => m.ToCs7Tuple()).ToArray();
             var structs = manuals.Select(m => m.ToStruct()).ToArray();
             var anonymous = manuals.Select(m =>
-              new {
-                  m.A,
-                  m.B,
-              }).ToArray();
+                new {
+                    m.A,
+                    m.B,
+                }
+            ).ToArray();
 
             yield return ProcessList(manuals);
             yield return ProcessList(valueObjects);
@@ -157,7 +159,8 @@ namespace ValueUtilsBenchmark
                 new {
                     m.A,
                     m.B,
-                }).ToArray();
+                }
+            ).ToArray();
 
             yield return ProcessList(manuals);
             yield return ProcessList(valueObjects);
@@ -198,7 +201,8 @@ namespace ValueUtilsBenchmark
                     m.Label,
                     m.Time,
                     m.C
-                }).ToArray();
+                }
+            ).ToArray();
 
             yield return ProcessList(manuals);
             yield return ProcessList(valueObjects);
@@ -223,46 +227,48 @@ namespace ValueUtilsBenchmark
                 Name = name,
                 Collisions = collisions,
                 GetHashCodeNS = TimeInNS(() => {
-                    foreach (var inst in objs) {
-                        inst.GetHashCode();
+                        foreach (var inst in objs) {
+                            inst.GetHashCode();
+                        }
                     }
-                }) / objs.Length,
+                ) / objs.Length,
                 EqualsNS = TimeInNS(() => {
-                    for (var i = 0; i < objs.Length; i++) {
-                        objs[i].Equals(objs[i]);
-                        objs[i].Equals(objs[(i + 1) % objs.Length]);
+                        for (var i = 0; i < objs.Length; i++) {
+                            objs[i].Equals(objs[i]);
+                            objs[i].Equals(objs[(i + 1) % objs.Length]);
+                        }
                     }
-                }) / objs.Length / 2,
-                DistinctCountNS = collisions.Rate > 0.95 ? double.NaN : TimeInNS(() => {
-                    objs.Distinct().Count();
-                }) / objs.Length,
-                DictionaryNS = collisions.Rate > 0.95 ? double.NaN : TimeInNS(() => {
-                    var idx = 0;
-                    objs.ToDictionary(o => o, _ => idx++);
-                }) / objs.Length,
+                ) / objs.Length / 2,
+                DistinctCountNS = collisions.Rate > 0.95 ? double.NaN : TimeInNS(() => { objs.Distinct().Count(); }) / objs.Length,
+                DictionaryNS = collisions.Rate > 0.95
+                    ? double.NaN
+                    : TimeInNS(() => {
+                            var idx = 0;
+                            objs.ToDictionary(o => o, _ => idx++);
+                        }
+                    ) / objs.Length,
             };
         }
-        static CollisionStats AnalyzeHashCollisions<T>(T[] objs)
-        {
-            return new CollisionStats {
-                DistinctValues = objs.Length,
-                DistinctHashCodes = objs.Select(o => o.GetHashCode()).Distinct().Count()
-            };
-        }
+
+        static CollisionStats AnalyzeHashCollisions<T>(T[] objs) => new CollisionStats {
+            DistinctValues = objs.Length,
+            DistinctHashCodes = objs.Select(o => o.GetHashCode()).Distinct().Count()
+        };
 
         static double TimeInNS(Action action)
         {
             var initial = Stopwatch.StartNew();
             var timings =
                 Enumerable.Range(0, 1000000)
-                .Select(_ => {
-                    var sw = Stopwatch.StartNew();
-                    action();
-                    return sw.Elapsed.TotalMilliseconds;
-                })
-                .TakeUntil(t => initial.ElapsedMilliseconds >= 10000)
-                .OrderBy(t => t)
-                .ToArray();
+                    .Select(_ => {
+                            var sw = Stopwatch.StartNew();
+                            action();
+                            return sw.Elapsed.TotalMilliseconds;
+                        }
+                    )
+                    .TakeUntil(t => initial.ElapsedMilliseconds >= 10000)
+                    .OrderBy(t => t)
+                    .ToArray();
             return 1000000.0 * timings.Take((timings.Length + 3) / 4).Average();
         }
     }

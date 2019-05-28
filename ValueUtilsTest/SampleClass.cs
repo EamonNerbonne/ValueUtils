@@ -12,13 +12,21 @@ namespace ValueUtilsTest
     {
         [UsedImplicitly]
         public SampleEnum AnEnum;
+
         [UsedImplicitly]
         public int? NullableField;
+
         [UsedImplicitly]
         public CustomStruct PlainStruct;
+
         [UsedImplicitly]
         public CustomStruct? NullableStruct;
 
-        public string AutoPropWithPrivateBackingField { [UsedImplicitly] get; set; }
+        public string AutoPropWithPrivateBackingField
+        {
+            [UsedImplicitly]
+            get;
+            set;
+        }
     }
 }

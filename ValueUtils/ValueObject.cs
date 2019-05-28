@@ -28,21 +28,21 @@ namespace ValueUtils
             }
         }
 
-        public sealed override bool Equals(object obj) => obj is T && equalsFunc((T) this, (T) obj);
+        public sealed override bool Equals(object obj) => obj is T && equalsFunc((T)this, (T)obj);
 
-        public bool Equals(T obj) => (object) obj != null && equalsFunc((T) this, obj);
+        public bool Equals(T obj) => (object)obj != null && equalsFunc((T)this, obj);
         //optimization note: (object)obj == null is equivalent to ReferenceEquals(obj, null) but faster here.
 
-        public sealed override int GetHashCode() => hashFunc((T) this);
+        public sealed override int GetHashCode() => hashFunc((T)this);
 
         public static bool operator !=(ValueObject<T> a, T b) =>
             // ReSharper disable once CSharpWarnings::CS0252
-            (object) a != b
-            && ((object) a == null || (object) b == null || !equalsFunc((T) a, b));
+            (object)a != b
+            && ((object)a == null || (object)b == null || !equalsFunc((T)a, b));
 
         public static bool operator ==(ValueObject<T> a, T b) =>
             // ReSharper disable once CSharpWarnings::CS0252
-            (object) a == b
-            || (object) a != null && (object) b != null && equalsFunc((T) a, b);
+            (object)a == b
+            || (object)a != null && (object)b != null && equalsFunc((T)a, b);
     }
 }

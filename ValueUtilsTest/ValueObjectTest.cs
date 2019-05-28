@@ -15,7 +15,7 @@ namespace ValueUtilsTest
                 && a == b
                 && a.GetHashCode() == b.GetHashCode()
                 && !ReferenceEquals(a, b)
-                );
+            );
         }
 
         [Fact]
@@ -28,7 +28,7 @@ namespace ValueUtilsTest
                 && a != b
                 && a.GetHashCode() != b.GetHashCode()
                 && !ReferenceEquals(a, b)
-                );
+            );
         }
 
         [Fact]
@@ -38,7 +38,7 @@ namespace ValueUtilsTest
             SampleValueObject b = null;
             PAssert.That(() =>
                 b == null && null == b && a != b
-                );
+            );
         }
 
 
@@ -67,12 +67,13 @@ namespace ValueUtilsTest
             PAssert.That(() =>
                 valueObjectA.Equals(valueObjectB)
                 && valueObjectA.GetHashCode() == valueObjectB.GetHashCode()
-                && valueObjectA == valueObjectB);
+                && valueObjectA == valueObjectB
+            );
             PAssert.That(() =>
                 !valueObjectA.Equals(valueObjectX)
                 && valueObjectA.GetHashCode() != valueObjectX.GetHashCode()
-                && valueObjectA != valueObjectX);
-
+                && valueObjectA != valueObjectX
+            );
         }
     }
 }

@@ -25,7 +25,7 @@ namespace ValueUtilsTest
             PAssert.That(() =>
                 FieldwiseEquality.AreEqual(a, b)
                 && !ReferenceEquals(a, b)
-                );
+            );
         }
 
         [Fact]
@@ -36,7 +36,7 @@ namespace ValueUtilsTest
             PAssert.That(() =>
                 FieldwiseHasher.Hash(a) == FieldwiseHasher.Hash(b)
                 && !ReferenceEquals(a, b)
-                );
+            );
         }
 
         [Fact]
@@ -47,7 +47,7 @@ namespace ValueUtilsTest
             PAssert.That(() =>
                 !FieldwiseEquality.AreEqual(a, b)
                 && !ReferenceEquals(a, b)
-                );
+            );
         }
 
         [Fact]
@@ -58,8 +58,7 @@ namespace ValueUtilsTest
             PAssert.That(() =>
                 FieldwiseHasher.Hash(a) != FieldwiseHasher.Hash(b)
                 && !ReferenceEquals(a, b)
-                );
+            );
         }
     }
 }
-

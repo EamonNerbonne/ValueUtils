@@ -51,13 +51,13 @@ namespace ValueUtilsBenchmark
         public override int GetHashCode()
         {
             var h = 2166136261;
-            h = (h * 16777619) ^ (uint)AnEnum.GetHashCode();
-            h = (h * 16777619) ^ (uint)A.GetHashCode();
-            h = (h * 16777619) ^ (uint)NullableInt.GetHashCode();
-            h = (h * 16777619) ^ (uint)B.GetHashCode();
-            h = (h * 16777619) ^ (uint)(default(string) == Label ? -1 : Label.GetHashCode());
-            h = (h * 16777619) ^ (uint)Time.GetHashCode();
-            h = (h * 16777619) ^ (uint)C.GetHashCode();
+            h = h * 16777619 ^ (uint)AnEnum.GetHashCode();
+            h = h * 16777619 ^ (uint)A.GetHashCode();
+            h = h * 16777619 ^ (uint)NullableInt.GetHashCode();
+            h = h * 16777619 ^ (uint)B.GetHashCode();
+            h = h * 16777619 ^ (uint)(default == Label ? -1 : Label.GetHashCode());
+            h = h * 16777619 ^ (uint)Time.GetHashCode();
+            h = h * 16777619 ^ (uint)C.GetHashCode();
             return (int)h;
         }
 
@@ -95,6 +95,6 @@ namespace ValueUtilsBenchmark
             );
 
         public (SeekOrigin AnEnum, int A, int? NullableInt, int B, string Label, DateTime Time, int C) ToCs7Tuple()
-            => (AnEnum: AnEnum, A: A, NullableInt: NullableInt, B: B, Label: Label, Time: Time, C: C);
+            => (AnEnum, A, NullableInt, B, Label, Time, C);
     }
 }

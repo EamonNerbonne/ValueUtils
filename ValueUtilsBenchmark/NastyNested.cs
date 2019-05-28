@@ -27,9 +27,9 @@ namespace ValueUtilsBenchmark
         public override int GetHashCode()
         {
             var h = 2166136261;
-            h = (h * 16777619) ^ (uint)(default(NastyNestedManual) == Nested ? -1 : Nested.GetHashCode());
-            h = (h * 16777619) ^ (uint)A.GetHashCode();
-            h = (h * 16777619) ^ (uint)B.GetHashCode();
+            h = h * 16777619 ^ (uint)(default(NastyNestedManual) == Nested ? -1 : Nested.GetHashCode());
+            h = h * 16777619 ^ (uint)A.GetHashCode();
+            h = h * 16777619 ^ (uint)B.GetHashCode();
             return (int)h;
         }
 
@@ -50,8 +50,8 @@ namespace ValueUtilsBenchmark
         public (object Nested, int A, int B) ToCs7Tuple()
             => (
                 Nested: Nested?.ToCs7Tuple(),
-                A: A,
-                B: B
-                );
+                A,
+                B
+            );
     }
 }

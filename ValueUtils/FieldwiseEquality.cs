@@ -79,7 +79,8 @@ namespace ValueUtils
         {
             var fieldType = fieldInfo.FieldType;
             var equalsMethod = fieldType.GetTypeInfo().GetMethod(
-                "Equals", new[] { fieldType });
+                "Equals", new[] { fieldType }
+            );
 
             var fieldsEqualExpr = equalsMethod == null || equalsMethod.GetParameters()[0].ParameterType != fieldType
                     ? Expression.Call(((Func<object, object, bool>)Equals).GetMethodInfo(),

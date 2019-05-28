@@ -7,22 +7,20 @@ namespace ValueUtils
     public static class FieldwiseHasher
     {
         /// <summary>
-        /// Computes a hashcode for an object based on its fields.  Type resolution is done 
+        /// Computes a hashcode for an object based on its fields.  Type resolution is done
         /// statically, which allows fast code (similar to hand-rolled performance).
         /// However, warning: if the instance is of compile-time type BaseType, but at runtime turns out
         /// to be SubClass, then only the fields of BaseType will be checked.
-        /// 
         /// This is simply a type-inference friendly wrapper around FieldwiseHasher&lt;&gt;.Instance
         /// </summary>
         /// <typeparam name="T">The type of the object to hash.</typeparam>
-
         public static int Hash<T>(T val) => FieldwiseHasher<T>.Instance(val);
     }
 
     public static class FieldwiseHasher<T>
     {
         /// <summary>
-        /// Computes a hashcode for an object based on its fields.  Type resolution is specified 
+        /// Computes a hashcode for an object based on its fields.  Type resolution is specified
         /// statically, which allows fast code (similar to hand-rolled performance).
         /// However, warning: if the instance is of compile-time type BaseType, but at runtime turns out
         /// to be SubClass, then only the fields of BaseType will be checked.
@@ -41,7 +39,7 @@ namespace ValueUtils
             //Start with some arbitrary constant; pick something type-dependant for the rare mixed-type usecase.
             Expression hashExpr = Expression.Constant((ulong)type.GetHashCode() * 1234567);
             ulong fieldIndex = 0;
-            var getHashCodeMethod = ((Func<int>)(new object().GetHashCode)).GetMethodInfo();
+            var getHashCodeMethod = ((Func<int>)new object().GetHashCode).GetMethodInfo();
 
             foreach (var fieldInfo in fields) {
                 var fieldExpr = Expression.Field(paramExpr, fieldInfo);
@@ -69,19 +67,20 @@ from it, and (almost entirely) relatively prime for the first 50 coefficients.
                  */
                 fieldIndex++;
                 var scale = 1794966779ul /*prime*/
-                + fieldIndex * 35225190ul /*2*3*3*5*7*11*13*17*23 */;
+                    + fieldIndex * 35225190ul /*2*3*3*5*7*11*13*17*23 */;
                 var scaledFieldHashExpr = Expression.Multiply(ulongFieldHashExpr, Expression.Constant(scale));
 
 
                 //if this field is null, use some arbitrary hash code.
                 var nullSafeFieldHashExpr = fieldInfo.FieldType.GetTypeInfo().IsValueType
-                   ? (Expression)scaledFieldHashExpr
-                   : Expression.Condition(
+                    ? (Expression)scaledFieldHashExpr
+                    : Expression.Condition(
                         Expression.Equal(Expression.Default(typeof(object)),
-                            Expression.Convert(fieldExpr, typeof(object))),
+                            Expression.Convert(fieldExpr, typeof(object))
+                        ),
                         Expression.Constant(scale * 3456789ul),
                         scaledFieldHashExpr
-                   );
+                    );
 
                 //add this field to running total.  Note we don't need an explicit accumulation variable!
                 hashExpr = Expression.Add(hashExpr, nullSafeFieldHashExpr);
@@ -92,13 +91,13 @@ from it, and (almost entirely) relatively prime for the first 50 coefficients.
             var writeHashStatement = Expression.Assign(ulongHashVariable, hashExpr);
 
             var intHashExpr =
-               Expression.Convert(
-                  Expression.ExclusiveOr(
-                     ulongHashVariable,
-                     Expression.RightShift(ulongHashVariable, Expression.Constant(32))
-                  )
-               , typeof(int)
-               );
+                Expression.Convert(
+                    Expression.ExclusiveOr(
+                        ulongHashVariable,
+                        Expression.RightShift(ulongHashVariable, Expression.Constant(32))
+                    )
+                    , typeof(int)
+                );
 
             var bodyExpr = Expression.Block(new[] { ulongHashVariable, }, writeHashStatement, intHashExpr);
             return Expression.Lambda<Func<T, int>>(bodyExpr, paramExpr);
