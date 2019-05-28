@@ -1,20 +1,34 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup Label="Configuration">
     <Version>2.0.0-preview1</Version>
+    <PackageReleaseNotes>Add source link support</PackageReleaseNotes>
     <Authors>Eamon Nerbonne</Authors>
     <Owners>Eamon Nerbonne</Owners>
     <Title>ValueUtils</Title>
     <Description>Efficient hash code and equality implementations for arbitrary objects.</Description>
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
-    <PackageReleaseNotes>Add support for .net core (via .net standard 1.5)</PackageReleaseNotes>
     <PackageTags>ValueObject DataTransferObject DTO GetHashCode Equals IEquatable ValueType value semantics hashcode</PackageTags>
     <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
     <PackageProjectUrl>http://eamonnerbonne.github.io/ValueUtils/</PackageProjectUrl>
-    <TargetFrameworks>netstandard2.0;net452</TargetFrameworks>
+    <TargetFrameworks>netstandard1.5;net452</TargetFrameworks>
     <RepositoryUrl>https://github.com/EamonNerbonne/ValueUtils</RepositoryUrl>
-    <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
-
-    <DebugType>full</DebugType>
-    <DebugSymbols>True</DebugSymbols>
+    <AllowedOutputExtensionsInPackageBuildOutputFolder>$(AllowedOutputExtensionsInPackageBuildOutputFolder);.pdb</AllowedOutputExtensionsInPackageBuildOutputFolder>
+    <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <SignAssembly>true</SignAssembly>
+    <WarningsAsErrors>NU1605</WarningsAsErrors>
   </PropertyGroup>
+
+  <PropertyGroup>
+    <!-- Source link: -->
+    <DebugType>portable</DebugType>
+    <DebugSymbols>True</DebugSymbols>
+    <PublishRepositoryUrl>true</PublishRepositoryUrl>
+    <EmbedUntrackedSources>true</EmbedUntrackedSources>
+    <IncludeSymbols>true</IncludeSymbols>
+    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.0.0-beta2-19270-01" PrivateAssets="All"/>
+  </ItemGroup>
 </Project>
