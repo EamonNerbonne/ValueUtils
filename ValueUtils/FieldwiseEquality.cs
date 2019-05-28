@@ -15,8 +15,7 @@ namespace ValueUtils {
         /// This is simply a type-inference friendly wrapper around FieldwiseEquality&lt;&gt;.Instance
         /// </summary>
         /// <typeparam name="T">The type of the objects to compare.</typeparam>
-        public static bool AreEqual<T>(T a, T b) { return FieldwiseEquality<T>.Instance(a, b); }
-
+        public static bool AreEqual<T>(T a, T b) => FieldwiseEquality<T>.Instance(a, b);
     }
     public static class FieldwiseEquality<T> {
         /// <summary>
