@@ -13,8 +13,11 @@ variables:
   buildConfiguration: 'Release'
 
 steps:
-- script: dotnet build --configuration $(buildConfiguration)
   displayName: 'dotnet build $(buildConfiguration)'
+- script: dotnet build --configuration $(buildConfiguration)
+- script: dotnet --list-runtimes
+- script: dotnet --list-sdks
+- script: dotnet --version
 - task: DotNetCoreCLI@2
   inputs:
     command: test
