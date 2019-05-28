@@ -4,10 +4,10 @@ using System.Reflection;
 namespace ValueUtils
 {
     /// <summary>
-    ///     Represents a C# object with value semantics.
-    ///     ValueObjects implements GetHashCode, Equals, IEquatable&lt;&gt; and operators == and != for you.
-    ///     A class deriving from ValueObject should pass itself as
-    ///     the generic type parameter to ValueObject.  ValueObjects must be sealed.
+    /// Represents a C# object with value semantics.
+    /// ValueObjects implements GetHashCode, Equals, IEquatable&lt;&gt; and operators == and != for you.
+    /// A class deriving from ValueObject should pass itself as
+    /// the generic type parameter to ValueObject.  ValueObjects must be sealed.
     /// </summary>
     /// <typeparam name="T">The sealed subclass of ValueObject.</typeparam>
     public abstract class ValueObject<T> : IEquatable<T>

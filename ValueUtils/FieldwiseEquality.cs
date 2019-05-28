@@ -5,31 +5,31 @@ using System.Reflection;
 namespace ValueUtils
 {
     /// <summary>
-    ///     Implements field-wise equality via reflection-based code generation.
+    /// Implements field-wise equality via reflection-based code generation.
     /// </summary>
     public static class FieldwiseEquality
     {
         /// <summary>
-        ///     Checks whether two objects of the same type are field-wise equal.  Type resolution is done
-        ///     statically, which allows fast code (similar to hand-rolled performance).
-        ///     However, warning: if the objects are of compile-time type BaseType, but at runtime turn out
-        ///     to be SubClass, then only the fields of BaseType will be checked.
-        ///     This is simply a type-inference friendly wrapper around FieldwiseEquality&lt;&gt;.Instance
+        /// Checks whether two objects of the same type are field-wise equal.  Type resolution is done
+        /// statically, which allows fast code (similar to hand-rolled performance).
+        /// However, warning: if the objects are of compile-time type BaseType, but at runtime turn out
+        /// to be SubClass, then only the fields of BaseType will be checked.
+        /// This is simply a type-inference friendly wrapper around FieldwiseEquality&lt;&gt;.Instance
         /// </summary>
         /// <typeparam name="T">The type of the objects to compare.</typeparam>
         public static bool AreEqual<T>(T a, T b) => FieldwiseEquality<T>.Instance(a, b);
     }
 
     /// <summary>
-    ///     Implements field-wise equality via reflection-based code generation.
+    /// Implements field-wise equality via reflection-based code generation.
     /// </summary>
     public static class FieldwiseEquality<T>
     {
         /// <summary>
-        ///     Checks whether two objects of the same type are field-wise equal.  Type resolution is specified
-        ///     statically, which allows fast code (similar to hand-rolled performance).
-        ///     However, warning: if the objects are of compile-time type BaseType, but at runtime turn out
-        ///     to be SubClass, then only the fields of BaseType will be checked.
+        /// Checks whether two objects of the same type are field-wise equal.  Type resolution is specified
+        /// statically, which allows fast code (similar to hand-rolled performance).
+        /// However, warning: if the objects are of compile-time type BaseType, but at runtime turn out
+        /// to be SubClass, then only the fields of BaseType will be checked.
         /// </summary>
         public static readonly Func<T, T, bool> Instance = CreateLambda().Compile();
 
