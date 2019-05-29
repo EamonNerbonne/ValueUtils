@@ -14,10 +14,14 @@ namespace ValueUtilsTest
             eq(new SampleStruct(1, 2, "3", 4), new SampleStruct(1, 2, "3", 4))
         );
 
-        [Fact(Skip = "Don't support nulls")]
-        public void CanCheckEqualityWithNull() => PAssert.That(() =>
-            !FieldwiseEquality.AreEqual(Tuple.Create(1), null)
-        );
+        [Fact]
+        public void CanCheckEqualityWithNull()
+        {
+            PAssert.That(() => !FieldwiseEquality.AreEqual(Tuple.Create(1), null));
+            PAssert.That(() => !FieldwiseEquality.AreEqual(null, Tuple.Create(1)));
+            PAssert.That(() => FieldwiseEquality.AreEqual<SampleStruct?>(null, null));
+            PAssert.That(() => FieldwiseEquality.AreEqual<SampleClass>(null, null));
+        }
 
 
         [Fact]
