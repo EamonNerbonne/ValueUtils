@@ -1,6 +1,8 @@
 ValueUtils
 ==========
 
+![Azure DevOps tests](https://img.shields.io/azure-devops/tests/eamonnerbonne/ValueUtils/1.svg) ![Azure DevOps coverage](https://img.shields.io/azure-devops/coverage/eamonnerbonne/ValueUtils/1.svg)
+
 [ValueUtils](http://eamonnerbonne.github.io/ValueUtils/) implements `Equals` and `GetHashCode` for you.  By using runtime code-generation, the performance overhead is kept small; `ValueObject<>` generally outperforms alternatives such as `Tuple<>`, `struct` or anonymous types (see benchmarks below). 
 
 The library is available on nuget (for import or direct download) as [ValueUtils](https://www.nuget.org/packages/ValueUtils/).  Though it's implemented in C#, it's just as applicable to VB.NET classes.  
