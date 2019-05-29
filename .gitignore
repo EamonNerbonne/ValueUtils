@@ -5,3 +5,4 @@ bin
 *.nupkg
 *.DotSettings.user
 .vs
+*.coverage
