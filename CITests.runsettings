@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- File name extension must be .runsettings -->
 <RunSettings>
   <DataCollectionRunSettings>
     <DataCollectors>
@@ -8,16 +7,9 @@
           <CodeCoverage>
             <ModulePaths>
               <Include>
-                <ModulePath>ValueUtils\.dll$</ModulePath>
+                <ModulePath>.*ValueUtils\.dll$</ModulePath>
               </Include>
             </ModulePaths>
-
-            <!-- We recommend you do not change the following values: -->
-            <UseVerifiableInstrumentation>True</UseVerifiableInstrumentation>
-            <AllowLowIntegrityProcesses>True</AllowLowIntegrityProcesses>
-            <CollectFromChildProcesses>True</CollectFromChildProcesses>
-            <CollectAspDotNet>False</CollectAspDotNet>
-
           </CodeCoverage>
         </Configuration>
       </DataCollector>
