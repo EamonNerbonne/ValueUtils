@@ -21,5 +21,5 @@ steps:
   inputs:
     command: test
     projects: 'ValueUtilsTest/ValueUtilsTest.csproj'
-    arguments: '--configuration $(buildConfiguration) --collect "Code coverage"'
+    arguments: '--configuration $(buildConfiguration) --collect "Code coverage" -s CITests.runsettings'
 #- script: dotnet publish --configuration $(BuildConfiguration) --output $(Build.ArtifactStagingDirectory)
