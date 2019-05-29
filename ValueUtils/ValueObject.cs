@@ -29,6 +29,13 @@ namespace ValueUtils
             }
         }
 
+        protected ValueObject()
+        {
+            if (!(this is T)) {
+                throw new NotSupportedException("Any subclass type must pass the type itself as type argument of ValueObject<>.");
+            }
+        }
+
         public sealed override bool Equals(object obj) => obj is T && equalsFunc((T)this, (T)obj);
 
         public bool Equals(T obj) => (object)obj != null && equalsFunc((T)this, obj);
