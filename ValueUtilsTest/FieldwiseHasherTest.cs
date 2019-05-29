@@ -47,6 +47,15 @@ namespace ValueUtilsTest
         }
 
         [Fact]
+        public void NullValuesAreHashable()
+        {
+            PAssert.That(() => FieldwiseHasher.Hash<SampleStruct?>(null) == FieldwiseHasher.Hash<SampleStruct?>(null));
+            PAssert.That(() => FieldwiseHasher.Hash<SampleStruct?>(null) != FieldwiseHasher.Hash<SampleStruct?>(default(SampleStruct)));
+            PAssert.That(() => FieldwiseHasher.Hash<SampleClass>(null) == FieldwiseHasher.Hash<SampleClass>(null));
+            PAssert.That(() => FieldwiseHasher.Hash<SampleClass>(null) != FieldwiseHasher.Hash<SampleStruct?>(null));
+        }
+
+        [Fact]
         public void IdenticalObjectsHaveIdenticalHashes() => PAssert.That(() =>
             FieldwiseHasher.Hash(Tuple.Create(1, 2, "3", 4))
             == FieldwiseHasher.Hash(Tuple.Create(1, 2, "3", 4))

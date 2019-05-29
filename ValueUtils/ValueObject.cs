@@ -18,13 +18,21 @@ namespace ValueUtils
         //and ClassB : ValueObject<ClassA>
         //If you do that, then GetHashCode and Equals will crash with an invalid cast exception.
 
+        static readonly Type type = typeof(T);
         static readonly Func<T, T, bool> equalsFunc = FieldwiseEquality<T>.Instance;
         static readonly Func<T, int> hashFunc = FieldwiseHasher<T>.Instance;
 
         static ValueObject()
         {
-            if (!typeof(T).GetTypeInfo().IsSealed) {
+            if (!type.GetTypeInfo().IsSealed) {
                 throw new NotSupportedException("Value objects must be sealed.");
+            }
+        }
+
+        protected ValueObject()
+        {
+            if (!(this is T)) {
+                throw new NotSupportedException("Any subclass type must pass the type itself as type argument of ValueObject<>.");
             }
         }
 

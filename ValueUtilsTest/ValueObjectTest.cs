@@ -1,4 +1,6 @@
-﻿using ExpressionToCodeLib;
+﻿using System;
+using ExpressionToCodeLib;
+using ValueUtils;
 using Xunit;
 
 namespace ValueUtilsTest
@@ -12,6 +14,7 @@ namespace ValueUtilsTest
             var b = new SampleValueObject { ShortValue = 2000, StringValue = "A", Value = -1 };
             PAssert.That(() =>
                 a.Equals(b)
+                && a.Equals((object)b)
                 && a == b
                 && a.GetHashCode() == b.GetHashCode()
                 && !ReferenceEquals(a, b)
@@ -25,6 +28,7 @@ namespace ValueUtilsTest
             var b = new SampleValueObject { ShortValue = 2000, StringValue = "a", Value = -1 };
             PAssert.That(() =>
                 !a.Equals(b)
+                && !a.Equals((object)b)
                 && a != b
                 && a.GetHashCode() != b.GetHashCode()
                 && !ReferenceEquals(a, b)
@@ -75,5 +79,20 @@ namespace ValueUtilsTest
                 && valueObjectA != valueObjectX
             );
         }
+
+        public class MyOverridableClass : ValueObject<MyOverridableClass>
+        {
+            public int SomeContents;
+        }
+
+        [Fact]
+        public void NonSealedValueObjectsCannotBeInstantiated()
+            => Assert.ThrowsAny<Exception>(() => new MyOverridableClass());
+
+        class NotQuiteTheSampleValueObject : ValueObject<SampleValueObject> { }
+
+        [Fact]
+        public void CrtpViolatingTypesCannotBeInstantiated()
+            => Assert.ThrowsAny<Exception>(() => new NotQuiteTheSampleValueObject());
     }
 }

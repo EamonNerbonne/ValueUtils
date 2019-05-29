@@ -26,5 +26,10 @@ namespace ValueUtils
         public static IEnumerable<FieldInfo> GetAllFields(Type type)
             => WalkMeaningfulInheritanceChain(type).Reverse()
                 .SelectMany(t => t.GetTypeInfo().GetFields(OnlyDeclaredInstanceMembers));
+
+        public static Type WhenNullableValueTypeGetNonNullableType(TypeInfo type)
+            => type.IsValueType && type.IsGenericType && type.GetGenericTypeDefinition() == typeof(Nullable<>)
+                ? type.GetGenericArguments()[0]
+                : null;
     }
 }
