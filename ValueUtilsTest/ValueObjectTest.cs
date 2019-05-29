@@ -25,6 +25,32 @@ namespace ValueUtilsTest
         public void DifferentValuesAreUnequal()
         {
             var a = new SampleValueObject { ShortValue = 2000, StringValue = "A", Value = -1 };
+            // ReSharper disable once SuspiciousTypeConversion.Global
+            PAssert.That(() => !a.Equals("test"));
+        }
+
+        [Fact]
+        public void NullIsNotEqual()
+        {
+            var a = new SampleValueObject { ShortValue = 2000, StringValue = "A", Value = -1 };
+            var typedNull = default(SampleValueObject);
+            var untypedNull = default(object);
+            // ReSharper disable once NegativeEqualityExpression
+            PAssert.That(() =>
+                !a.Equals(typedNull)
+                && !a.Equals(untypedNull)
+                && a != typedNull
+                && !(a == typedNull)
+                && typedNull != a
+                // ReSharper disable once EqualExpressionComparison
+                && !(a != a)
+            );
+        }
+
+        [Fact]
+        public void DifferentTypesAreUnequal()
+        {
+            var a = new SampleValueObject { ShortValue = 2000, StringValue = "A", Value = -1 };
             var b = new SampleValueObject { ShortValue = 2000, StringValue = "a", Value = -1 };
             PAssert.That(() =>
                 !a.Equals(b)
@@ -93,6 +119,9 @@ namespace ValueUtilsTest
 
         [Fact]
         public void CrtpViolatingTypesCannotBeInstantiated()
-            => Assert.ThrowsAny<Exception>(() => new NotQuiteTheSampleValueObject());
+        {
+            Assert.ThrowsAny<Exception>(() => new NotQuiteTheSampleValueObject()
+            );
+        }
     }
 }
