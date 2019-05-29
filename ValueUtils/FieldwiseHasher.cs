@@ -31,6 +31,7 @@ namespace ValueUtils
         {
             //Get all fields including inherited fields
             var type = typeof(T);
+            var nonNullableTypeOrNull = ReflectionHelper.WhenNullableValueTypeGetNonNullableType(type.GetTypeInfo());
             var fields = ReflectionHelper.GetAllFields(type);
 
             var paramExpr = Expression.Parameter(type, "valueToHash");
@@ -88,7 +89,21 @@ from it, and (almost entirely) relatively prime for the first 50 coefficients.
 
             //we have a 64-bit expression, need to downmix to 32bit.
             var ulongHashVariable = Expression.Variable(typeof(ulong), "hashcode");
-            var writeHashStatement = Expression.Assign(ulongHashVariable, hashExpr);
+            var writeHashStatement = Expression.Assign(ulongHashVariable,
+                    !type.GetTypeInfo().IsValueType
+                        ? Expression.Condition(
+                            Expression.NotEqual(Expression.Convert(paramExpr, typeof(object)), Expression.Default(typeof(object))),
+                            hashExpr,
+                            Expression.Constant((ulong)type.GetHashCode() * 1234567)
+                        )
+                        : nonNullableTypeOrNull != null
+                            ? Expression.Condition(
+                                Expression.Property(paramExpr, "HasValue"),
+                                hashExpr,
+                                Expression.Constant((ulong)type.GetHashCode() * 1234567)
+                            )
+                            : hashExpr
+                );
 
             var intHashExpr =
                 Expression.Convert(

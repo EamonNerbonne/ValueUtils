@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq.Expressions;
 using System.Reflection;
 
@@ -37,13 +38,38 @@ namespace ValueUtils
         {
             //Get all fields including inherited fields
             var type = typeof(T);
+            var nonNullableTypeOrNull = ReflectionHelper.WhenNullableValueTypeGetNonNullableType(type.GetTypeInfo());
             var fields = ReflectionHelper.GetAllFields(type);
 
             var aExpr = Expression.Parameter(type, "a");
             var bExpr = Expression.Parameter(type, "b");
 
-            Expression eqExpr = Expression.Constant(true);
+            var feqExpr = FieldwiseEqualityExpression(fields, aExpr, bExpr);
 
+            var eqExpr =
+                !type.GetTypeInfo().IsValueType
+                    ? Expression.Condition(
+                        Expression.NotEqual(Expression.Convert(aExpr, typeof(object)), Expression.Default(typeof(object))),
+                        Expression.AndAlso(Expression.NotEqual(Expression.Convert(bExpr, typeof(object)), Expression.Default(typeof(object))), feqExpr),
+                        Expression.Equal(Expression.Convert(bExpr, typeof(object)), Expression.Default(typeof(object)))
+                    )
+                    : nonNullableTypeOrNull != null
+                        ? Expression.Condition(
+                            Expression.Property(aExpr, "HasValue"),
+                            Expression.AndAlso(Expression.Property(bExpr, "HasValue"), feqExpr),
+                            Expression.Not(Expression.Property(bExpr, "HasValue"))
+                        )
+                        : feqExpr;
+
+
+            return Expression.Lambda<Func<T, T, bool>>(eqExpr, aExpr, bExpr);
+        }
+
+        static Expression FieldwiseEqualityExpression(IEnumerable<FieldInfo> fields, ParameterExpression aExpr, ParameterExpression bExpr)
+        {
+            var trueExpr = Expression.Constant(true);
+
+            Expression eqExpr = trueExpr;
             foreach (var fieldInfo in fields) {
                 var aFieldExpr = Expression.Field(aExpr, fieldInfo);
                 var bFieldExpr = Expression.Field(bExpr, fieldInfo);
@@ -52,23 +78,18 @@ namespace ValueUtils
                         ?? InstanceEqualsOrNull(aFieldExpr, bFieldExpr, fieldInfo)
                     ;
 
-                eqExpr = Expression.AndAlso(eqExpr, bestEqualityApproach);
+                eqExpr = eqExpr == trueExpr ? bestEqualityApproach : Expression.AndAlso(eqExpr, bestEqualityApproach);
             }
 
-            return Expression.Lambda<Func<T, T, bool>>(eqExpr, aExpr, bExpr);
+            return eqExpr;
         }
 
         static bool HasEqualityOperator(TypeInfo type) =>
             type.IsPrimitive
             || type.IsEnum
             || type.GetMethod("op_Equality", BindingFlags.Public | BindingFlags.Static) != null
-            || WhenNullableValueTypeGetNonNullableType(type) is Type nonNullableType
+            || ReflectionHelper.WhenNullableValueTypeGetNonNullableType(type) is Type nonNullableType
             && HasEqualityOperator(nonNullableType.GetTypeInfo());
-
-        static Type WhenNullableValueTypeGetNonNullableType(TypeInfo type)
-            => type.IsValueType && type.IsGenericType && type.GetGenericTypeDefinition() == typeof(Nullable<>)
-                ? type.GetGenericArguments()[0]
-                : null;
 
         static Expression EqualityByOperatorOrNull(Expression aFieldExpr, Expression bFieldExpr, FieldInfo fieldInfo) =>
             HasEqualityOperator(fieldInfo.FieldType.GetTypeInfo())
