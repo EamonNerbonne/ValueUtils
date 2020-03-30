@@ -64,15 +64,11 @@ struct ExampleStruct : IEquatable<ExampleStruct> {
     int some, members, here; 
     //...
 
-    public bool Equals(ExampleStruct other) {
-        return FieldwiseEquality.AreEqual(this, other);
-    }
-    public override bool Equals(object obj) {
-        return obj is ExampleStruct && Equals((ExampleStruct)obj);
-    }
-    public override int GetHashCode() {
-        return FieldwiseHasher.Hash(this);
-    }
+    public bool Equals(ExampleStruct other) => FieldwiseEquality.AreEqual(this, other);
+    
+    public override bool Equals(object obj) => obj is ExampleStruct other && Equals(other);
+    
+    public override int GetHashCode() => FieldwiseHasher.Hash(this);    
 }
 ```
 
