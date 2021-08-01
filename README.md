@@ -1,3 +1,5 @@
+(Note that this project predates C# records - but those provide much the same benefits in a more convenient package, so use those instead!)
+
 ValueUtils
 ==========
 
