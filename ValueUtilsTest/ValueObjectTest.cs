@@ -1,4 +1,10 @@
-﻿using System;
+﻿//disable various warnings for weird code; the *intent* is to test even weird cases.
+#pragma  warning disable CS1718
+// ReSharper disable NegativeEqualityExpression
+// ReSharper disable EqualExpressionComparison
+// ReSharper disable SuspiciousTypeConversion.Global
+
+using System;
 using ExpressionToCodeLib;
 using ValueUtils;
 using Xunit;
@@ -25,7 +31,6 @@ namespace ValueUtilsTest
         public void DifferentValuesAreUnequal()
         {
             var a = new SampleValueObject { ShortValue = 2000, StringValue = "A", Value = -1 };
-            // ReSharper disable once SuspiciousTypeConversion.Global
             PAssert.That(() => !a.Equals("test"));
         }
 
@@ -35,14 +40,12 @@ namespace ValueUtilsTest
             var a = new SampleValueObject { ShortValue = 2000, StringValue = "A", Value = -1 };
             var typedNull = default(SampleValueObject);
             var untypedNull = default(object);
-            // ReSharper disable once NegativeEqualityExpression
             PAssert.That(() =>
                 !a.Equals(typedNull)
                 && !a.Equals(untypedNull)
                 && a != typedNull
                 && !(a == typedNull)
                 && typedNull != a
-                // ReSharper disable once EqualExpressionComparison
                 && !(a != a)
             );
         }
