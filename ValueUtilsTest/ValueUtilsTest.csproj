@@ -14,7 +14,7 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="Assent" Version="1.8.2" />
+    <PackageReference Include="Assent" Version="2.0.2" />
     <PackageReference Include="JetBrains.Annotations" Version="2022.1.0" />
     <PackageReference Include="System.Runtime" Version="4.3.1" />
   </ItemGroup>
