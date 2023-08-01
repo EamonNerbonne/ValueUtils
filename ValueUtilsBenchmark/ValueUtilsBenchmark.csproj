@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <Authors>Eamon Nerbonne</Authors>
     <TargetFrameworks>net6.0</TargetFrameworks>
@@ -7,7 +7,7 @@
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="ExpressionToCodeLib" Version="3.5.0" />
-    <PackageReference Include="JetBrains.Annotations" Version="2022.1.0" />
+    <PackageReference Include="JetBrains.Annotations" Version="2023.2.0" />
     <PackageReference Include="morelinq" Version="3.3.2" />
     <PackageReference Include="System.ValueTuple" Version="4.5.0" />
     <ProjectReference Include="..\ValueUtils\ValueUtils.csproj" />
